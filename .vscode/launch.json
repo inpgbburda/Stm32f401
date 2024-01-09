@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "Debug/Example_BlackPill.elf",
+            "name": "Debug project",
+            "device": "STM32F401",
+            // "preLaunchTask": "build project",
+            
+            "svdFile": "Tools/STM32F401.svd",
+            "configFiles": [
+                "interface/stlink.cfg", "target/stm32f4x.cfg"
+            ]
+        }
+    ]
+}

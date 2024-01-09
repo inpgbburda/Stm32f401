@@ -1,0 +1,65 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build project",
+            "type": "shell",
+            "command": "make all -j4",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/Build_gcc"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "clean project",
+            "type": "shell",
+            "command": "make clean",
+            "args": [],
+
+            "options": {
+                "cwd": "${workspaceFolder}/Build_gcc"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "generate makefile SA=on",
+            "type": "shell",
+            "command": "cmake ../Tools/Cmake -DSTATIC_ANALYSIS=ON",
+            "args": [],
+
+            "options": {
+                "cwd": "${workspaceFolder}/Build_gcc"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "generate makefile SA=off",
+            "type": "shell",
+            "command": "cmake ../Tools/Cmake -DSTATIC_ANALYSIS=OFF",
+            "args": [],
+
+            "options": {
+                "cwd": "${workspaceFolder}/Build_gcc"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+
+    ]
+}

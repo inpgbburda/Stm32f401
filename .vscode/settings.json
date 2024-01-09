@@ -1,0 +1,16 @@
+{
+
+  "cortex-debug.armToolchainPath": "D:/Programy/ARM_toolchain/10_2021_10/bin/",
+  "cortex-debug.openocdPath": "D:/Programy/ARM_toolchain/OpenOCD-20231002-0.12.0/bin/openocd.exe",
+  "files.associations": {
+    "core_init.h": "c",
+    "platform_specific.h": "c",
+    "stm32f3xx.h": "c",
+    "os.h": "c",
+    "stdbool.h": "c",
+    "stdio.h": "c",
+    "mocksupport.h": "c"
+  },
+  "cortex-debug.variableUseNaturalFormat": true,
+
+}
