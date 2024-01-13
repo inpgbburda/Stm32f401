@@ -1,0 +1,56 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: /cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/CMakeScratch/TryCompile-usvzqJ
+
+Run Build Command(s):/usr/bin/make.exe -f Makefile cmTC_6e444/fast && /usr/bin/make  -f CMakeFiles/cmTC_6e444.dir/build.make CMakeFiles/cmTC_6e444.dir/build
+make[1]: Entering directory '/cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/CMakeScratch/TryCompile-usvzqJ'
+Building C object CMakeFiles/cmTC_6e444.dir/CMakeCCompilerABI.c.obj
+/cygdrive/d/Programy/ARM_toolchain/10_2021_10/bin/arm-none-eabi-gcc.exe   -v -o CMakeFiles/cmTC_6e444.dir/CMakeCCompilerABI.c.obj -c /usr/share/cmake-3.25.3/Modules/CMakeCCompilerABI.c
+arm-none-eabi-gcc.exe: error: /usr/share/cmake-3.25.3/Modules/CMakeCCompilerABI.c: No such file or directory
+Using built-in specs.
+COLLECT_GCC=D:\Programy\ARM_toolchain\10_2021_10\bin\arm-none-eabi-gcc.exe
+Target: arm-none-eabi
+Configured with: /mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/src/gcc/configure --build=x86_64-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw --libexecdir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/lib --infodir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --enable-mingw-wildcard --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/arm-none-eabi --with-libiconv-prefix=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-gmp=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-mpfr=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-mpc=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-isl=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-libelf=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Arm Embedded Toolchain 10.3-2021.10' --with-multilib-list=rmprofile,aprofile
+Thread model: single
+Supported LTO compression algorithms: zlib
+gcc version 10.3.1 20210824 (release) (GNU Arm Embedded Toolchain 10.3-2021.10) 
+Linking C static library libcmTC_6e444.a
+/usr/bin/cmake.exe -P CMakeFiles/cmTC_6e444.dir/cmake_clean_target.cmake
+/usr/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_6e444.dir/link.txt --verbose=1
+arm-none-eabi-ar qc libcmTC_6e444.a CMakeFiles/cmTC_6e444.dir/CMakeCCompilerABI.c.obj
+D:\Programy\ARM_toolchain\10_2021_10\bin\arm-none-eabi-ar.exe: CMakeFiles/cmTC_6e444.dir/CMakeCCompilerABI.c.obj: No such file or directory
+make[1]: *** [CMakeFiles/cmTC_6e444.dir/build.make:100: libcmTC_6e444.a] Error 1
+make[1]: *** Deleting file 'libcmTC_6e444.a'
+make[1]: Leaving directory '/cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/CMakeScratch/TryCompile-usvzqJ'
+make: *** [Makefile:127: cmTC_6e444/fast] Error 2
+
+
+
+
+Detecting CXX compiler ABI info failed to compile with the following output:
+Change Dir: /cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/CMakeScratch/TryCompile-WKuRkf
+
+Run Build Command(s):/usr/bin/make.exe -f Makefile cmTC_aa464/fast && /usr/bin/make  -f CMakeFiles/cmTC_aa464.dir/build.make CMakeFiles/cmTC_aa464.dir/build
+make[1]: Entering directory '/cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/CMakeScratch/TryCompile-WKuRkf'
+Building CXX object CMakeFiles/cmTC_aa464.dir/CMakeCXXCompilerABI.cpp.obj
+/cygdrive/d/Programy/ARM_toolchain/10_2021_10/bin/arm-none-eabi-g++.exe   -v -o CMakeFiles/cmTC_aa464.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/share/cmake-3.25.3/Modules/CMakeCXXCompilerABI.cpp
+arm-none-eabi-g++.exe: error: /usr/share/cmake-3.25.3/Modules/CMakeCXXCompilerABI.cpp: No such file or directory
+Using built-in specs.
+COLLECT_GCC=D:\Programy\ARM_toolchain\10_2021_10\bin\arm-none-eabi-g++.exe
+Target: arm-none-eabi
+Configured with: /mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/src/gcc/configure --build=x86_64-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw --libexecdir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/lib --infodir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --enable-mingw-wildcard --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/install-mingw/arm-none-eabi --with-libiconv-prefix=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-gmp=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-mpfr=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-mpc=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-isl=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-libelf=/mnt/workspace/workspace/GCC-10-pipeline/jenkins-GCC-10-pipeline-338_20211018_1634516203/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Arm Embedded Toolchain 10.3-2021.10' --with-multilib-list=rmprofile,aprofile
+Thread model: single
+Supported LTO compression algorithms: zlib
+gcc version 10.3.1 20210824 (release) (GNU Arm Embedded Toolchain 10.3-2021.10) 
+Linking CXX static library libcmTC_aa464.a
+/usr/bin/cmake.exe -P CMakeFiles/cmTC_aa464.dir/cmake_clean_target.cmake
+/usr/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_aa464.dir/link.txt --verbose=1
+arm-none-eabi-ar qc libcmTC_aa464.a CMakeFiles/cmTC_aa464.dir/CMakeCXXCompilerABI.cpp.obj
+D:\Programy\ARM_toolchain\10_2021_10\bin\arm-none-eabi-ar.exe: CMakeFiles/cmTC_aa464.dir/CMakeCXXCompilerABI.cpp.obj: No such file or directory
+make[1]: *** [CMakeFiles/cmTC_aa464.dir/build.make:100: libcmTC_aa464.a] Error 1
+make[1]: *** Deleting file 'libcmTC_aa464.a'
+make[1]: Leaving directory '/cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/CMakeScratch/TryCompile-WKuRkf'
+make: *** [Makefile:127: cmTC_aa464/fast] Error 2
+
+
+
+
