@@ -25,7 +25,7 @@ set(CPP_SRCS
 
 set(C_SRCS
     ${REL_PATH}Sw_Components/02_Srv/main.c
-    # ${REL_PATH}SW_Components/05_Mcu/core_init/core_init.c
+    ${REL_PATH}SW_Components/05_Mcu/core_init/system_stm32f4xx.c
     # ${REL_PATH}Sw_Components/05_Mcu/startup/vectors.c
 )
 

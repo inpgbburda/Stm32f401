@@ -1,8 +1,8 @@
-# Install script for directory: /cygdrive/d/Self_development/stm32f401/Tools/Cmake
+# Install script for directory: D:/Self_development/stm32f401/Tools/Cmake
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/cygdrive/d/Self_development/stm32f401/Tools/Cmake/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Self_development/stm32f401/Tools/Cmake/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

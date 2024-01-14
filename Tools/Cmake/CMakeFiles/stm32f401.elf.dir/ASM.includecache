@@ -6,5 +6,5 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/d/Self_development/stm32f401/Sw_Components/05_Mcu/startup/startup_stm32f401ccux.s
+D:/Self_development/stm32f401/Sw_Components/05_Mcu/startup/startup_stm32f401ccux.s
 

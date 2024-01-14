@@ -1,4 +1,4 @@
-/cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/stm32f401.elf.dir
-/cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/stm32f401.dir
-/cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/edit_cache.dir
-/cygdrive/d/Self_development/stm32f401/Tools/Cmake/CMakeFiles/rebuild_cache.dir
+D:/Self_development/stm32f401/Tools/Cmake/CMakeFiles/stm32f401.elf.dir
+D:/Self_development/stm32f401/Tools/Cmake/CMakeFiles/stm32f401.dir
+D:/Self_development/stm32f401/Tools/Cmake/CMakeFiles/edit_cache.dir
+D:/Self_development/stm32f401/Tools/Cmake/CMakeFiles/rebuild_cache.dir

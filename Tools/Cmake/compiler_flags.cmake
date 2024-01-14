@@ -20,7 +20,7 @@ set(CXX_FLAGS "-std=gnu++14 -O0 -g -fno-rtti -fno-exceptions -fverbose-asm -MMD"
 # -O0 - optimization level: -O0, -O1, -O2, -O3, -Os
 # fverbose-asm - additional comments for generated assembler code
 # -MMD - create dependency files
-set(C_FLAGS "-std=gnu89 -O0 -ffunction-sections -fdata-sections -fverbose-asm -MMD")
+set(C_FLAGS "-std=c11 -O0 -ffunction-sections -fdata-sections -fverbose-asm -MMD")
 
 set(ASM_FLAGS "-x assembler-with-cpp")
 
@@ -35,7 +35,7 @@ set(CXX_WARNINGS "-Wall -Wextra")
 # -Wstrict-prototypes - additional warnings for function prototypes
 set(C_WARNINGS "-Wall -Wextra -Wstrict-prototypes")
 
-set(LD_SCRIPT ${CMAKE_SOURCE_DIR}/../../SW_Components/05_Mcu/linkers/linker.ld)
+set(LD_SCRIPT ${CMAKE_SOURCE_DIR}/../../Make_GCC/STM32F401CCUX_FLASH.ld)
 # Linker flags
 # -Wl, -Map - map file to be created
 # -T - file with linker script

@@ -6,7 +6,7 @@
             "request": "launch",
             "servertype": "openocd",
             "cwd": "${workspaceFolder}",
-            "executable": "Debug/Example_BlackPill.elf",
+            "executable": "${workspaceFolder}/Tools/Cmake/stm32f401.elf",
             "name": "Debug project",
             "device": "STM32F401",
             // "preLaunchTask": "build project",
