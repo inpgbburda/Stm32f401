@@ -10,8 +10,8 @@
         "name": "default",
         "displayName": "Default",
         "description": "Default build cfg",
-        "generator": "Unix Makefiles",
-        "binaryDir": "${sourceDir}/builds_UT",
+        "generator": "MinGW Makefiles",
+        "binaryDir": "${sourceDir}../../../Output",
         "cacheVariables": {
         },
         "environment": {

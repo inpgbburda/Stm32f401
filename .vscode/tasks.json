@@ -4,10 +4,10 @@
         {
             "label": "build project",
             "type": "shell",
-            "command": "${env:MAKE_PATH} all",
+            "command": "D:/Programy/ARM_toolchain/GnuWin32/bin/make all",
             "args": [],
             "options": {
-                "cwd": "${workspaceFolder}/Tools/Cmake"
+                "cwd": "${workspaceFolder}/Output"
             },
             "group": {
                 "kind": "build",
@@ -18,11 +18,11 @@
         {
             "label": "clean project",
             "type": "shell",
-            "command": "$env:makePath clean",
+            "command": "D:/Programy/ARM_toolchain/GnuWin32/bin/make clean",
             "args": [],
 
             "options": {
-                "cwd": "${workspaceFolder}/Tools/Cmake"
+                "cwd": "${workspaceFolder}/Output"
             },
             "group": {
                 "kind": "build",
@@ -48,12 +48,11 @@
         {
             "label": "generate makefile SA=off",
             "type": "shell",
-            "command": "D:\\Programy\\ARM_toolchain\\Cmake\\bin\\cmake",
+            "command": "D:/Programy/ARM_toolchain/Cmake/bin/cmake",
             "args": [
                         ".",
-                        "-G",
-                        "MinGW Makefiles"  // "MinGW Makefiles" must be quoted and VS code adds quotes automatically to arguments with spaces
-                ],
+                        "--preset=default"
+                    ],
             "options": {
                 "cwd": "${workspaceFolder}/Tools/Cmake"
             },
