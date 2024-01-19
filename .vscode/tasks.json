@@ -61,6 +61,40 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "target erase",
+            "type": "shell",
+            "command": "D:/Programy/STM32_CubeProg/bin/STM32_Programmer_CLI.exe",
+            "args": [
+                        "--erase",
+                        "all"
+                    ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "target flash",
+            "type": "shell",
+            "command": "D:/Programy/STM32_CubeProg/bin/STM32_Programmer_CLI.exe",
+            "args": [
+                        "--connect",    /*connect to the CPU*/
+                        "port=SWD",
+                        "--download",   /*flash the binary into memory*/
+                        "stm32f401.hex",
+                        "--start",      /*start the execution*/
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Output"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
         }
 
     ]
