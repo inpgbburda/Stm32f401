@@ -4,7 +4,7 @@
         {
             "label": "build project",
             "type": "shell",
-            "command": "D:/Programy/ARM_toolchain/GnuWin32/bin/make all",
+            "command": "${config:makePath} all",
             "args": [],
             "options": {
                 "cwd": "${workspaceFolder}/Output"
@@ -13,12 +13,12 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": []
+            "problemMatcher": "$gcc"
         },
         {
             "label": "clean project",
             "type": "shell",
-            "command": "D:/Programy/ARM_toolchain/GnuWin32/bin/make clean",
+            "command": "${config:makePath} clean",
             "args": [],
 
             "options": {
@@ -33,7 +33,7 @@
         {
             "label": "generate makefile SA=on",
             "type": "shell",
-            "command": "cmake ../Tools/Cmake -DSTATIC_ANALYSIS=ON",
+            "command": "${config:cmakePath} -DSTATIC_ANALYSIS=ON",
             "args": [],
 
             "options": {
@@ -48,7 +48,7 @@
         {
             "label": "generate makefile SA=off",
             "type": "shell",
-            "command": "D:/Programy/ARM_toolchain/Cmake/bin/cmake",
+            "command": "${config:cmakePath}",
             "args": [
                         ".",
                         "--preset=default"
@@ -65,7 +65,7 @@
         {
             "label": "target erase",
             "type": "shell",
-            "command": "D:/Programy/STM32_CubeProg/bin/STM32_Programmer_CLI.exe",
+            "command": "${config:Stm32ProgrammerPath}",
             "args": [
                         "--erase",
                         "all"
@@ -79,7 +79,7 @@
         {
             "label": "target flash",
             "type": "shell",
-            "command": "D:/Programy/STM32_CubeProg/bin/STM32_Programmer_CLI.exe",
+            "command": "${config:Stm32ProgrammerPath}",
             "args": [
                         "--connect",    /*connect to the CPU*/
                         "port=SWD",

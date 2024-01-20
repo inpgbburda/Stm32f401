@@ -1,7 +1,11 @@
 {
+    /*Toolchain paths to adjust*/
+    "makePath": "D:/Programy/ARM_toolchain/GnuWin32/bin/make",
+    "Stm32ProgrammerPath": "D:/Programy/STM32_CubeProg/bin/STM32_Programmer_CLI.exe",
+    "cmakePath": "D:/Programy/ARM_toolchain/Cmake/bin/cmake",
+    "cortex-debug.armToolchainPath": "D:/Programy/ARM_toolchain/10_2021_10/bin/",
+    "cortex-debug.openocdPath": "D:/Programy/ARM_toolchain/OpenOCD-20231002-0.12.0/bin/openocd.exe",
 
-  "cortex-debug.armToolchainPath": "D:/Programy/ARM_toolchain/10_2021_10/bin/",
-  "cortex-debug.openocdPath": "D:/Programy/ARM_toolchain/OpenOCD-20231002-0.12.0/bin/openocd.exe",
   "files.associations": {
     "core_init.h": "c",
     "platform_specific.h": "c",
