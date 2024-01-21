@@ -15,6 +15,7 @@
     "stdio.h": "c",
     "mocksupport.h": "c"
   },
-  "cortex-debug.variableUseNaturalFormat": true,
+"cortex-debug.variableUseNaturalFormat": true,
+"terminal.integrated.defaultProfile.osx": "",
 
 }

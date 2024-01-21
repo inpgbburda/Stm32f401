@@ -9,9 +9,9 @@
             "executable": "${workspaceFolder}/Output/stm32f401.elf",
             "name": "Debug project",
             "device": "STM32F401",
-            // "preLaunchTask": "build project",
+            "preLaunchTask": "build project",
             
-            "svdFile": "Tools/STM32F401.svd",
+            "svdFile": "Tools/Debug/STM32F401.svd",
             "configFiles": [
                 "interface/stlink.cfg", "target/stm32f4x.cfg"
             ]
