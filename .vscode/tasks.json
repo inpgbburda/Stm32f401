@@ -95,7 +95,39 @@
                 "isDefault": true
             },
             "problemMatcher": []
-        }
+        },
+        {
+            "label": "generate makefile pwm ut",
+            "type": "shell",
+            "command": "${config:cmakePath}",
+            "args": [
+                        ".",
+                        "--preset=default"
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build pwm ut",
+            "type": "shell",
+            "command": "${config:makePath} all",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
 
     ]
 }
