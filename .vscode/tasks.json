@@ -97,7 +97,7 @@
             "problemMatcher": []
         },
         {
-            "label": "generate makefile pwm ut",
+            "label": "UT - pwm generate makefile ",
             "type": "shell",
             "command": "${config:cmakePath}",
             "args": [
@@ -114,7 +114,7 @@
             "problemMatcher": []
         },
         {
-            "label": "build pwm ut",
+            "label": "UT - pwm build",
             "type": "shell",
             "command": "${config:makePath} all",
             "args": [
@@ -128,6 +128,20 @@
             },
             "problemMatcher": []
         },
-
+        {
+            "label": "UT - pwm clean",
+            "type": "shell",
+            "command": "${config:makePath} clean",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
     ]
 }
