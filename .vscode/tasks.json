@@ -126,7 +126,7 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": []
+            "problemMatcher": ["$gcc"]
         },
         {
             "label": "UT - pwm clean",
@@ -139,6 +139,21 @@
             },
             "group": {
                 "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - pwm run",
+            "type": "shell",
+            "command": "./Pwm_Ut.exe",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
+            },
+            "group": {
+                "kind": "test",
                 "isDefault": true
             },
             "problemMatcher": []

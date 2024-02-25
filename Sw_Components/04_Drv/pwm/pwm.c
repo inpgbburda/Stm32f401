@@ -10,6 +10,8 @@
 */
 
 #include "pwm.h"
+#include "pwm_cfg.h"
+#include "stm32f401xc.h"
 
 /*
 |===================================================================================================================================|
@@ -17,6 +19,7 @@
 |===================================================================================================================================|
 */
 
+#define FIRST_PERIOD 0xFFU
 
 /*
 |===================================================================================================================================|
@@ -44,7 +47,26 @@
 |===================================================================================================================================|
 */
 
-int AverageThreeBytes(int a, int b, int c)
+void PwmInit(void)
 {
-    return 0;
+    RCC->AHB1ENR = RCC_AHB1LPENR_GPIOALPEN;     /*Enable clock for GPIO*/
+    GPIOA->MODER |=  0x00000002U;
+    GPIOA->AFR[0] |= 0x00000001U; 
+
+    RCC->APB1ENR = RCC_APB1ENR_TIM2EN;          /*Enable clock for Timer*/
+    TIM2->ARR = FIRST_PERIOD;   /* Must be set before enabling automatic preload to avoid waiting for first overflow*/
+    TIM2->CCMR1 |= (TIM_CCMR1_OC1M_1|TIM_CCMR1_OC1M_2);         /*Pwm mode 1*/
+    TIM2->CCMR1 |=  TIM_CCMR1_OC1PE;                            /*Enable the Preload register*/
+    TIM2->CR1 |= TIM_CR1_ARPE;                                  /*Enable the auto-reload Preload register */
+
+    TIM2->ARR = PERIOD_VAL;
+    TIM2->CCR1 = DUTY_VAL;
+    
+    TIM2->CCER |= TIM_CCER_CC1E; 
+    TIM2-> CR1 |= TIM_CR1_CEN;                  /*Set Counter Enable Bit*/
+}
+
+void PwmStart()
+{
+
 }
