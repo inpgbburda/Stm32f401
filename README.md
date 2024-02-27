@@ -3,7 +3,8 @@
        - arm-none-eabi
        - make
        - cmake
-       - mingw - required for Cmake generation 
+       - mingw - required for Cmake generation
+       - ruby - required for CMock 
     2) Open OCD
 
 To enable VS Code task execution configure paths in 'settings.json' file.

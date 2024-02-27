@@ -95,7 +95,68 @@
                 "isDefault": true
             },
             "problemMatcher": []
-        }
-
+        },
+        {
+            "label": "UT - pwm generate makefile ",
+            "type": "shell",
+            "command": "${config:cmakePath}",
+            "args": [
+                        ".",
+                        "--preset=default"
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - pwm build",
+            "type": "shell",
+            "command": "${config:makePath} all",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "UT - pwm clean",
+            "type": "shell",
+            "command": "${config:makePath} clean",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - pwm run",
+            "type": "shell",
+            "command": "./Pwm_Ut.exe",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
     ]
 }
