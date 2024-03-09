@@ -8,9 +8,6 @@
     File includes 
 |===================================================================================================================================|
 */
-
-#include "pwm.h"
-#include "pwm_cfg.h"
 #include "stm32f401xc.h"
 #include "spi.h"
 
@@ -52,5 +49,16 @@
 
 void SpiInit(void)
 {
+    RCC->APB1ENR |= RCC_APB1ENR_SPI2EN; /* Enable clock for SPI2*/
 
+    /*TODO choose alternate options for PORTS*/
+
+    SPI2->CR1 |= SPI_CR1_DFF;  /* Set 16-bit format */
+    SPI2->CR1 |= (SPI_CR1_CPOL | SPI_CR1_CPHA);
+    SPI2->CR1 &= (~SPI_CR1_LSBFIRST); /* Set MSB first format*/
+    SPI2->CR1 &= (SPI_CR1_SSM);   /* Configure NSS as Hardware, output disabled*/
+    SPI2->CR1 &= (SPI_CR2_SSOE);
+    SPI2->CR2 &= (~SPI_CR2_FRF);  /*Choose motorola mode*/
+    SPI2->CR1 &= (~SPI_CR1_MSTR); /* MOSI pin is a data input */
+    SPI2->CR1 |= SPI_CR1_SPE;     /* MISO pin is a data output */
 }
