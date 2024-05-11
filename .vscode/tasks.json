@@ -34,10 +34,13 @@
             "label": "generate makefile SA=on",
             "type": "shell",
             "command": "${config:cmakePath} -DSTATIC_ANALYSIS=ON",
-            "args": [],
+            "args": [
+                ".",
+                "--preset=default"
+            ],
 
             "options": {
-                "cwd": "${workspaceFolder}/Build_gcc"
+                "cwd": "${workspaceFolder}/Tools/Cmake/"
             },
             "group": {
                 "kind": "build",
