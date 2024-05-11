@@ -161,5 +161,18 @@
             },
             "problemMatcher": []
         },
+        {
+            "label": "UT - pwm generate mocks",
+            "type": "shell",
+            "command": "ruby Tools/Unit_Testing/Cmock/lib/cmock.rb -oTools/Unit_Testing/Cmock/config_files/gcc.yml Sw_Components/04_Drv/pwm/pwm.h",
+            "args": [
+                    ],
+            "options": {
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+        },
     ]
 }
