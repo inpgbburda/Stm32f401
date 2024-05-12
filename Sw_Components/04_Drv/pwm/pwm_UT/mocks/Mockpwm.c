@@ -7,12 +7,10 @@
 
 static const char* CMockString_PwmInit = "PwmInit";
 static const char* CMockString_PwmStart = "PwmStart";
-static const char* CMockString_pwm = "pwm";
 
 typedef struct _CMOCK_PwmInit_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
-  int Expected_pwm;
 
 } CMOCK_PwmInit_CALL_INSTANCE;
 
@@ -59,7 +57,7 @@ void Mockpwm_Destroy(void)
   memset(&Mock, 0, sizeof(Mock));
 }
 
-void PwmInit(int pwm)
+void PwmInit(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_PwmInit_CALL_INSTANCE* cmock_call_instance;
@@ -68,20 +66,10 @@ void PwmInit(int pwm)
   Mock.PwmInit_CallInstance = CMock_Guts_MemNext(Mock.PwmInit_CallInstance);
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
-  {
-    UNITY_SET_DETAILS(CMockString_PwmInit,CMockString_pwm);
-    UNITY_TEST_ASSERT_EQUAL_INT(cmock_call_instance->Expected_pwm, pwm, cmock_line, CMockStringMismatch);
-  }
   UNITY_CLR_DETAILS();
 }
 
-void CMockExpectParameters_PwmInit(CMOCK_PwmInit_CALL_INSTANCE* cmock_call_instance, int pwm);
-void CMockExpectParameters_PwmInit(CMOCK_PwmInit_CALL_INSTANCE* cmock_call_instance, int pwm)
-{
-  cmock_call_instance->Expected_pwm = pwm;
-}
-
-void PwmInit_CMockExpect(UNITY_LINE_TYPE cmock_line, int pwm)
+void PwmInit_CMockExpect(UNITY_LINE_TYPE cmock_line)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_PwmInit_CALL_INSTANCE));
   CMOCK_PwmInit_CALL_INSTANCE* cmock_call_instance = (CMOCK_PwmInit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
@@ -89,7 +77,6 @@ void PwmInit_CMockExpect(UNITY_LINE_TYPE cmock_line, int pwm)
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.PwmInit_CallInstance = CMock_Guts_MemChain(Mock.PwmInit_CallInstance, cmock_guts_index);
   cmock_call_instance->LineNumber = cmock_line;
-  CMockExpectParameters_PwmInit(cmock_call_instance, pwm);
 }
 
 void PwmStart(void)

@@ -29,8 +29,8 @@ void Mockpwm_Verify(void);
 
 
 
-#define PwmInit_Expect(pwm) PwmInit_CMockExpect(__LINE__, pwm)
-void PwmInit_CMockExpect(UNITY_LINE_TYPE cmock_line, int pwm);
+#define PwmInit_Expect() PwmInit_CMockExpect(__LINE__)
+void PwmInit_CMockExpect(UNITY_LINE_TYPE cmock_line);
 #define PwmStart_Expect() PwmStart_CMockExpect(__LINE__)
 void PwmStart_CMockExpect(UNITY_LINE_TYPE cmock_line);
 

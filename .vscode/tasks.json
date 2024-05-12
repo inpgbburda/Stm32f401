@@ -149,7 +149,7 @@
         {
             "label": "UT - pwm run",
             "type": "shell",
-            "command": "./Pwm_Ut.exe",
+            "command": "Pwm_Ut.exe",
             "args": [
                     ],
             "options": {
