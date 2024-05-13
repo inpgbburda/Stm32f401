@@ -1,6 +1,6 @@
 #include <unity.h>
 
-
+// Just dummy test to check if its working, to be fixed with propper implementation
 void test_AverageThreeBytes_should_AverageMidRangeValues(void)
 {
     TEST_ASSERT_EQUAL_HEX8(40, 40);
