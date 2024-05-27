@@ -1,10 +1,11 @@
 #include "pwm.h"
 #include "spi.h"
+#include "spi_cfg.h"
 
 int main(void)
 {
     PwmInit();
-    SpiInit();
+    SpiInit(&Spi_Config);
 
     PwmStart();
     

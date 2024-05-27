@@ -47,18 +47,22 @@
 |===================================================================================================================================|
 */
 
-void SpiInit(void)
+void SpiInit(Spi_Cfg_T* config)
 {
     RCC->APB1ENR |= RCC_APB1ENR_SPI2EN; /* Enable clock for SPI2*/
-
     /*TODO choose alternate options for PORTS*/
 
-    SPI2->CR1 |= SPI_CR1_DFF;  /* Set 16-bit format */
-    SPI2->CR1 |= (SPI_CR1_CPOL | SPI_CR1_CPHA);
-    SPI2->CR1 &= (~SPI_CR1_LSBFIRST); /* Set MSB first format*/
-    SPI2->CR1 &= (SPI_CR1_SSM);   /* Configure NSS as Hardware, output disabled*/
-    SPI2->CR1 &= (SPI_CR2_SSOE);
-    SPI2->CR2 &= (~SPI_CR2_FRF);  /*Choose motorola mode*/
-    SPI2->CR1 &= (~SPI_CR1_MSTR); /* MOSI pin is a data input */
-    SPI2->CR1 |= SPI_CR1_SPE;     /* MISO pin is a data output */
+    SPI_TypeDef* used_driver;
+    used_driver = config->instance;
+    SPI2->CR1 = 0x0000U;
+
+    used_driver->CR1 |= config->dff;
+    used_driver->CR1 |= config->clock_polarity;
+    used_driver->CR1 |= config->clock_phase;
+    used_driver->CR1 |= config->lsb_first;
+    used_driver->CR1 |= config->ssm;
+    used_driver->CR1 |= config->ssoe;
+    used_driver->CR1 |= config->mstr;
+    used_driver->CR2 |= config->frf;
+    used_driver->CR1 |= config->spe;     /* enable spi */
 }
