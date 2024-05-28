@@ -5,7 +5,7 @@
 int main(void)
 {
     PwmInit();
-    SpiInit(&Spi_Config);
+    SpiInit(&Spi2_Config);
 
     PwmStart();
     

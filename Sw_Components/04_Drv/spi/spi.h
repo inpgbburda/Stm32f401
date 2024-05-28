@@ -46,7 +46,7 @@ Spi_Cfg_T;
     Exported functions declarations
 |===================================================================================================================================|
 */
-void SpiInit(Spi_Cfg_T* config);
+void SpiInit(const Spi_Cfg_T* config);
 
 #endif /* SPI_H */
 

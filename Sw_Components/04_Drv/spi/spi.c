@@ -16,10 +16,6 @@
     Macro definitions
 |===================================================================================================================================|
 */
-#define GPIO_AFRL 0x00U
-#define MODER0_ALT_FUN_MODE      GPIO_MODER_MODER0_1
-#define AFRL_TIM1TIM2_SEL        GPIO_AFRL_AFSEL0_0
-#define FIRST_PERIOD 0xFFU
 
 /*
 |===================================================================================================================================|
@@ -47,14 +43,15 @@
 |===================================================================================================================================|
 */
 
-void SpiInit(Spi_Cfg_T* config)
+void SpiInit(const Spi_Cfg_T* config)
 {
-    RCC->APB1ENR |= RCC_APB1ENR_SPI2EN; /* Enable clock for SPI2*/
-    /*TODO choose alternate options for PORTS*/
-
     SPI_TypeDef* used_driver;
+    RCC->APB1ENR |= RCC_APB1ENR_SPI2EN; /* Enable clock for SPI2*/
     used_driver = config->instance;
+
+    /* Clear register contents*/
     SPI2->CR1 = 0x0000U;
+    SPI2->CR2 = 0x0000U;
 
     used_driver->CR1 |= config->dff;
     used_driver->CR1 |= config->clock_polarity;
@@ -64,5 +61,6 @@ void SpiInit(Spi_Cfg_T* config)
     used_driver->CR1 |= config->ssoe;
     used_driver->CR1 |= config->mstr;
     used_driver->CR2 |= config->frf;
-    used_driver->CR1 |= config->spe;     /* enable spi */
+    /* Enable spi */
+    used_driver->CR1 |= config->spe;
 }
