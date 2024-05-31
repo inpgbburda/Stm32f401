@@ -10,5 +10,7 @@ int main(void)
     PwmStart();
     
     while (1){
+        uint16_t spi_data = 0;
+        spi_data = SpiReadBuffer(SPI2);
     }
 }
