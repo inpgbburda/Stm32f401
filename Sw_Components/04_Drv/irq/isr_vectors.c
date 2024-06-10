@@ -2,10 +2,10 @@
 
  */
 
+#include <stdint.h>
 
 /* This symbol is created by the linker script. */
-extern const char* _estack;
-
+extern const char _estack;
 void Reset_Handler(void);
 
 /* Every not used interrupt is redirected to default handler. */
@@ -92,7 +92,7 @@ void __attribute__ ((interrupt, weak, alias("__Default_Handler")))SPI4_IRQHandle
 */
 void (* const vectors[])(void) __attribute__ ((section(".vectors"))) =
 {
-    (void (*)(void))_estack,
+    (void (*)(void))(uintptr_t)&_estack,        /* Initial stack pointer */ 
     Reset_Handler,
     NMI_Handler,
     HardFault_Handler,
