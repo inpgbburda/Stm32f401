@@ -6,7 +6,8 @@
 
 /* This symbol is created by the linker script. */
 extern const char _estack;
-void Reset_Handler(void);
+
+void Reset_Handler(void); /* Defined in assembly startup */
 
 /* Every not used interrupt is redirected to default handler. */
 static void __attribute__ ((interrupt)) __Default_Handler(void)
@@ -19,8 +20,6 @@ static void __attribute__ ((interrupt)) __Default_Handler(void)
 
 /* List of interrupt routines
  * */
-
-void __attribute__ ((interrupt, weak, alias("__Default_Handler")))Reset_Handler(void);
 void __attribute__ ((interrupt, weak, alias("__Default_Handler")))NMI_Handler(void);
 void __attribute__ ((interrupt, weak, alias("__Default_Handler")))HardFault_Handler(void);
 void __attribute__ ((interrupt, weak, alias("__Default_Handler")))MemManage_Handler(void);
@@ -92,7 +91,7 @@ void __attribute__ ((interrupt, weak, alias("__Default_Handler")))SPI4_IRQHandle
 */
 void (* const vectors[])(void) __attribute__ ((section(".vectors"))) =
 {
-    (void (*)(void))(uintptr_t)&_estack,        /* Initial stack pointer */ 
+    (void (*)(void))(uintptr_t)&_estack,        /* Initial stack pointer - end of RAM */ 
     Reset_Handler,
     NMI_Handler,
     HardFault_Handler,
