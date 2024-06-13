@@ -1,6 +1,28 @@
-/*
-
+/**
+ * @file    interrupt_vectors.c
+ * @brief   Interrupt vector table and default interrupt handlers for STM32F401.
+ *
+ * This file defines the interrupt vector table for the STM32F401 microcontroller.
+ * Each interrupt vector is associated with a weakly linked interrupt handler, which 
+ * by default is redirected to a common default handler. Specific interrupt handlers 
+ * can be implemented by overriding the weakly linked default handlers.
+ *
+ * @details
+ * The interrupt vector table includes handlers for the core system interrupts (NMI, 
+ * HardFault, etc.) and external interrupts for peripherals (e.g., TIM2, USART1).
+ * The vector table is placed at the beginning of the memory section defined by 
+ * the ".vectors" linker section.
+ *
+ * @note
+ * The _estack symbol is defined in the linker script and points to the end of RAM.
+ *
+ * @attention
+ * Make sure to implement the necessary interrupt handlers for your application 
+ * to avoid the default infinite loop in the default handler.
+ *
+ * @see STM32F401 Reference Manual
  */
+
 
 #include <stdint.h>
 

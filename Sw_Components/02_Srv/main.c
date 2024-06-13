@@ -9,7 +9,7 @@ int main(void)
     SpiInit(&Spi2_Config);
 
     PwmStart();
-    // __enable_irq();
+    NVIC_EnableIRQ(TIM2_IRQn);
     
     while (1){
         uint16_t spi_data = 0;
