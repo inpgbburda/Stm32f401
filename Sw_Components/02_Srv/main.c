@@ -1,6 +1,7 @@
 #include "pwm.h"
 #include "spi.h"
 #include "spi_cfg.h"
+#include "cmsis_gcc.h"
 
 int main(void)
 {
@@ -8,6 +9,7 @@ int main(void)
     SpiInit(&Spi2_Config);
 
     PwmStart();
+    NVIC_EnableIRQ(TIM2_IRQn);
     
     while (1){
         uint16_t spi_data = 0;
