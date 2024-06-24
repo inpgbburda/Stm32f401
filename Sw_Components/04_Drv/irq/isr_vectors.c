@@ -1,5 +1,5 @@
 /**
- * @file    interrupt_vectors.c
+ * @file    isr_vectors.c
  * @brief   Interrupt vector table and default interrupt handlers for STM32F401.
  *
  * This file defines the interrupt vector table for the STM32F401 microcontroller.
