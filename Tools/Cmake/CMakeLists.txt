@@ -12,6 +12,7 @@ project(stm32f401)
 set(REL_PATH ../../)
 
 set(INCLUDE_DIRS
+    ${REL_PATH}Sw_Components/04_Drv/irq
     ${REL_PATH}Sw_Components/04_Drv/pwm
     ${REL_PATH}Sw_Components/04_Drv/spi
     ${REL_PATH}Sw_Components/05_Mcu
@@ -27,10 +28,11 @@ set(CPP_SRCS
 
 set(C_SRCS
     ${REL_PATH}Sw_Components/02_Srv/main.c
+    ${REL_PATH}Sw_Components/04_Drv/irq/isr_vectors.c
+    ${REL_PATH}Sw_Components/04_Drv/irq/systick.c
     ${REL_PATH}Sw_Components/04_Drv/pwm/pwm.c
     ${REL_PATH}Sw_Components/04_Drv/spi/spi.c
     ${REL_PATH}Sw_Components/04_Drv/spi/spi_cfg.c
-    ${REL_PATH}Sw_Components/04_Drv/irq/isr_vectors.c
     ${REL_PATH}SW_Components/05_Mcu/core_init/system_stm32f4xx.c
     # ${REL_PATH}Sw_Components/05_Mcu/startup/vectors.c
 )
