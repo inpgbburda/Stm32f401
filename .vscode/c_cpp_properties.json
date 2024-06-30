@@ -10,7 +10,7 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "D:/Programy/ARM_toolchain/10_2021_10/bin/arm-none-eabi-gcc.exe",
+            "compilerPath": "${config:gcc-arm_path}",
             "cStandard": "gnu11",
             "cppStandard": "c++17",
             "intelliSenseMode": "gcc-arm"
