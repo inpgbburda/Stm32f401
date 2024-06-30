@@ -1,1 +1,1 @@
-void SystickInit(void);
+int SystickInit(void);

@@ -4,14 +4,15 @@
 #include "cmsis_gcc.h"
 #include "systick.h"
 
+int systic_status = 0;
+
 int main(void)
 {
     PwmInit();
     SpiInit(&Spi2_Config);
-    SystickInit();
+    systic_status = SystickInit();
     
     PwmStart();
-    NVIC_EnableIRQ(TIM2_IRQn);
     
     while (1){
         uint16_t spi_data = 0;

@@ -2,9 +2,13 @@
 #include "stm32f401xc.h"
 #include "core_cm4.h"
 
-void SystickInit(void)
+#define ONE_MS_PRESCALER 1000U
+
+int SystickInit(void)
 {
-    SysTick_Config(100);
+    int result;
+    result = SysTick_Config(SystemCoreClock / ONE_MS_PRESCALER);
+    return result;
 }
 
 void SysTick_Handler(void)
