@@ -4,13 +4,11 @@
 #include "cmsis_gcc.h"
 #include "systick.h"
 
-int systic_status = 0;
-
 int main(void)
 {
     PwmInit();
     SpiInit(&Spi2_Config);
-    systic_status = SystickInit();
+    SystickInit();
     
     PwmStart();
     
