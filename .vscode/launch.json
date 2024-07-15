@@ -10,7 +10,8 @@
             "name": "Debug project",
             "device": "STM32F401",
             "preLaunchTask": "build project",
-            
+            "breakAfterReset": true,
+
             "svdFile": "Tools/Debug/STM32F401.svd",
             "configFiles": [
                 "interface/stlink.cfg", "target/stm32f4x.cfg"

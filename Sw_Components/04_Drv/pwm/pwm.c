@@ -61,6 +61,7 @@ void PwmInit(void)
     TIM2->CCMR1 |=  TIM_CCMR1_OC1PE;                        /*Enable the Preload register*/
     TIM2->CR1 |= TIM_CR1_ARPE;                              /*Enable the auto-reload Preload register */
     TIM2->CCER |= TIM_CCER_CC1E;  /*Set OC1 signal is output on the corresponding output pin*/
+    TIM2->DIER |= TIM_DIER_CC1IE;
 
     TIM2->ARR = PERIOD_VAL;
     TIM2->CCR1 = DUTY_VAL; 
@@ -69,4 +70,10 @@ void PwmInit(void)
 void PwmStart()
 {
     TIM2->CR1 |= TIM_CR1_CEN;  /*Set Counter Enable Bit*/
+}
+
+void TIM2_IRQHandler(void)
+{
+    static int a = 0;
+    a++;
 }
