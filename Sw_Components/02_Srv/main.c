@@ -1,4 +1,5 @@
 #include "pwm.h"
+#include "pwm_cfg.h"
 #include "spi.h"
 #include "spi_cfg.h"
 #include "cmsis_gcc.h"
@@ -6,7 +7,7 @@
 
 int main(void)
 {
-    PwmInit();
+    PwmInit(&Pwm2_Config);
     SpiInit(&Spi2_Config);
     SystickInit();
     

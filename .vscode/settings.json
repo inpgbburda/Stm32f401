@@ -14,7 +14,11 @@
     "stdbool.h": "c",
     "stdio.h": "c",
     "mocksupport.h": "c",
-    "stm32f401xc.h": "c"
+    "stm32f401xc.h": "c",
+    "spi_cfg.h": "c",
+    "spi.h": "c",
+    "pwm_cfg.h": "c",
+    "systick.h": "c"
   },
 "cortex-debug.variableUseNaturalFormat": true,
 "terminal.integrated.defaultProfile.osx": "",

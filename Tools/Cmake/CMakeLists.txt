@@ -30,6 +30,7 @@ set(C_SRCS
     ${REL_PATH}Sw_Components/04_Drv/irq/isr_vectors.c
     ${REL_PATH}Sw_Components/04_Drv/irq/systick.c
     ${REL_PATH}Sw_Components/04_Drv/pwm/pwm.c
+    ${REL_PATH}Sw_Components/04_Drv/pwm/pwm_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/spi/spi.c
     ${REL_PATH}Sw_Components/04_Drv/spi/spi_cfg.c
     ${REL_PATH}SW_Components/05_Mcu/Core/Src/system_stm32f4xx.c

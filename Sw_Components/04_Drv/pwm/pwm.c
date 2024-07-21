@@ -10,8 +10,6 @@
 */
 
 #include "pwm.h"
-#include "pwm_cfg.h"
-#include "stm32f401xc.h"
 
 /*
 |===================================================================================================================================|
@@ -48,8 +46,10 @@
     Function definitions
 |===================================================================================================================================|
 */
+#define PERIOD_VAL 100U
+#define DUTY_VAL 50U //TODO: move to config
 
-void PwmInit(void)
+void PwmInit(const Pwm_Cfg_T* config)
 {
     RCC->AHB1ENR = RCC_AHB1LPENR_GPIOALPEN;     /*Enable clock for GPIO*/
     GPIOA->MODER |= MODER0_ALT_FUN_MODE;        /*Configure the desired I/O as an alternate function*/
