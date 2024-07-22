@@ -5,14 +5,17 @@
 #include "cmsis_gcc.h"
 #include "systick.h"
 
+#define RANDOM_PWM_VAL 10U
+
 int main(void)
 {
     PwmInit(&Pwm2_Config);
     SpiInit(&Spi2_Config);
     SystickInit();
     
-    PwmStart();
-    
+    PwmStart(&Pwm2_Config);
+    PwmSetDuty(&Pwm2_Config, RANDOM_PWM_VAL);
+
     while (1){
         static uint16_t spi_data = 0;
         spi_data = SpiReadBuffer(SPI2);

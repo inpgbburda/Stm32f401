@@ -20,6 +20,7 @@
 typedef struct
 {
     TIM_TypeDef* instance;
+    uint32_t reload_val;
 }
 Pwm_Cfg_T;
 
@@ -36,6 +37,8 @@ Pwm_Cfg_T;
 */
 void PwmInit(const Pwm_Cfg_T* config);
 
-void PwmStart(void);
+void PwmStart(const Pwm_Cfg_T *config);
+
+void PwmSetDuty(const Pwm_Cfg_T *config, uint32_t cc_reg_val);
 
 #endif /* PWM_H */

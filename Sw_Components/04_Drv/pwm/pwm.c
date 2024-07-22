@@ -47,33 +47,36 @@
 |===================================================================================================================================|
 */
 #define PERIOD_VAL 100U
-#define DUTY_VAL 50U //TODO: move to config
 
 void PwmInit(const Pwm_Cfg_T* config)
 {
+    TIM_TypeDef* timer_instance;
+
+    timer_instance = config->instance;
     RCC->AHB1ENR = RCC_AHB1LPENR_GPIOALPEN;     /*Enable clock for GPIO*/
     GPIOA->MODER |= MODER0_ALT_FUN_MODE;        /*Configure the desired I/O as an alternate function*/
     GPIOA->AFR[GPIO_AFRL] |= AFRL_TIM1TIM2_SEL; /*Root desired TIMer as pin source*/
 
-    RCC->APB1ENR = RCC_APB1ENR_TIM2EN;  /*Enable clock for Timer*/
-    TIM2->ARR = FIRST_PERIOD;           /* Must be set before enabling automatic preload to avoid waiting for first overflow*/
-    TIM2->CCMR1 |= (TIM_CCMR1_OC1M_1|TIM_CCMR1_OC1M_2);     /*Pwm mode 1*/
-    TIM2->CCMR1 |=  TIM_CCMR1_OC1PE;                        /*Enable the Preload register*/
-    TIM2->CR1 |= TIM_CR1_ARPE;                              /*Enable the auto-reload Preload register */
-    TIM2->CCER |= TIM_CCER_CC1E;  /*Set OC1 signal is output on the corresponding output pin*/
-    TIM2->DIER |= TIM_DIER_CC1IE;
+    RCC->APB1ENR = RCC_APB1ENR_TIM2EN;          /*Enable clock for Timer*/
+    timer_instance->ARR = FIRST_PERIOD;         /* Must be set before enabling automatic preload to avoid waiting for first overflow*/
+    timer_instance->CCMR1 |= (TIM_CCMR1_OC1M_1|TIM_CCMR1_OC1M_2);     /*Pwm mode 1*/
+    timer_instance->CCMR1 |=  TIM_CCMR1_OC1PE;                        /*Enable the Preload register*/
+    timer_instance->CR1 |= TIM_CR1_ARPE;                              /*Enable the auto-reload Preload register */
+    timer_instance->CCER |= TIM_CCER_CC1E;      /*Set OC1 signal is output on the corresponding output pin*/
+    timer_instance->DIER |= TIM_DIER_CC1IE;
 
-    TIM2->ARR = PERIOD_VAL;
-    TIM2->CCR1 = DUTY_VAL; 
+    timer_instance->ARR = config->reload_val;
+    timer_instance->CCR1 = 0U;
 }
 
-void PwmStart()
+void PwmStart(const Pwm_Cfg_T* config)
 {
-    TIM2->CR1 |= TIM_CR1_CEN;  /*Set Counter Enable Bit*/
+    TIM_TypeDef* timer_instance = config->instance;
+    timer_instance->CR1 |= TIM_CR1_CEN;  /*Set Counter Enable Bit*/
 }
 
-void TIM2_IRQHandler(void)
+void PwmSetDuty(const Pwm_Cfg_T* config, uint32_t cc_reg_val)
 {
-    static int a = 0;
-    a++;
+    TIM_TypeDef* timer_instance = config->instance;
+    timer_instance->CCR1 = cc_reg_val;
 }
