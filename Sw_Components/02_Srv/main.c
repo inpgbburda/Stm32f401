@@ -14,7 +14,7 @@ int main(void)
     SystickInit();
     
     PwmStart(&Pwm2_Config);
-    PwmSetDuty(&Pwm2_Config, RANDOM_PWM_VAL);
+    PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, RANDOM_PWM_VAL);
 
     while (1){
         static uint16_t spi_data = 0;

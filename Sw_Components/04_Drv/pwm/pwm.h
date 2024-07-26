@@ -20,9 +20,21 @@
 typedef struct
 {
     TIM_TypeDef* instance;
+    uint16_t prescaler_val;
     uint32_t reload_val;
+    uint16_t chan_sel;
 }
 Pwm_Cfg_T;
+
+typedef enum
+{
+    PWM_CHAN_1,
+    PWM_CHAN_2,
+    PWM_CHAN_3,
+    PWM_CHAN_4
+}
+Pwm_Timer_Chan_T;
+
 
 /*
 |===================================================================================================================================|
@@ -39,6 +51,6 @@ void PwmInit(const Pwm_Cfg_T* config);
 
 void PwmStart(const Pwm_Cfg_T *config);
 
-void PwmSetDuty(const Pwm_Cfg_T *config, uint32_t cc_reg_val);
+void PwmSetDuty(const Pwm_Cfg_T* config, Pwm_Timer_Chan_T channel, uint32_t cc_reg_val);
 
 #endif /* PWM_H */
