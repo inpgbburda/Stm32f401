@@ -5,8 +5,9 @@
 #ifndef PWM_H_CFG
 #define PWM_H_CFG
 
+#include "pwm.h"
 
-#define PERIOD_VAL 100U
-#define DUTY_VAL 50U
+extern const Pwm_Cfg_T Pwm2_Config;
+
 
 #endif /* PWM_H_CFG */
