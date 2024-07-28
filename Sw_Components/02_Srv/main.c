@@ -4,11 +4,15 @@
 #include "spi_cfg.h"
 #include "cmsis_gcc.h"
 #include "systick.h"
+#include "port.h"
+#include "clock.h"
 
 #define RANDOM_PWM_VAL 10U
 
 int main(void)
 {
+    ClockInit();
+    PortInit();
     PwmInit(&Pwm2_Config);
     SpiInit(&Spi2_Config);
     SystickInit();

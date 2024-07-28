@@ -20,9 +20,11 @@
     "spi_cfg.h": "c",
     "spi.h": "c",
     "pwm_cfg.h": "c",
-    "systick.h": "c"
+    "systick.h": "c",
+    "port.h": "c",
+    "clock.h": "c"
 },
 "cortex-debug.variableUseNaturalFormat": true,
-"terminal.integrated.defaultProfile.osx": "",
+"terminal.integrated.defaultProfile.osx": ""
 
 }
