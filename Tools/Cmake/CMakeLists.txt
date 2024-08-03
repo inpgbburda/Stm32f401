@@ -33,6 +33,7 @@ set(C_SRCS
     ${REL_PATH}Sw_Components/04_Drv/irq/isr_vectors.c
     ${REL_PATH}Sw_Components/04_Drv/irq/systick.c
     ${REL_PATH}Sw_Components/04_Drv/ports/port.c
+    ${REL_PATH}Sw_Components/04_Drv/ports/port_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/pwm/pwm.c
     ${REL_PATH}Sw_Components/04_Drv/pwm/pwm_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/spi/spi.c
