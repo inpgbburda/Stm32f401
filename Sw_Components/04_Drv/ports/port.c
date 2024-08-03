@@ -8,11 +8,11 @@ void PortInit(const Port_Cfg_T config[])
 {
     GPIO_TypeDef* port;
 
-    //iterate through all ports in config:
+    /* iterate through all ports in config */
     for(int i=0; i<PORT_MAX_NUMBER; i++)
     {
         port = config[i].port;
-        
+
         port->MODER = config[i].moder;
         /* GPIOx_AFRL (for pin 0 to 7)  */
  	    /* GPIOx_AFRH (for pin 8 to 15) */
