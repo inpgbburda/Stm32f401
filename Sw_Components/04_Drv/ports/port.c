@@ -15,8 +15,8 @@ void PortInit(const Port_Cfg_T config[])
 
         port->MODER = config[i].moder;
         /* GPIOx_AFRL (for pin 0 to 7)  */
- 	    /* GPIOx_AFRH (for pin 8 to 15) */
         port->AFR[GPIO_AFRL] = config[i].alt_fun_pin_0_7;
+ 	    /* GPIOx_AFRH (for pin 8 to 15) */
         port->AFR[GPIO_AFRH] = config[i].alt_fun_pin_8_15;
     }
 }
