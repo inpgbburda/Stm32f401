@@ -1,3 +1,10 @@
+/**
+ * @file clock_cfg.h
+ * @brief Content of clock configuration.
+ * @date 12/08/2024
+ * 
+ */
+
 #include "clock_cfg.h"
 
 const Clock_Cfg_T Clock_Config = 

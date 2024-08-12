@@ -1,3 +1,15 @@
+/**
+ * @file port_types.h
+ * @brief This header file defines GPIO mode configurations and alternate function settings
+ *        for each GPIO pin of the STM32F401 microcontroller. The macros provided in this file 
+ *        simplify the configuration of GPIO pins for input, output, alternate function, and analog modes.
+ * @date 05/08/2024
+ * 
+ */
+
+#ifndef PORT_TYPES_H
+#define PORT_TYPES_H
+
 #include "stm32f401xc.h"
 
 #define GPIO_0_INPUT_MODE   0U
@@ -368,3 +380,5 @@
 #define GPIO_15_ALT_FUN_13 (GPIO_AFRH_AFSEL15_3 | GPIO_AFRH_AFSEL15_2 | GPIO_AFRH_AFSEL15_0)
 #define GPIO_15_ALT_FUN_14 (GPIO_AFRH_AFSEL15_3 | GPIO_AFRH_AFSEL15_2 | GPIO_AFRH_AFSEL15_1)
 #define GPIO_15_ALT_FUN_15 (GPIO_AFRH_AFSEL15_3 | GPIO_AFRH_AFSEL15_2 | GPIO_AFRH_AFSEL15_1 | GPIO_AFRH_AFSEL15_0)
+
+#endif /* PORT_TYPES_H */

@@ -1,3 +1,10 @@
+/**
+ * @file port_cfg.h
+ * @brief Content of Port configuration.
+ * @date 03/08/2024
+ * 
+ */
+
 #include "port_cfg.h"
 #include "port_types.h"
 

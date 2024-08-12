@@ -1,7 +1,7 @@
 /**
  * @file clock.h
  * @brief Functions for initializing and handling the clocks of microcontroller.
- * 
+ * @date 28/07/2024
  */
 
 #ifndef CLOCK_H
