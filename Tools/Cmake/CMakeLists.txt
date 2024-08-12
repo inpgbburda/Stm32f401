@@ -30,6 +30,7 @@ set(CPP_SRCS
 set(C_SRCS
     ${REL_PATH}Sw_Components/02_Srv/main.c
     ${REL_PATH}Sw_Components/04_Drv/clock/clock.c
+    ${REL_PATH}Sw_Components/04_Drv/clock/clock_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/irq/isr_vectors.c
     ${REL_PATH}Sw_Components/04_Drv/irq/systick.c
     ${REL_PATH}Sw_Components/04_Drv/ports/port.c
