@@ -20,3 +20,7 @@ void PortInit(const Port_Cfg_T config[])
         port->AFR[GPIO_AFRH] = config[i].alt_fun_pin_8_15;
     }
 }
+
+void PortSetGpioState(GPIO_TypeDef *port, uint8_t pin, bool state)
+{
+}

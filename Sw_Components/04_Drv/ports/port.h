@@ -8,6 +8,7 @@
 #define PORT_H
 
 #include "stm32f401xc.h"
+#include "stdbool.h"
 
 #define PORT_MAX_NUMBER 2
 
@@ -21,5 +22,6 @@ typedef struct
 Port_Cfg_T;
 
 void PortInit(const Port_Cfg_T config[]);
+void PortSetGpioState(GPIO_TypeDef* port, uint8_t pin, bool state);
 
 #endif /* PORT_H */
