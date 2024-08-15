@@ -23,4 +23,9 @@ void PortInit(const Port_Cfg_T config[])
 
 void PortSetGpioState(GPIO_TypeDef *port, uint8_t pin, bool state)
 {
+    if(state){
+        port->ODR |= (1<<pin);
+    }else{
+        port->ODR &= ~(1<<pin);
+    }
 }

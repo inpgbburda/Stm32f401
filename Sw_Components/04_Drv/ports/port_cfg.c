@@ -14,7 +14,7 @@ const uint32_t portA_mode =
     GPIO_1_INPUT_MODE  |
     GPIO_2_INPUT_MODE  |
     GPIO_3_INPUT_MODE  |
-    GPIO_4_INPUT_MODE  |
+    GPIO_4_OUTPUT_MODE | /* Debug DIO */
     GPIO_5_INPUT_MODE  |
     GPIO_6_INPUT_MODE  |
     GPIO_7_INPUT_MODE  |
@@ -94,6 +94,6 @@ const uint32_t portB_afrh =
 
 const Port_Cfg_T Port_Config[PORT_MAX_NUMBER] = 
 {
-    {GPIOA,  portA_mode, portA_afrl, portA_afrh},    
-    {GPIOB,  portB_mode, portB_afrl, portB_afrh}                                                                                       
+    {GPIOA,  portA_mode, portA_afrl, portA_afrh},
+    {GPIOB,  portB_mode, portB_afrl, portB_afrh}
 };
