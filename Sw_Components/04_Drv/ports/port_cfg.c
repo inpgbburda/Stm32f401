@@ -23,8 +23,8 @@ const uint32_t portA_mode =
     GPIO_10_INPUT_MODE |
     GPIO_11_INPUT_MODE |
     GPIO_12_INPUT_MODE |
-    GPIO_13_INPUT_MODE |
-    GPIO_14_INPUT_MODE |
+    GPIO_13_ALT_FUN_MODE | /* SWD */
+    GPIO_14_ALT_FUN_MODE | /* SWD */
     GPIO_15_INPUT_MODE
 );
 const uint32_t portB_mode =
@@ -40,10 +40,10 @@ const uint32_t portB_mode =
     GPIO_9_INPUT_MODE   |
     GPIO_10_INPUT_MODE  |
     GPIO_11_INPUT_MODE  |
-    GPIO_12_ALT_FUN_MODE|
-    GPIO_13_ALT_FUN_MODE|
-    GPIO_14_ALT_FUN_MODE|
-    GPIO_15_ALT_FUN_MODE 
+    GPIO_12_ALT_FUN_MODE| /* SPI */
+    GPIO_13_ALT_FUN_MODE| /* SPI */
+    GPIO_14_ALT_FUN_MODE| /* SPI */
+    GPIO_15_ALT_FUN_MODE  /* SPI */
 );
 
 const uint32_t portA_afrl = 
@@ -64,8 +64,8 @@ const uint32_t portA_afrh =
     GPIO_10_ALT_FUN_0|
     GPIO_11_ALT_FUN_0|
     GPIO_12_ALT_FUN_0|
-    GPIO_13_ALT_FUN_0|
-    GPIO_14_ALT_FUN_0|
+    GPIO_13_ALT_FUN_0| /* SWDIO pin */
+    GPIO_14_ALT_FUN_0| /* SWCLK pin */
     GPIO_15_ALT_FUN_0
 );
 
