@@ -86,10 +86,10 @@ const uint32_t portB_afrh =
     GPIO_9_ALT_FUN_0 |
     GPIO_10_ALT_FUN_0|
     GPIO_11_ALT_FUN_0|
-    GPIO_12_ALT_FUN_5|  /* Spi pins */
-    GPIO_13_ALT_FUN_5|  /* Spi pins */
-    GPIO_14_ALT_FUN_5|  /* Spi pins */
-    GPIO_15_ALT_FUN_5   /* Spi pins */
+    GPIO_12_ALT_FUN_5|  /* Spi2 pin - SSEL */
+    GPIO_13_ALT_FUN_5|  /* Spi2 pin - SCLK */
+    GPIO_14_ALT_FUN_5|  /* Spi2 pin - MISO */
+    GPIO_15_ALT_FUN_5   /* Spi2 pin - MOSI */
 ); 
 
 const Port_Cfg_T Port_Config[PORT_MAX_NUMBER] = 
