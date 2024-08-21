@@ -17,9 +17,6 @@
     Macro definitions
 |===================================================================================================================================|
 */
-#define GPIO_AFRL 0x00U
-#define MODER0_ALT_FUN_MODE      GPIO_MODER_MODER0_1
-#define AFRL_TIM1TIM2_SEL        GPIO_AFRL_AFSEL0_0
 #define FIRST_PERIOD 0xFFU
 
 /*
@@ -61,12 +58,7 @@
 void PwmInit(const Pwm_Cfg_T* config)
 {
     TIM_TypeDef* timer_instance;
-
     timer_instance = config->instance;
-    RCC->AHB1ENR = RCC_AHB1LPENR_GPIOALPEN;     /* Enable clock for GPIO*/
-    GPIOA->MODER |= MODER0_ALT_FUN_MODE;        /* Configure the desired I/O as an alternate function*/
-    GPIOA->AFR[GPIO_AFRL] |= AFRL_TIM1TIM2_SEL; /* Root desired TIMer as pin source*/
-    RCC->APB1ENR = RCC_APB1ENR_TIM2EN;          /* Enable clock for Timer*/
 
     timer_instance->PSC = config->prescaler_val;    /* Set prescaler value */
     timer_instance->ARR = FIRST_PERIOD;         /* Must be set before enabling automatic preload to avoid waiting for first overflow*/

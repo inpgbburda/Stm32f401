@@ -1,0 +1,30 @@
+{
+    /*Toolchain paths to adjust*/
+    "makePath": "C:/Toolchains/GnuWin32/bin/make.exe",
+    "Stm32ProgrammerPath": "E:/Bartek/Programy/ARM_Toolchain/Stm_Programmer/bin/STM32_Programmer_CLI.exe",
+    "cmakePath": "C:/Toolchains/CMake/bin/cmake.exe",
+    "gcc-arm_path": "C:/Toolchains/Arm_Gcc/arm-gnu-toolchain-13.2.Rel1-mingw-w64-i686-arm-none-eabi/bin/",
+    "cortex-debug.openocdPath": "C:/Toolchains/openocd-20231002/OpenOCD-20231002-0.12.0/bin/openocd.exe",
+
+    "cortex-debug.armToolchainPath": "${config:gcc-arm_path}",
+
+  "files.associations": {
+    "core_init.h": "c",
+    "platform_specific.h": "c",
+    "stm32f3xx.h": "c",
+    "os.h": "c",
+    "stdbool.h": "c",
+    "stdio.h": "c",
+    "mocksupport.h": "c",
+    "stm32f401xc.h": "c",
+    "spi_cfg.h": "c",
+    "spi.h": "c",
+    "pwm_cfg.h": "c",
+    "systick.h": "c",
+    "port.h": "c",
+    "clock.h": "c"
+},
+"cortex-debug.variableUseNaturalFormat": true,
+"terminal.integrated.defaultProfile.osx": ""
+
+}
