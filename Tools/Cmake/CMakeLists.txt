@@ -40,6 +40,7 @@ set(C_SRCS
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/tasks.c
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/timers.c
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/portable/MemMang/heap_4.c
     ${REL_PATH}Sw_Components/04_Drv/clock/clock.c
     ${REL_PATH}Sw_Components/04_Drv/clock/clock_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/irq/isr_vectors.c

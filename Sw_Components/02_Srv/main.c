@@ -8,8 +8,16 @@
 #include "port_cfg.h"
 #include "clock.h"
 #include "clock_cfg.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 #define RANDOM_PWM_VAL 10U
+
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
+    while(1){
+
+    };
+}
 
 int main(void)
 {
@@ -21,6 +29,7 @@ int main(void)
     
     PwmStart(&Pwm2_Config);
     PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, RANDOM_PWM_VAL);
+    vTaskStartScheduler();
 
     while (1){
         static uint16_t spi_data = 0;

@@ -190,7 +190,7 @@
 /* If configHEAP_CLEAR_MEMORY_ON_FREE is set to 1, then blocks of memory
  * allocated using pvPortMalloc() will be cleared (i.e. set to zero) when freed
  * using vPortFree(). Defaults to 0 if left undefined. */
-#define configHEAP_CLEAR_MEMORY_ON_FREE            1
+#define configHEAP_CLEAR_MEMORY_ON_FREE            0
 
 /* vTaskList and vTaskGetRunTimeStats APIs take a buffer as a parameter and
  * assume that the length of the buffer is configSTATS_BUFFER_MAX_LENGTH.
