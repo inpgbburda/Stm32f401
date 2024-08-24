@@ -10,6 +10,7 @@
 #include "systick.h"
 #include "stm32f401xc.h"
 #include "core_cm4.h"
+#include "FreeRTOS.h"
 
 #define ONE_MS_PRESCALER 1000U
 
@@ -36,5 +37,6 @@ void SystickInit(void)
  */
 void SysTick_Handler(void)
 {
-    /* OS handler */
+    /* Call the FreeRTOS tick handler */
+    xPortSysTickHandler();
 }

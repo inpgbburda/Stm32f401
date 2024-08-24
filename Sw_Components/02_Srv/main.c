@@ -19,6 +19,20 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
     };
 }
 
+void vTask1(void *pvParameters) {
+    for (;;) {
+        // Task 1 code
+        vTaskDelay(pdMS_TO_TICKS(1000));  // 1-second delay
+    }
+}
+
+void vTask2(void *pvParameters) {
+    for (;;) {
+        // Task 2 code
+        vTaskDelay(pdMS_TO_TICKS(500));  // 500ms delay
+    }
+}
+
 int main(void)
 {
     ClockInit(&Clock_Config);
@@ -29,6 +43,10 @@ int main(void)
     
     PwmStart(&Pwm2_Config);
     PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, RANDOM_PWM_VAL);
+
+    xTaskCreate(vTask1, "Task 1", configMINIMAL_STACK_SIZE + 100, NULL, 1, NULL);
+    xTaskCreate(vTask2, "Task 2", configMINIMAL_STACK_SIZE + 100, NULL, 2, NULL);
+
     vTaskStartScheduler();
 
     while (1){
