@@ -26,17 +26,3 @@ void SystickInit(void)
 {
     SysTick_Config(SystemCoreClock / ONE_MS_PRESCALER);
 }
-
-/**
- * @brief Systick interrupt handler.
- *
- * This function is called whenever the Systick timer generates an interrupt.
- * Intended to be used for implementing an operating system (OS) handler.
- *
- * @return None
- */
-void SysTick_Handler(void)
-{
-    /* Call the FreeRTOS tick handler */
-    xPortSysTickHandler();
-}

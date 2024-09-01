@@ -624,7 +624,7 @@
  * configCHECK_HANDLER_INSTALLATION to 0.
  *
  * Defaults to 1 if left undefined. */
-#define configCHECK_HANDLER_INSTALLATION    0
+#define configCHECK_HANDLER_INSTALLATION    1
 
 /******************************************************************************/
 /* Definitions that include or exclude functionality. *************************/
@@ -664,7 +664,12 @@
 #define INCLUDE_xTaskGetHandle                 0
 #define INCLUDE_xTaskResumeFromISR             1
 
-/* Systick Declaration to avoid compilation warnings */
-void xPortSysTickHandler( void );
+// /* Systick Declaration to avoid compilation warnings */
+// void xPortSysTickHandler( void );
+
+#define vPortSVCHandler SVC_Handler
+#define xPortPendSVHandler PendSV_Handler
+#define xPortSysTickHandler SysTick_Handler
+
 
 #endif /* FREERTOS_CONFIG_H */
