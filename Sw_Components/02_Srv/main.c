@@ -8,6 +8,7 @@
 #include "port_cfg.h"
 #include "clock.h"
 #include "clock_cfg.h"
+#include "os.h"
 
 #define RANDOM_PWM_VAL 10U
 
@@ -18,12 +19,13 @@ int main(void)
     PwmInit(&Pwm2_Config);
     SpiInit(&Spi2_Config);
     SystickInit();
+    OsInit();
     
+    OsStart();
     PwmStart(&Pwm2_Config);
     PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, RANDOM_PWM_VAL);
 
     while (1){
-        static uint16_t spi_data = 0;
-        spi_data = SpiReadBuffer(SPI2);
+        /* Unreachable code */
     }
 }

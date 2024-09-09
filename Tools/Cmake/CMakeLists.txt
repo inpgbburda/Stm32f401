@@ -12,6 +12,10 @@ project(stm32f401)
 set(REL_PATH ../../)
 
 set(INCLUDE_DIRS
+    ${REL_PATH}Sw_Components/02_Srv/Os/Os_Api/
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/Config
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/include
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/portable/GCC/ARM_CM4F
     ${REL_PATH}Sw_Components/04_Drv/clock
     ${REL_PATH}Sw_Components/04_Drv/irq
     ${REL_PATH}Sw_Components/04_Drv/ports
@@ -29,6 +33,16 @@ set(CPP_SRCS
 
 set(C_SRCS
     ${REL_PATH}Sw_Components/02_Srv/main.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/Os_Api/os.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/croutine.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/event_groups.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/list.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/queue.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/stream_buffer.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/tasks.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/timers.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c
+    ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/portable/MemMang/heap_4.c
     ${REL_PATH}Sw_Components/04_Drv/clock/clock.c
     ${REL_PATH}Sw_Components/04_Drv/clock/clock_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/irq/isr_vectors.c
