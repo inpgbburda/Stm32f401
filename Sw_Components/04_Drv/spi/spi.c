@@ -91,3 +91,21 @@ uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
 
     return buffer_val;
 }
+
+bool SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
+{
+    uint32_t byte_num = 0;
+    uint32_t tick_cnt = 0;
+
+    while(tick_cnt<timeout){
+        if(SPI_SR_RXNE_FLAG(instance->SR)){
+            if(byte_num<mess_len){
+                dest_ptr[byte_num] = instance->DR;
+                byte_num++;
+            }else{
+                break;
+            }
+        }
+    }
+    return false;
+}
