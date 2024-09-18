@@ -49,7 +49,14 @@ void SpiInit(const Spi_Cfg_T* config);
 
 uint16_t SpiReadBuffer(const SPI_TypeDef* instance);
 
-bool SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
+typedef enum
+{
+    RET_OK = 0,
+    RET_NOK = 1
+}
+Succes_T;
+
+Succes_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
 
 #endif /* SPI_H */
 

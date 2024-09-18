@@ -10,6 +10,7 @@
 */
 #include "stm32f401xc.h"
 #include "spi.h"
+#include "stdlib.h"
 
 /*
 |===================================================================================================================================|
@@ -30,19 +31,30 @@
     Object allocations 
 |===================================================================================================================================|
 */
-
+#ifdef _UNIT_TEST
+extern uint8_t Fake_Message[4];
+extern bool Fake_Flags[4];
+#endif
 
 /*
 |===================================================================================================================================|
     Local function declarations
 |===================================================================================================================================|
 */
+bool IsRxFlagSet(const SPI_TypeDef *instance);
+uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
+
+#ifdef _UNIT_TEST
+static bool ReadRxNeFlagMock(void);
+static uint8_t ReadDrMock(void);
+#endif
 
 /*
 |===================================================================================================================================|
     Function definitions
 |===================================================================================================================================|
 */
+
 
 /**
  * SpiInit - Initializes the SPI interface with the specified configuration.
@@ -92,20 +104,62 @@ uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
     return buffer_val;
 }
 
-bool SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
+Succes_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
 {
     uint32_t byte_num = 0;
     uint32_t tick_cnt = 0;
 
     while(tick_cnt<timeout){
-        if(SPI_SR_RXNE_FLAG(instance->SR)){
+        if(IsRxFlagSet(instance)){
             if(byte_num<mess_len){
-                dest_ptr[byte_num] = instance->DR;
+                dest_ptr[byte_num] = ReadHwDrBuffer(instance);
                 byte_num++;
             }else{
                 break;
             }
         }
+        tick_cnt++;
     }
-    return false;
+    return RET_OK;
+}
+
+bool IsRxFlagSet(const SPI_TypeDef *instance)
+{
+    bool result = false;
+#ifndef _UNIT_TEST
+    result = SPI_SR_RXNE_FLAG(instance->SR);
+#else
+    result = ReadRxNeFlagMock();
+#endif
+    return result;
+}
+
+uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
+{
+    uint8_t result;
+
+#ifndef _UNIT_TEST
+    result = instance->DR;
+#else
+    result = ReadDrMock();
+#endif
+    return result;
+}
+
+bool ReadRxNeFlagMock(void)
+{
+    bool result;
+    static int i = 0;
+    result = Fake_Flags[i];
+    i++;
+    return result;
+}
+
+uint8_t ReadDrMock(void)
+{
+    uint8_t result;
+    static int i = 0;
+    result = Fake_Message[i];
+    i++;
+    return result;
 }

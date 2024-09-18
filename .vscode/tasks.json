@@ -174,5 +174,80 @@
                 "isDefault": true
             },
         },
+        {
+            "label": "UT - spi generate makefile ",
+            "type": "shell",
+            "command": "${config:cmakePath}",
+            "args": [
+                        ".",
+                        "--preset=default"
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - spi build",
+            "type": "shell",
+            "command": "${config:makePath} all",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/Output_UT"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "UT - spi clean",
+            "type": "shell",
+            "command": "${config:makePath} clean",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/Output_UT"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - spi run",
+            "type": "shell",
+            "command": "Spi_Ut.exe",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/Output_UT"
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - spi generate mocks",
+            "type": "shell",
+            "command": "ruby Tools/Unit_Testing/Cmock/lib/cmock.rb -oTools/Unit_Testing/Cmock/config_files/gcc.yml Sw_Components/04_Drv/spi/spi.h",
+            "args": [
+                    ],
+            "options": {
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+        },
     ]
 }
