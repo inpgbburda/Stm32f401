@@ -12,6 +12,9 @@
 #include "spi.h"
 #include "stdlib.h"
 
+#ifdef _UNIT_TEST
+#include "spi_helper_UT.h"
+#endif
 /*
 |===================================================================================================================================|
     Macro definitions
@@ -31,10 +34,6 @@
     Object allocations 
 |===================================================================================================================================|
 */
-#ifdef _UNIT_TEST
-extern uint8_t Fake_Message[4];
-extern bool Fake_Flags[4];
-#endif
 
 /*
 |===================================================================================================================================|
@@ -44,10 +43,6 @@ extern bool Fake_Flags[4];
 bool IsRxFlagSet(const SPI_TypeDef *instance);
 uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
 
-#ifdef _UNIT_TEST
-static bool ReadRxNeFlagMock(void);
-static uint8_t ReadDrMock(void);
-#endif
 
 /*
 |===================================================================================================================================|
@@ -143,23 +138,5 @@ uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
 #else
     result = ReadDrMock();
 #endif
-    return result;
-}
-
-bool ReadRxNeFlagMock(void)
-{
-    bool result;
-    static int i = 0;
-    result = Fake_Flags[i];
-    i++;
-    return result;
-}
-
-uint8_t ReadDrMock(void)
-{
-    uint8_t result;
-    static int i = 0;
-    result = Fake_Message[i];
-    i++;
     return result;
 }
