@@ -6,4 +6,5 @@ uint8_t ReadDrMock(void);
 
 void SetTestPreConditionsMessage(uint8_t mess[], int len);
 void SetTestConditionsFlags( bool flags[], int len);
-void ResetMocks(void);
+void ResetReadIdx(void);
+void ResetBuffer(uint8_t buffer[], int len);

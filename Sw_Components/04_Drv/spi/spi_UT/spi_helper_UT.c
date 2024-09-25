@@ -6,7 +6,7 @@ static uint8_t Fake_Message[100];
 static bool Fake_Flags[100];
 static int cnt = 0;
 
-void ResetMocks(void);
+void ResetReadIdx(void);
 
 void SetTestPreConditionsMessage(uint8_t mess[], int len)
 {
@@ -40,7 +40,14 @@ uint8_t ReadDrMock(void)
     return result;
 }
 
-void ResetMocks(void)
+void ResetReadIdx(void)
 {
     cnt = 0;
+}
+
+void ResetBuffer(uint8_t buffer[], int len)
+{
+    for(int i=0; i<len; i++){
+        buffer[i] = 0;
+    }
 }
