@@ -22,16 +22,15 @@ const uint32_t exp_len = 4;
 
 void spi_ReceivesChunkOfBytes(void)
 {
-    const uint32_t arbitrary_len = 4;
-
     uint8_t Expected_Message[] = {0x11, 0x22, 0x33, 0x44};
+
     uint8_t Injected_Message[] = { 0x11, 0x22, 0x33, 0x44};
     bool InjectedFlags[] =       {true, true, true, true};
 
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout), RET_OK);
+    TEST_ASSERT_EQUAL(RET_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
 }
 
@@ -45,7 +44,7 @@ void spi_ReceivesChunkOfBytesWithFewSpaces(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout), RET_OK);
+    TEST_ASSERT_EQUAL(RET_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
 }
 
@@ -59,9 +58,35 @@ void spi_ReceivesTwoChunksOfBytesWhenOnlyFirstOneIsExpected(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout), RET_OK);
+    TEST_ASSERT_EQUAL(RET_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
+}
 
+void spi_ReceivesChunkOfBytesWithOneByteMore(void)
+{
+    uint8_t Expected_Message[] = {0x11, 0x22, 0x33, 0x44};
+
+    uint8_t Injected_Message[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x00,  0x66, 0x77, 0x88};
+    bool InjectedFlags[] =       {true, true, true, true, true, false, true, true, true};
+
+    SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
+    SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
+
+    TEST_ASSERT_EQUAL(RET_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
+}
+
+void spi_DoesntReceiveInTimeout(void)
+{
+    uint32_t too_short_timeout = 2U;
+
+    uint8_t Injected_Message[] = { 0x11, 0x22, 0x33, 0x44};
+    bool InjectedFlags[] =       {true, true, true, true};
+
+    SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
+    SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
+
+    TEST_ASSERT_EQUAL(RET_NOK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, too_short_timeout));
 }
 
 int main(void)
@@ -71,5 +96,8 @@ int main(void)
     RUN_TEST(spi_ReceivesChunkOfBytes);
     RUN_TEST(spi_ReceivesChunkOfBytesWithFewSpaces);
     RUN_TEST(spi_ReceivesTwoChunksOfBytesWhenOnlyFirstOneIsExpected);
+    RUN_TEST(spi_ReceivesChunkOfBytesWithOneByteMore);
+    RUN_TEST(spi_DoesntReceiveInTimeout);
+
     return UNITY_END();
 }

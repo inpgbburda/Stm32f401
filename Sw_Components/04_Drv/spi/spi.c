@@ -101,21 +101,25 @@ uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
 
 Succes_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
 {
+    Succes_T ret_val = RET_NOK;
     uint32_t byte_num = 0;
     uint32_t tick_cnt = 0;
+    bool mess_ready = false;
 
-    while(tick_cnt<timeout){
+    while((tick_cnt < timeout) && (!mess_ready)){
         if(IsRxFlagSet(instance)){
-            if(byte_num<mess_len){
+            if(byte_num < mess_len){
                 dest_ptr[byte_num] = ReadHwDrBuffer(instance);
                 byte_num++;
-            }else{
-                break;
             }
+        }
+        if(byte_num >= mess_len){
+            mess_ready = true;
+            ret_val = RET_OK;
         }
         tick_cnt++;
     }
-    return RET_OK;
+    return ret_val;
 }
 
 bool IsRxFlagSet(const SPI_TypeDef *instance)
@@ -134,6 +138,7 @@ uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
     uint8_t result;
 
 #ifndef _UNIT_TEST
+    /*Reading this buffer also clears the RXNE flag*/
     result = instance->DR;
 #else
     result = ReadDrMock();
