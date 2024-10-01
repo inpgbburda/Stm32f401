@@ -89,6 +89,32 @@ void spi_DoesntReceiveInTimeout(void)
     TEST_ASSERT_EQUAL(RET_NOK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, too_short_timeout));
 }
 
+void spi_ReturnsFailureBeingCalledWithInvalidBuffer(void)
+{
+    uint8_t* Inv_Dest_Buff = NULL;
+
+    uint8_t Injected_Message[] = { 0x11, 0x22, 0x33, 0x44};
+    bool InjectedFlags[] =       {true, true, true, true};
+
+    SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
+    SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
+
+    TEST_ASSERT_EQUAL(RET_NOK, SpiReadSynch(SPI2, Inv_Dest_Buff, exp_len, timeout));
+}
+
+void spi_ReturnsFailureBeingCalledWithInvalidPeripheral(void)
+{
+    const SPI_TypeDef* inv_spi_hdl = NULL;
+
+    uint8_t Injected_Message[] = { 0x11, 0x22, 0x33, 0x44};
+    bool InjectedFlags[] =       {true, true, true, true};
+
+    SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
+    SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
+
+    TEST_ASSERT_EQUAL(RET_NOK, SpiReadSynch(inv_spi_hdl, Destination_Buffer, exp_len, timeout));
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -98,6 +124,8 @@ int main(void)
     RUN_TEST(spi_ReceivesTwoChunksOfBytesWhenOnlyFirstOneIsExpected);
     RUN_TEST(spi_ReceivesChunkOfBytesWithOneByteMore);
     RUN_TEST(spi_DoesntReceiveInTimeout);
-
+    RUN_TEST(spi_ReturnsFailureBeingCalledWithInvalidBuffer);
+    RUN_TEST(spi_ReturnsFailureBeingCalledWithInvalidPeripheral);
+    
     return UNITY_END();
 }

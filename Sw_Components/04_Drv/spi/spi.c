@@ -106,6 +106,10 @@ Succes_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t m
     uint32_t tick_cnt = 0;
     bool mess_ready = false;
 
+    if((NULL == instance)||(NULL == dest_ptr)){
+        return RET_NOK;
+    }
+
     while((tick_cnt < timeout) && (!mess_ready)){
         if(IsRxFlagSet(instance)){
             if(byte_num < mess_len){
