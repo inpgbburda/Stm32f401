@@ -1,5 +1,5 @@
 /**
-* File contains 
+* File contains Spi interface
 *
 */
 #ifndef SPI_H
@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "stm32f401xc.h"
+#include "type_reuse.h"
 
 /*
 |===================================================================================================================================|
@@ -49,14 +50,7 @@ void SpiInit(const Spi_Cfg_T* config);
 
 uint16_t SpiReadBuffer(const SPI_TypeDef* instance);
 
-typedef enum
-{
-    RET_OK = 0,
-    RET_NOK = 1
-}
-Succes_T;
-
-Succes_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
+Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
 
 #endif /* SPI_H */
 

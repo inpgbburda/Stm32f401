@@ -1,5 +1,5 @@
 /**
-* File contains 
+* File contains spi implementation
 *
 */
 
@@ -40,8 +40,8 @@
     Local function declarations
 |===================================================================================================================================|
 */
-bool IsRxFlagSet(const SPI_TypeDef *instance);
-uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
+static bool IsRxFlagSet(const SPI_TypeDef *instance);
+static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
 
 
 /*
@@ -99,15 +99,30 @@ uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
     return buffer_val;
 }
 
-Succes_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
+/**
+ * SpiReadSynch - Synchronously reads data from an SPI peripheral.
+ * @instance: A pointer to the SPI_TypeDef structure representing the SPI instance to read from.
+ * @dest_ptr: A pointer to the destination buffer where the read data will be stored.
+ * @mess_len: The number of bytes to read from the SPI instance.
+ * @timeout: The maximum time (in CPU ticks) to wait for the read operation to complete.
+ * 
+ * This function performs a synchronous read operation from the specified SPI instance. It reads up to the specified 
+ * number of bytes (`mess_len`) and stores them in the provided buffer (`dest_ptr`). The function will continue reading 
+ * until either the message length is reached or the specified timeout expires.
+ * 
+ * Returns: 
+ * - E_OK: If the data is successfully read from the SPI peripheral.
+ * - E_NOT_OK: If there is a timeout, invalid input (null pointers), or other errors during the operation.
+ */
+Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
 {
-    Succes_T ret_val = RET_NOK;
+    Std_Return_T ret_val = E_NOT_OK;
     uint32_t byte_num = 0;
     uint32_t tick_cnt = 0;
     bool mess_ready = false;
 
     if((NULL == instance)||(NULL == dest_ptr)){
-        return RET_NOK;
+        return E_NOT_OK;
     }
 
     while((tick_cnt < timeout) && (!mess_ready)){
@@ -119,14 +134,14 @@ Succes_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t m
         }
         if(byte_num >= mess_len){
             mess_ready = true;
-            ret_val = RET_OK;
+            ret_val = E_OK;
         }
         tick_cnt++;
     }
     return ret_val;
 }
 
-bool IsRxFlagSet(const SPI_TypeDef *instance)
+static bool IsRxFlagSet(const SPI_TypeDef *instance)
 {
     bool result = false;
 #ifndef _UNIT_TEST
@@ -137,7 +152,7 @@ bool IsRxFlagSet(const SPI_TypeDef *instance)
     return result;
 }
 
-uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
+static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
 {
     uint8_t result;
 

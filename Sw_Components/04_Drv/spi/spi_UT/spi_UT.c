@@ -30,7 +30,7 @@ void spi_ReceivesChunkOfBytes(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(RET_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
+    TEST_ASSERT_EQUAL(E_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
 }
 
@@ -44,7 +44,7 @@ void spi_ReceivesChunkOfBytesWithFewSpaces(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(RET_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
+    TEST_ASSERT_EQUAL(E_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
 }
 
@@ -58,7 +58,7 @@ void spi_ReceivesTwoChunksOfBytesWhenOnlyFirstOneIsExpected(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(RET_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
+    TEST_ASSERT_EQUAL(E_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
 }
 
@@ -72,7 +72,7 @@ void spi_ReceivesChunkOfBytesWithOneByteMore(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(RET_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
+    TEST_ASSERT_EQUAL(E_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
 }
 
@@ -86,7 +86,7 @@ void spi_DoesntReceiveInTimeout(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(RET_NOK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, too_short_timeout));
+    TEST_ASSERT_EQUAL(E_NOT_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, too_short_timeout));
 }
 
 void spi_ReturnsFailureBeingCalledWithInvalidBuffer(void)
@@ -99,7 +99,7 @@ void spi_ReturnsFailureBeingCalledWithInvalidBuffer(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(RET_NOK, SpiReadSynch(SPI2, Inv_Dest_Buff, exp_len, timeout));
+    TEST_ASSERT_EQUAL(E_NOT_OK, SpiReadSynch(SPI2, Inv_Dest_Buff, exp_len, timeout));
 }
 
 void spi_ReturnsFailureBeingCalledWithInvalidPeripheral(void)
@@ -112,7 +112,7 @@ void spi_ReturnsFailureBeingCalledWithInvalidPeripheral(void)
     SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
     SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
 
-    TEST_ASSERT_EQUAL(RET_NOK, SpiReadSynch(inv_spi_hdl, Destination_Buffer, exp_len, timeout));
+    TEST_ASSERT_EQUAL(E_NOT_OK, SpiReadSynch(inv_spi_hdl, Destination_Buffer, exp_len, timeout));
 }
 
 int main(void)
