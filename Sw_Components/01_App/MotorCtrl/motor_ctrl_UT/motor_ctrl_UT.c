@@ -3,6 +3,17 @@
 #include "pwm_types.h"
 #include "pwm.h"
 
+
+void setUp(void)
+{
+    pwm_Init();
+}
+
+void tearDown(void)
+{
+    pwm_Verify();
+}
+
 void motor_ctrl_CalculatesMotorsSets(void)
 {
     PwmSetDuty_ExpectAnyArgs();
