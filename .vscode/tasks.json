@@ -314,8 +314,9 @@
         {
             "label": "UT - motor ctrl generate mocks",
             "type": "shell",
-            "command": "ruby Tools/Unit_Testing/Cmock/lib/cmock.rb -oSw_Components/01_App/MotorCtrl/motor_ctrl_UT/gcc.yml Sw_Components/04_Drv/pwm/pwm.h",
+            "command": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/header_files.bat",
             "args": [
+                        "${workspaceFolder}"
                     ],
             "options": {
             },
