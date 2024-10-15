@@ -249,5 +249,81 @@
                 "isDefault": true
             },
         },
+        {
+            "label": "UT - motor_ctrl generate makefile ",
+            "type": "shell",
+            "command": "${config:cmakePath}",
+            "args": [
+                        ".",
+                        "--preset=default"
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - motor_ctrl build",
+            "type": "shell",
+            "command": "${config:makePath} all",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/Output_UT"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "UT - motor_ctrl clean",
+            "type": "shell",
+            "command": "${config:makePath} clean",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/Output_UT"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - motor_ctrl run",
+            "type": "shell",
+            "command": "Motor_Ctrl_Ut.exe",
+            "args": [
+                    ],
+            "options": {
+                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/Output_UT"
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "UT - motor ctrl generate mocks",
+            "type": "shell",
+            "command": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/header_files.bat",
+            "args": [
+                        "${workspaceFolder}"
+                    ],
+            "options": {
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+        },
     ]
 }
