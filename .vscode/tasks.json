@@ -100,15 +100,13 @@
             "problemMatcher": []
         },
         {
-            "label": "UT - pwm generate makefile ",
+            "label": "UT - generate all makefiles ",
             "type": "shell",
-            "command": "${config:cmakePath}",
+            "command": "configure_all_modules.bat",
             "args": [
-                        ".",
-                        "--preset=default"
+                        "${config:cmakePath}"
                     ],
             "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/"
             },
             "group": {
                 "kind": "build",
@@ -175,23 +173,6 @@
             },
         },
         {
-            "label": "UT - spi generate makefile ",
-            "type": "shell",
-            "command": "${config:cmakePath}",
-            "args": [
-                        ".",
-                        "--preset=default"
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        },
-        {
             "label": "UT - spi build",
             "type": "shell",
             "command": "${config:makePath} all",
@@ -248,23 +229,6 @@
                 "kind": "test",
                 "isDefault": true
             },
-        },
-        {
-            "label": "UT - motor_ctrl generate makefile ",
-            "type": "shell",
-            "command": "${config:cmakePath}",
-            "args": [
-                        ".",
-                        "--preset=default"
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": []
         },
         {
             "label": "UT - motor_ctrl build",
