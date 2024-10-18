@@ -102,11 +102,13 @@
         {
             "label": "UT - generate all makefiles ",
             "type": "shell",
-            "command": "configure_all_modules.bat",
+            "command": "\"${workspaceFolder}/Tools/Scripts/ut_configure_all_modules.bat\"",
             "args": [
-                        "${config:cmakePath}"
+                        "${config:cmakePath}",
+                        "${workspaceFolder}/Pr_Settings/ut_modules_config.txt",
                     ],
             "options": {
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
