@@ -117,6 +117,23 @@
             "problemMatcher": []
         },
         {
+            "label": "UT - generate all mocks",
+            "type": "shell",
+            "command": "${workspaceFolder}/Tools/Scripts/ut_generate_all_mocks.bat",
+            "args": [
+                "${workspaceFolder}",  // Project root
+                "Pr_Settings/ut_modules_config.txt"  // Path to the path list
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "UT - clean all UTs",
             "type": "shell",
             "command": "\"${workspaceFolder}/Tools/Scripts/ut_clean_all_modules.bat\"",
@@ -183,23 +200,6 @@
                 "isDefault": true
             },
             "problemMatcher": ["$gcc"]
-        },
-        {
-            "label": "UT - motor ctrl - generate mocks",
-            "type": "shell",
-            "command": "${workspaceFolder}/Tools/Scripts/ut_generate_mocks.bat",
-            "args": [
-                "${workspaceFolder}",  // Project root
-                "Sw_Components/01_App/MotorCtrl/motor_ctrl_UT"  // Path to the UT module
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": []
         },
     ]
 }
