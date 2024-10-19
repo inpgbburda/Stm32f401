@@ -32,9 +32,9 @@ for /f "tokens=*" %%m in (%config_file%) do (
     echo Configuring CMake for %%m...
 
     :: Check if Output folder exists, create it if it doesn't
-    if not exist "%%m\Output" (
+    if not exist "%%m\Output_UT" (
         echo Creating Output folder in %%m...
-        mkdir "%%m\Output"
+        mkdir "%%m\Output_UT"
     )
 
     :: Navigate to the module directory

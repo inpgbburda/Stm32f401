@@ -1,4 +1,4 @@
-project("Motor_Ctrl_Ut" C)
+project("motor_ctrl_UT" C)
 cmake_minimum_required(VERSION 3.0)
 
 SET(UNITY_RLV_PATH 
