@@ -105,7 +105,7 @@
             "command": "\"${workspaceFolder}/Tools/Scripts/ut_configure_all_modules.bat\"",
             "args": [
                         "${config:cmakePath}",
-                        "${workspaceFolder}/Pr_Settings/ut_modules_config.txt",
+                        "${workspaceFolder}/Pr_Settings/UT/ut_modules_config.txt",
                     ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -122,7 +122,7 @@
             "command": "${workspaceFolder}/Tools/Scripts/ut_generate_all_mocks.bat",
             "args": [
                 "${workspaceFolder}",  // Project root
-                "Pr_Settings/ut_modules_config.txt"  // Path to the path list
+                "Pr_Settings/UT/ut_modules_config.txt"  // Path to the path list
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -139,7 +139,7 @@
             "command": "\"${workspaceFolder}/Tools/Scripts/ut_clean_all_modules.bat\"",
             "args": [
                         "${config:makePath}",
-                        "${workspaceFolder}/Pr_Settings/ut_modules_config.txt",
+                        "${workspaceFolder}/UT/Pr_Settings/ut_modules_config.txt",
                     ],
             "options": {
                 "cwd": "${workspaceFolder}"
