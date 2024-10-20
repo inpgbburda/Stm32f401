@@ -40,7 +40,7 @@
             ],
 
             "options": {
-                "cwd": "${workspaceFolder}/Tools/Cmake/"
+                "cwd": "${workspaceFolder}/Pr_Settings/Cmake"
             },
             "group": {
                 "kind": "build",
@@ -57,7 +57,7 @@
                         "--preset=default"
                     ],
             "options": {
-                "cwd": "${workspaceFolder}/Tools/Cmake"
+                "cwd": "${workspaceFolder}/Pr_Settings/Cmake/"
             },
             "group": {
                 "kind": "build",
@@ -100,15 +100,15 @@
             "problemMatcher": []
         },
         {
-            "label": "UT - pwm generate makefile ",
+            "label": "UT - generate all makefiles ",
             "type": "shell",
-            "command": "${config:cmakePath}",
+            "command": "\"${workspaceFolder}/Tools/Scripts/ut_configure_all_modules.bat\"",
             "args": [
-                        ".",
-                        "--preset=default"
+                        "${config:cmakePath}",
+                        "${workspaceFolder}/Pr_Settings/UT/ut_modules_config.txt",
                     ],
             "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/"
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
@@ -117,28 +117,15 @@
             "problemMatcher": []
         },
         {
-            "label": "UT - pwm build",
+            "label": "UT - generate all mocks",
             "type": "shell",
-            "command": "${config:makePath} all",
+            "command": "${workspaceFolder}/Tools/Scripts/ut_generate_all_mocks.bat",
             "args": [
-                    ],
+                "${workspaceFolder}",  // Project root
+                "Pr_Settings/UT/ut_modules_config.txt"  // Path to the path list
+            ],
             "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": ["$gcc"]
-        },
-        {
-            "label": "UT - pwm clean",
-            "type": "shell",
-            "command": "${config:makePath} clean",
-            "args": [
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
@@ -147,43 +134,15 @@
             "problemMatcher": []
         },
         {
-            "label": "UT - pwm run",
+            "label": "UT - clean all UTs",
             "type": "shell",
-            "command": "Pwm_Ut.exe",
+            "command": "\"${workspaceFolder}/Tools/Scripts/ut_clean_all_modules.bat\"",
             "args": [
+                        "${config:makePath}",
+                        "${workspaceFolder}/UT/Pr_Settings/ut_modules_config.txt",
                     ],
             "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT"
-            },
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "UT - pwm generate mocks",
-            "type": "shell",
-            "command": "ruby Tools/Unit_Testing/Cmock/lib/cmock.rb -oTools/Unit_Testing/Cmock/config_files/gcc.yml Sw_Components/04_Drv/pwm/pwm.h",
-            "args": [
-                    ],
-            "options": {
-            },
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
-        },
-        {
-            "label": "UT - spi generate makefile ",
-            "type": "shell",
-            "command": "${config:cmakePath}",
-            "args": [
-                        ".",
-                        "--preset=default"
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/"
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
@@ -192,13 +151,15 @@
             "problemMatcher": []
         },
         {
-            "label": "UT - spi build",
+            "label": "UT - pwm - build and run",
             "type": "shell",
-            "command": "${config:makePath} all",
+            "command": "\"${workspaceFolder}/Tools/Scripts/ut_build_and_run.bat\"",
             "args": [
+                    "${config:makePath}",
+                    "Sw_Components/04_Drv/pwm/pwm_UT"
                     ],
             "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/Output_UT"
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
@@ -207,73 +168,15 @@
             "problemMatcher": ["$gcc"]
         },
         {
-            "label": "UT - spi clean",
+            "label": "UT - spi - build and run",
             "type": "shell",
-            "command": "${config:makePath} clean",
+            "command": "\"${workspaceFolder}/Tools/Scripts/ut_build_and_run.bat\"",
             "args": [
+                    "${config:makePath}",
+                    "Sw_Components/04_Drv/spi/spi_UT"
                     ],
             "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/Output_UT"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "UT - spi run",
-            "type": "shell",
-            "command": "Spi_Ut.exe",
-            "args": [
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/Output_UT"
-            },
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "UT - spi generate mocks",
-            "type": "shell",
-            "command": "ruby Tools/Unit_Testing/Cmock/lib/cmock.rb -oTools/Unit_Testing/Cmock/config_files/gcc.yml Sw_Components/04_Drv/spi/spi.h",
-            "args": [
-                    ],
-            "options": {
-            },
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
-        },
-        {
-            "label": "UT - motor_ctrl generate makefile ",
-            "type": "shell",
-            "command": "${config:cmakePath}",
-            "args": [
-                        ".",
-                        "--preset=default"
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "UT - motor_ctrl build",
-            "type": "shell",
-            "command": "${config:makePath} all",
-            "args": [
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/Output_UT"
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
@@ -282,48 +185,21 @@
             "problemMatcher": ["$gcc"]
         },
         {
-            "label": "UT - motor_ctrl clean",
+            "label": "UT - motor ctrl - build and run",
             "type": "shell",
-            "command": "${config:makePath} clean",
+            "command": "\"${workspaceFolder}/Tools/Scripts/ut_build_and_run.bat\"",
             "args": [
+                    "${config:makePath}",
+                    "Sw_Components/01_App/MotorCtrl/motor_ctrl_UT"
                     ],
             "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/Output_UT"
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": []
-        },
-        {
-            "label": "UT - motor_ctrl run",
-            "type": "shell",
-            "command": "Motor_Ctrl_Ut.exe",
-            "args": [
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/Output_UT"
-            },
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "UT - motor ctrl generate mocks",
-            "type": "shell",
-            "command": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/header_files.bat",
-            "args": [
-                        "${workspaceFolder}"
-                    ],
-            "options": {
-            },
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
+            "problemMatcher": ["$gcc"]
         },
     ]
 }
