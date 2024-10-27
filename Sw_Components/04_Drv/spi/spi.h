@@ -52,5 +52,10 @@ uint16_t SpiReadBuffer(const SPI_TypeDef* instance);
 
 Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
 
+void SpiReadIt(const SPI_TypeDef *instance, uint8_t *dest_ptr, uint32_t mess_len);
+
+void Spi2_RxCompleteCbk(void);
+void SPI2_IRQHandler(void);
+
 #endif /* SPI_H */
 

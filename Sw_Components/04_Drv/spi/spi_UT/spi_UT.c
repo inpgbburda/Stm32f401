@@ -115,6 +115,34 @@ void spi_ReturnsFailureBeingCalledWithInvalidPeripheral(void)
     TEST_ASSERT_EQUAL(E_NOT_OK, SpiReadSynch(inv_spi_hdl, Destination_Buffer, exp_len, timeout));
 }
 
+
+bool is_mess_ready = false;
+
+void Spi2_RxCompleteCbk(void)
+{
+    is_mess_ready = true;
+}
+
+void spi_It_ReceivesChunkOfBytes(void)
+{
+    uint8_t Expected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF};
+
+    
+    uint8_t Injected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF};
+    bool InjectedFlags[] =       {true, true, true, true};
+
+    SetTestPreConditionsMessage(Injected_Message, sizeof(Injected_Message));
+    SetTestConditionsFlags(InjectedFlags, sizeof(InjectedFlags));
+
+    SpiReadIt(SPI2, Destination_Buffer, exp_len);
+    for(int i=0; i<4; i++){
+        SPI2_IRQHandler();
+    }
+
+    TEST_ASSERT_EQUAL(true, is_mess_ready);
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -127,5 +155,7 @@ int main(void)
     RUN_TEST(spi_ReturnsFailureBeingCalledWithInvalidBuffer);
     RUN_TEST(spi_ReturnsFailureBeingCalledWithInvalidPeripheral);
     
+    RUN_TEST(spi_It_ReceivesChunkOfBytes);
+
     return UNITY_END();
 }

@@ -51,6 +51,7 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
 */
 
 
+
 /**
  * SpiInit - Initializes the SPI interface with the specified configuration.
  * @config: A pointer to an Spi_Cfg_T structure containing the configuration parameters.
@@ -60,12 +61,15 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
  */
 void SpiInit(const Spi_Cfg_T* config)
 {
+    NVIC_SetPriority(SPI2_IRQn, 1);           // Set priority
+    NVIC_EnableIRQ(SPI2_IRQn);                 // Enable SPI1 interrupt
+
     SPI_TypeDef* used_driver;
     used_driver = config->instance;
 
     /* Clear register contents*/
-    SPI2->CR1 = 0x0000U;
-    SPI2->CR2 = 0x0000U;
+    used_driver->CR1 = 0x0000U;
+    used_driver->CR2 = 0x0000U;
 
     used_driver->CR1 |= config->dff;
     used_driver->CR1 |= config->clock_polarity;
@@ -75,6 +79,9 @@ void SpiInit(const Spi_Cfg_T* config)
     used_driver->CR1 |= config->ssoe;
     used_driver->CR1 |= config->mstr;
     used_driver->CR2 |= config->frf;
+
+    used_driver->CR2 |= SPI_CR2_RXNEIE; // Set the RXNEIE bit to enable RXNE interrupt
+
     /* Enable spi */
     used_driver->CR1 |= config->spe;
 }
@@ -147,6 +154,7 @@ static bool IsRxFlagSet(const SPI_TypeDef *instance)
 #ifndef _UNIT_TEST
     result = SPI_SR_RXNE_FLAG(instance->SR);
 #else
+    GoToNextSample();
     result = ReadRxNeFlagMock();
 #endif
     return result;
@@ -163,4 +171,32 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
     result = ReadDrMock();
 #endif
     return result;
+}
+
+uint8_t value = 0;
+uint8_t buffer[4]={0};
+
+uint8_t* pointer_to_save;
+
+void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
+{
+    pointer_to_save = dest_ptr;
+}
+
+int cnt = 0;
+
+void SPI2_IRQHandler()
+{
+    while(cnt<4){
+#ifndef _UNIT_TEST
+        /*Reading this buffer also clears the RXNE flag*/
+        pointer_to_save[cnt] = SP2->DR;
+#else
+        GoToNextSample();
+        pointer_to_save[cnt] = ReadDrMock();
+        // value = ReadDrMock();
+#endif
+    cnt++;
+    }
+    Spi2_RxCompleteCbk();
 }

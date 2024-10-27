@@ -8,11 +8,15 @@ static int cnt = 0;
 
 void ResetReadIdx(void);
 
+void GoToNextSample(void)
+{
+    cnt++;
+}
+
 void SetTestPreConditionsMessage(uint8_t mess[], int len)
 {
     for (size_t i = 0; i < len; i++)
     {
-        /* code */
         Fake_Message[i] = mess[i];
     }
 }
@@ -20,14 +24,12 @@ void SetTestConditionsFlags(bool flags[], int len)
 {
     for (size_t i = 0; i < len; i++)
     {
-        /* code */
         Fake_Flags[i] = flags[i];
     }
 }
 
 bool ReadRxNeFlagMock(void)
 {
-    cnt++;
     bool result;
     result = Fake_Flags[cnt-1];
     return result;
