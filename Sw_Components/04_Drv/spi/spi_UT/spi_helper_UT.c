@@ -31,14 +31,14 @@ void SetTestConditionsFlags(bool flags[], int len)
 bool ReadRxNeFlagMock(void)
 {
     bool result;
-    result = Fake_Flags[cnt-1];
+    result = Fake_Flags[cnt];
     return result;
 }
 
 uint8_t ReadDrMock(void)
 {
     uint8_t result;
-    result = Fake_Message[cnt-1];
+    result = Fake_Message[cnt];
     return result;
 }
 

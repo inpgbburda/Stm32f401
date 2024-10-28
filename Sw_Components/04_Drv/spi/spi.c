@@ -144,8 +144,17 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
             ret_val = E_OK;
         }
         tick_cnt++;
+        UT_GO_TO_NEXT_SAMPLE();
     }
     return ret_val;
+}
+
+
+uint8_t* pointer_to_save;
+
+void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
+{
+    pointer_to_save = dest_ptr;
 }
 
 static bool IsRxFlagSet(const SPI_TypeDef *instance)
@@ -154,7 +163,6 @@ static bool IsRxFlagSet(const SPI_TypeDef *instance)
 #ifndef _UNIT_TEST
     result = SPI_SR_RXNE_FLAG(instance->SR);
 #else
-    GoToNextSample();
     result = ReadRxNeFlagMock();
 #endif
     return result;
@@ -173,30 +181,16 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
     return result;
 }
 
-uint8_t value = 0;
-uint8_t buffer[4]={0};
-
-uint8_t* pointer_to_save;
-
-void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
-{
-    pointer_to_save = dest_ptr;
-}
-
-int cnt = 0;
-
 void SPI2_IRQHandler()
 {
-    while(cnt<4){
-#ifndef _UNIT_TEST
-        /*Reading this buffer also clears the RXNE flag*/
-        pointer_to_save[cnt] = SP2->DR;
-#else
-        GoToNextSample();
-        pointer_to_save[cnt] = ReadDrMock();
-        // value = ReadDrMock();
-#endif
-    cnt++;
+    static uint32_t byte_cnt = 0;
+
+    if(byte_cnt<4){
+        pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
+        byte_cnt++;
+        UT_GO_TO_NEXT_SAMPLE();
+    }else{
+        byte_cnt = 0;
     }
     Spi2_RxCompleteCbk();
 }
