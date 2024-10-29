@@ -185,12 +185,14 @@ void SPI2_IRQHandler()
 {
     static uint32_t byte_cnt = 0;
 
-    if(byte_cnt<4){
-        pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
+    pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
+
+    if(byte_cnt < 3){
         byte_cnt++;
-        UT_GO_TO_NEXT_SAMPLE();
-    }else{
-        byte_cnt = 0;
     }
-    Spi2_RxCompleteCbk();
+    else{
+        byte_cnt = 0U;
+        Spi2_RxCompleteCbk();
+    }
+    UT_GO_TO_NEXT_SAMPLE();
 }

@@ -16,3 +16,7 @@ void SetTestPreConditionsMessage(uint8_t mess[], int len);
 void SetTestConditionsFlags( bool flags[], int len);
 void ResetReadIdx(void);
 void ResetBuffer(uint8_t buffer[], int len);
+
+void SetupSpiTest(uint8_t* injected_message, bool* injected_flags, int len);
+bool Was_Spi2_RxCompleteCbkCalled(void);
+void Clear_Spi2_RxCompleteCbkStatus(void);
