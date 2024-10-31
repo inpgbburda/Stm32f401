@@ -1,22 +1,18 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifdef _UNIT_TEST
-    #define UT_GO_TO_NEXT_SAMPLE() do { GoToNextSample(); } while (0)
-#else
-    #define UT_GO_TO_NEXT_SAMPLE() do {} while (0)
-#endif
+/* Api called from tested source file */
+bool SpiHelper_ReadRxNeFlagMock(void);
+uint8_t SpiHelper_ReadDrMock(void);
+void SpiHelper_GoToNextSample(void);
 
+/* Api called from test file to control used mocks*/
+void SpiHelper_SetTestPreCondMess(uint8_t mess[], int len);
+void SpiHelper_SetTestPreCondFlags( bool flags[], int len);
+void SpiHelper_ResetReadIdx(void);
+void SpiHelper_ResetBuffer(uint8_t buffer[], int len);
+bool SpiHelper_CheckIf_Spi2_RxCompleteCbkCalled(void);
+void SpiHelper_Clear_Spi2_RxCompleteCbkStatus(void);
 
-bool ReadRxNeFlagMock(void);
-uint8_t ReadDrMock(void);
-
-void GoToNextSample(void);
-void SetTestPreConditionsMessage(uint8_t mess[], int len);
-void SetTestConditionsFlags( bool flags[], int len);
-void ResetReadIdx(void);
-void ResetBuffer(uint8_t buffer[], int len);
-
-void SetupSpiTest(uint8_t* injected_message, bool* injected_flags, int len);
-bool Was_Spi2_RxCompleteCbkCalled(void);
-void Clear_Spi2_RxCompleteCbkStatus(void);
+/* Other functions called from test file - provided for readability */
+void SpiHelper_SetupTest(uint8_t* injected_message, bool* injected_flags, int len);

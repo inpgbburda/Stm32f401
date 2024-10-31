@@ -163,7 +163,7 @@ static bool IsRxFlagSet(const SPI_TypeDef *instance)
 #ifndef _UNIT_TEST
     result = SPI_SR_RXNE_FLAG(instance->SR);
 #else
-    result = ReadRxNeFlagMock();
+    result = SpiHelper_ReadRxNeFlagMock();
 #endif
     return result;
 }
@@ -176,7 +176,7 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
     /*Reading this buffer also clears the RXNE flag*/
     result = instance->DR;
 #else
-    result = ReadDrMock();
+    result = SpiHelper_ReadDrMock();
 #endif
     return result;
 }

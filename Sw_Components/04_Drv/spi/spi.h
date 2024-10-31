@@ -16,6 +16,18 @@
 
 /*
 |===================================================================================================================================|
+    Macro definitions
+|===================================================================================================================================|
+*/
+#ifdef _UNIT_TEST
+    #define UT_GO_TO_NEXT_SAMPLE() do { SpiHelper_GoToNextSample(); } while (0)
+#else
+    #define UT_GO_TO_NEXT_SAMPLE() do {} while (0)
+#endif
+
+
+/*
+|===================================================================================================================================|
     Exported types declarations
 |===================================================================================================================================|
 */
@@ -47,11 +59,8 @@ Spi_Cfg_T;
 |===================================================================================================================================|
 */
 void SpiInit(const Spi_Cfg_T* config);
-
 uint16_t SpiReadBuffer(const SPI_TypeDef* instance);
-
 Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
-
 void SpiReadIt(const SPI_TypeDef *instance, uint8_t *dest_ptr, uint32_t mess_len);
 
 void Spi2_RxCompleteCbk(void);

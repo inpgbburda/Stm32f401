@@ -40,6 +40,8 @@ void PwmTask(void *pvParameters) {
     }
 }
 
+uint8_t buffer[4] = {0};
+
 /**
  * @brief This function is a task that reads data from an SPI peripheral and updates a variable.
  *
@@ -52,9 +54,15 @@ void PwmTask(void *pvParameters) {
  */
 void SpiTask(void *pvParameters) {
     for (;;) {
-        static uint16_t spi_data = 0;
-        spi_data = SpiReadBuffer(SPI2);
-        vTaskDelay(pdMS_TO_TICKS(10));
+        SpiReadIt(SPI2, buffer, 4);
+        vTaskDelay(pdMS_TO_TICKS(120));
+    }
+}
+
+void Spi2_RxCompleteCbk(void)
+{
+    for(int i =0; i<4; i++){
+        buffer[i] = 0;
     }
 }
 
