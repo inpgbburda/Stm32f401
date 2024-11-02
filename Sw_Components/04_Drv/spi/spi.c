@@ -151,10 +151,14 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
 
 
 uint8_t* pointer_to_save;
+static bool mess_ready = false;
+static uint32_t expected_length = 0U;
 
 void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
 {
+    mess_ready = false;
     pointer_to_save = dest_ptr;
+    expected_length = mess_len;
 }
 
 static bool IsRxFlagSet(const SPI_TypeDef *instance)
@@ -183,16 +187,23 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
 
 void SPI2_IRQHandler()
 {
-    static uint32_t byte_cnt = 0;
-
-    pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
-
-    if(byte_cnt < 3){
-        byte_cnt++;
-    }
-    else{
-        byte_cnt = 0U;
-        Spi2_RxCompleteCbk();
+    static uint32_t byte_cnt = 0U;
+    
+    if(!mess_ready){
+        if(byte_cnt < (expected_length - 1U)){
+            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);   
+            byte_cnt++;
+        }
+        else if(byte_cnt == (expected_length - 1U)){
+            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);   
+            byte_cnt = 0U;
+            mess_ready = true;
+            Spi2_RxCompleteCbk();
+        }
+        else{
+            /* Error handling */
+            byte_cnt = 0U;
+        }
     }
     UT_GO_TO_NEXT_SAMPLE();
 }

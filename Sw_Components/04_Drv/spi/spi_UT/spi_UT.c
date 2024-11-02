@@ -131,6 +131,26 @@ void spi_It_ReceivesChunkOfBytes(void)
     SpiHelper_Clear_Spi2_RxCompleteCbkStatus();
 }
 
+void spi_It_ReceivesMoreBytesThanRequested(void)
+{
+    uint8_t Expected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF};
+
+    uint8_t Injected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF, 0x11, 0x22, 0x33, 0x44};
+    bool InjectedFlags[] =       {true, true, true, true, true, true, true, true};
+
+    SpiHelper_SetupTest(Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    
+    SpiReadIt(SPI2, Destination_Buffer, exp_len);
+    for(int i=0; i<8; i++){
+        SPI2_IRQHandler();
+    }
+    
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_Spi2_RxCompleteCbkCalled());
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
+    
+    SpiHelper_Clear_Spi2_RxCompleteCbkStatus();
+}
+
 void spi_It_FailsToReceiveWholeMessage(void)
 {
     uint8_t Expected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF};
@@ -162,6 +182,7 @@ int main(void)
     RUN_TEST(spi_ReturnsFailureBeingCalledWithInvalidPeripheral);
     
     RUN_TEST(spi_It_ReceivesChunkOfBytes);
+    RUN_TEST(spi_It_ReceivesMoreBytesThanRequested);
     RUN_TEST(spi_It_FailsToReceiveWholeMessage);
 
     return UNITY_END();
