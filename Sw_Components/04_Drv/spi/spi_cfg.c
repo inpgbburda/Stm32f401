@@ -15,9 +15,13 @@
 #define SPI_CR1_SSM_HW 0U
 #define SPI_CR2_SSOE_DIS 0U
 
+#define SPI2_INTER_PRIO 1U
+
 const Spi_Cfg_T Spi2_Config =
 {
     SPI2,
+    SPI_MODE_INTERRUPT,
+    SPI2_INTER_PRIO,
     SPI_CR1_DFF_8_BIT,       /* 8 bit format of data frame*/
     SPI_CR1_CPOL_LOW_IDLE,   /* low sck state as idle */
     SPI_CR1_CPHA_FIRST_EDGE, /* first edge of sck as latching */

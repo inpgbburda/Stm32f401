@@ -61,10 +61,9 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
  */
 void SpiInit(const Spi_Cfg_T* config)
 {
-    NVIC_SetPriority(SPI2_IRQn, 1);           // Set priority
-    NVIC_EnableIRQ(SPI2_IRQn);                 // Enable SPI1 interrupt
-
     SPI_TypeDef* used_driver;
+    uint8_t interrupt_id;
+
     used_driver = config->instance;
 
     /* Clear register contents*/
@@ -80,7 +79,25 @@ void SpiInit(const Spi_Cfg_T* config)
     used_driver->CR1 |= config->mstr;
     used_driver->CR2 |= config->frf;
 
-    used_driver->CR2 |= SPI_CR2_RXNEIE; // Set the RXNEIE bit to enable RXNE interrupt
+    if(SPI_MODE_INTERRUPT == config->mode){
+
+        used_driver->CR2 |= SPI_CR2_RXNEIE;  /* Set the RXNEIE bit to enable RXNE interrupt */
+
+        if(SPI1 == used_driver){
+            interrupt_id = SPI1_IRQn;
+        }
+        else if(SPI2 == used_driver){
+            interrupt_id = SPI2_IRQn;
+        }
+        else if(SPI3 == used_driver){
+            interrupt_id = SPI3_IRQn;
+        }
+        else{
+
+        }            
+        NVIC_SetPriority(interrupt_id, config->int_priority);     /* Set priority */
+        NVIC_EnableIRQ(interrupt_id);                             /* Enable SPI2 interrupt */
+    }
 
     /* Enable spi */
     used_driver->CR1 |= config->spe;

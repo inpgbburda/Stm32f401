@@ -31,9 +31,18 @@
     Exported types declarations
 |===================================================================================================================================|
 */
+typedef enum
+{
+    SPI_MODE_SYNCHRONOUS = 0,
+    SPI_MODE_INTERRUPT,
+}
+Spi_Mode_T;
+
 typedef struct
 {
     SPI_TypeDef* instance;
+    Spi_Mode_T mode;
+    uint8_t int_priority; /* priority of interrupt - leave empty if not used */
     uint16_t dff;    /* frame format - 8 or 16 bit */
     uint16_t clock_polarity; /* clock_polarity */
     uint16_t clock_phase;    /* clock_phase */
@@ -45,7 +54,6 @@ typedef struct
     uint16_t spe;    /* enable spi */
 }
 Spi_Cfg_T;
-
 
 /*
 |===================================================================================================================================|
