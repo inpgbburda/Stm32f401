@@ -62,23 +62,10 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
 void SpiInit(const Spi_Cfg_T* config)
 {
     SPI_TypeDef* used_driver;
-    uint8_t interrupt_id;
+    IRQn_Type interrupt_id;
 
     used_driver = config->instance;
-
-    /* Clear register contents*/
-    used_driver->CR1 = 0x0000U;
-    used_driver->CR2 = 0x0000U;
-
-    used_driver->CR1 |= config->dff;
-    used_driver->CR1 |= config->clock_polarity;
-    used_driver->CR1 |= config->clock_phase;
-    used_driver->CR1 |= config->lsb_first;
-    used_driver->CR1 |= config->ssm;
-    used_driver->CR1 |= config->ssoe;
-    used_driver->CR1 |= config->mstr;
-    used_driver->CR2 |= config->frf;
-
+    
     if(SPI_MODE_INTERRUPT == config->mode){
 
         used_driver->CR2 |= SPI_CR2_RXNEIE;  /* Set the RXNEIE bit to enable RXNE interrupt */
@@ -94,10 +81,23 @@ void SpiInit(const Spi_Cfg_T* config)
         }
         else{
 
-        }            
+        }
         NVIC_SetPriority(interrupt_id, config->int_priority);     /* Set priority */
         NVIC_EnableIRQ(interrupt_id);                             /* Enable SPI2 interrupt */
     }
+
+    /* Clear register contents*/
+    used_driver->CR1 = 0x0000U;
+    used_driver->CR2 = 0x0000U;
+
+    used_driver->CR1 |= config->dff;
+    used_driver->CR1 |= config->clock_polarity;
+    used_driver->CR1 |= config->clock_phase;
+    used_driver->CR1 |= config->lsb_first;
+    used_driver->CR1 |= config->ssm;
+    used_driver->CR1 |= config->ssoe;
+    used_driver->CR1 |= config->mstr;
+    used_driver->CR2 |= config->frf;
 
     /* Enable spi */
     used_driver->CR1 |= config->spe;
@@ -173,9 +173,16 @@ static uint32_t expected_length = 0U;
 
 void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
 {
+    uint8_t residual_trash;
+    
+    residual_trash = ReadHwDrBuffer(SPI2);
+    
     mess_ready = false;
     pointer_to_save = dest_ptr;
     expected_length = mess_len;
+#ifndef _UNIT_TEST
+    SPI2->CR2 |= SPI_CR2_RXNEIE;
+#endif
 }
 
 static bool IsRxFlagSet(const SPI_TypeDef *instance)
@@ -205,16 +212,19 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
 void SPI2_IRQHandler()
 {
     static uint32_t byte_cnt = 0U;
-    
+
     if(!mess_ready){
         if(byte_cnt < (expected_length - 1U)){
-            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);   
+            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
             byte_cnt++;
         }
         else if(byte_cnt == (expected_length - 1U)){
-            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);   
+            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
             byte_cnt = 0U;
             mess_ready = true;
+#ifndef _UNIT_TEST
+            SPI2->CR2 &= ~(SPI_CR2_RXNEIE);
+#endif
             Spi2_RxCompleteCbk();
         }
         else{
