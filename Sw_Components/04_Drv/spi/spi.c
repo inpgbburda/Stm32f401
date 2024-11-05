@@ -42,7 +42,8 @@
 */
 static bool IsRxFlagSet(const SPI_TypeDef *instance);
 static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
-
+static void EnableInterruptInHw(SPI_TypeDef *instance);
+static void DisableInterruptInHw(SPI_TypeDef *instance);
 
 /*
 |===================================================================================================================================|
@@ -180,14 +181,13 @@ void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len
     mess_ready = false;
     pointer_to_save = dest_ptr;
     expected_length = mess_len;
-#ifndef _UNIT_TEST
-    SPI2->CR2 |= SPI_CR2_RXNEIE;
-#endif
+    EnableInterruptInHw(SPI2);
 }
 
 static bool IsRxFlagSet(const SPI_TypeDef *instance)
 {
     bool result = false;
+
 #ifndef _UNIT_TEST
     result = SPI_SR_RXNE_FLAG(instance->SR);
 #else
@@ -209,6 +209,20 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
     return result;
 }
 
+static void EnableInterruptInHw(SPI_TypeDef *instance)
+{
+#ifndef _UNIT_TEST
+    instance->CR2 |= SPI_CR2_RXNEIE;
+#endif
+}
+
+static void DisableInterruptInHw(SPI_TypeDef *instance)
+{
+#ifndef _UNIT_TEST
+    instance->CR2 &= ~(SPI_CR2_RXNEIE);
+#endif
+}
+
 void SPI2_IRQHandler()
 {
     static uint32_t byte_cnt = 0U;
@@ -222,9 +236,7 @@ void SPI2_IRQHandler()
             pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
             byte_cnt = 0U;
             mess_ready = true;
-#ifndef _UNIT_TEST
-            SPI2->CR2 &= ~(SPI_CR2_RXNEIE);
-#endif
+            DisableInterruptInHw(SPI2);
             Spi2_RxCompleteCbk();
         }
         else{
