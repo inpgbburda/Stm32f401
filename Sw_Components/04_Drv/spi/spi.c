@@ -28,7 +28,8 @@
 |===================================================================================================================================|
 */
 static uint8_t* pointer_to_save;
-static bool mess_ready = false;
+static bool mess_ready_1 = false;
+static bool mess_ready_2 = false;
 static uint32_t expected_length = 0U;
 
 /*
@@ -183,16 +184,23 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
     return ret_val;
 }
 
-void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
+void SpiReadIt(SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
 {
     uint8_t residual_trash;
     
     residual_trash = ReadHwDrBuffer(SPI2);
-    
-    mess_ready = false;
+    if(SPI1 == instance){
+        mess_ready_1 = false;
+    }
+    else if(SPI2 == instance){
+        mess_ready_2 = false;
+    }
+    else{
+
+    }
     pointer_to_save = dest_ptr;
     expected_length = mess_len;
-    EnableInterruptInDriver(SPI2);
+    EnableInterruptInDriver(instance);
 }
 
 static bool IsRxFlagSet(const SPI_TypeDef *instance)
@@ -234,11 +242,35 @@ static void DisableInterruptInDriver(SPI_TypeDef *instance)
 #endif
 }
 
+void SPI1_IRQHandler()
+{
+    static uint32_t byte_cnt = 0U;
+
+    if(!mess_ready_1){
+        if(byte_cnt < (expected_length - 1U)){
+            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI1);
+            byte_cnt++;
+        }
+        else if(byte_cnt == (expected_length - 1U)){
+            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI1);
+            byte_cnt = 0U;
+            mess_ready_1 = true;
+            DisableInterruptInDriver(SPI1);
+            Spi1_RxCompleteCbk();
+        }
+        else{
+            /* Error handling */
+            byte_cnt = 0U;
+        }
+    }
+    UT_GO_TO_NEXT_SAMPLE();
+}
+
 void SPI2_IRQHandler()
 {
     static uint32_t byte_cnt = 0U;
 
-    if(!mess_ready){
+    if(!mess_ready_2){
         if(byte_cnt < (expected_length - 1U)){
             pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
             byte_cnt++;
@@ -246,7 +278,7 @@ void SPI2_IRQHandler()
         else if(byte_cnt == (expected_length - 1U)){
             pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
             byte_cnt = 0U;
-            mess_ready = true;
+            mess_ready_2 = true;
             DisableInterruptInDriver(SPI2);
             Spi2_RxCompleteCbk();
         }
@@ -257,3 +289,10 @@ void SPI2_IRQHandler()
     }
     UT_GO_TO_NEXT_SAMPLE();
 }
+
+#ifndef _UNIT_TEST
+void Spi1_RxCompleteCbk()
+{
+
+}
+#endif

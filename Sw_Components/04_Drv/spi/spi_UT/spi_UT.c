@@ -19,9 +19,10 @@ void tearDown(void)
     SpiHelper_ResetReadIdx();
 }
 
-const uint32_t timeout = 20;
-const uint32_t exp_len = 4;
+const uint32_t timeout = 20U;
+const uint32_t exp_len = 4U;
 const uint32_t spi1_int_prio = 1U;
+const uint32_t spi2_int_prio = 2U;
 
 void spi_ReceivesChunkOfBytes(void)
 {
@@ -114,6 +115,8 @@ void spi_ReturnsFailureBeingCalledWithInvalidPeripheral(void)
 
 /* Interrupt-mode receiving tests */
 
+const int Irq_Too_Few_Calls = 2U;
+
 void spi_It_ReceivesChunkOfBytes(void)
 {
     uint8_t Expected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF};
@@ -124,14 +127,14 @@ void spi_It_ReceivesChunkOfBytes(void)
     SpiHelper_SetupTest(Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     SpiReadIt(SPI2, Destination_Buffer, exp_len);
-    for(int i=0; i<4; i++){
+    for(int i=0; i<sizeof(Injected_Message); i++){
         SPI2_IRQHandler();
     }
 
-    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_Spi2_RxCompleteCbkCalled());
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
 
-    SpiHelper_Clear_Spi2_RxCompleteCbkStatus();
+    SpiHelper_Clear_RxCompleteCbkStatuses();
 }
 
 void spi_It_ReceivesMoreBytesThanRequested(void)
@@ -144,14 +147,14 @@ void spi_It_ReceivesMoreBytesThanRequested(void)
     SpiHelper_SetupTest(Injected_Message, InjectedFlags, sizeof(Injected_Message));
     
     SpiReadIt(SPI2, Destination_Buffer, exp_len);
-    for(int i=0; i<8; i++){
+    for(int i=0; i<sizeof(Injected_Message); i++){
         SPI2_IRQHandler();
     }
     
-    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_Spi2_RxCompleteCbkCalled());
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
     
-    SpiHelper_Clear_Spi2_RxCompleteCbkStatus();
+    SpiHelper_Clear_RxCompleteCbkStatuses();
 }
 
 void spi_It_FailsToReceiveWholeMessage(void)
@@ -164,13 +167,13 @@ void spi_It_FailsToReceiveWholeMessage(void)
     SpiHelper_SetupTest(Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     SpiReadIt(SPI2, Destination_Buffer, exp_len);
-    for(int i=0; i<2; i++){
+    for(int i=0; i<Irq_Too_Few_Calls; i++){
         SPI2_IRQHandler();
     }
 
-    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_Spi2_RxCompleteCbkCalled());
+    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
 
-    SpiHelper_Clear_Spi2_RxCompleteCbkStatus();
+    SpiHelper_Clear_RxCompleteCbkStatuses();
 }
 
 const Spi_Cfg_T Spi1_Config =
@@ -189,9 +192,45 @@ const Spi_Cfg_T Spi1_Config =
     REG_FIELD_NOT_UT_RELEVANT
 };
 
+const Spi_Cfg_T Spi2_Config =
+{
+    SPI2,
+    SPI_MODE_INTERRUPT,
+    spi2_int_prio,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT
+};
+
 void spi_It_IsProperlyInitialised(void)
 {
+    /*Check if given interrupt is really using assigned hw and calls the expected callback in the end*/
     SpiInit(&Spi1_Config);
+    SpiInit(&Spi2_Config);
+
+    SpiReadIt(SPI1, Destination_Buffer, exp_len);
+    for(int i=0; i<exp_len; i++){
+        SPI1_IRQHandler();
+    }
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_1));
+    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
+    
+    SpiHelper_Clear_RxCompleteCbkStatuses();
+
+    SpiReadIt(SPI2, Destination_Buffer, exp_len);
+    for(int i=0; i<exp_len; i++){
+        SPI2_IRQHandler();
+    }
+    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_1));
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
+    
+    SpiHelper_Clear_RxCompleteCbkStatuses();
 }
 
 int main(void)

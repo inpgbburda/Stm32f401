@@ -3,10 +3,13 @@
 #include <stddef.h>
 #include "spi.h"
 
-static uint8_t Fake_Message[100];
-static bool Fake_Flags[100];
+#define FAKE_MESSAGE_MAX_SIZE 100U
+#define MAX_DRIVER_NUMBER 3U
+
+static uint8_t Fake_Message[FAKE_MESSAGE_MAX_SIZE];
+static bool Fake_Flags[FAKE_MESSAGE_MAX_SIZE];
 static int sample_cnt = 0;
-static bool Spi2RxComplete = false;
+static bool SpiRxCompleteStatuses[SPI_HELPER_DRV_MAX] = {false};
 
 bool SpiHelper_ReadRxNeFlagMock(void)
 {
@@ -54,19 +57,25 @@ void SpiHelper_ResetBuffer(uint8_t buffer[], int len)
     }
 }
 
+void Spi1_RxCompleteCbk(void)
+{
+    SpiRxCompleteStatuses[SPI_HELPER_DRV_1] = true;
+}
+
 void Spi2_RxCompleteCbk(void)
 {
-    Spi2RxComplete = true;
+    SpiRxCompleteStatuses[SPI_HELPER_DRV_2] = true;
 }
 
-bool SpiHelper_CheckIf_Spi2_RxCompleteCbkCalled(void)
+bool SpiHelper_CheckIf_RxCompleteCbkCalled(SpiHelper_Driver_T driver)
 {
-    return Spi2RxComplete;
+    return SpiRxCompleteStatuses[driver];
 }
 
-void SpiHelper_Clear_Spi2_RxCompleteCbkStatus(void)
+void SpiHelper_Clear_RxCompleteCbkStatuses(void)
 {
-    Spi2RxComplete = false;
+    SpiRxCompleteStatuses[SPI_HELPER_DRV_1] = false;
+    SpiRxCompleteStatuses[SPI_HELPER_DRV_2] = false;
 }
 
 void SpiHelper_SetupTest(uint8_t* injected_message, bool* injected_flags, int len)
