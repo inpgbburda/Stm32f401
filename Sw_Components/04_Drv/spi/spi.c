@@ -27,7 +27,9 @@
     Local types definitions 
 |===================================================================================================================================|
 */
-
+static uint8_t* pointer_to_save;
+static bool mess_ready = false;
+static uint32_t expected_length = 0U;
 
 /*
 |===================================================================================================================================|
@@ -40,18 +42,18 @@
     Local function declarations
 |===================================================================================================================================|
 */
+static void SetUpDriverRegisters(const Spi_Cfg_T* config);
+static void SetUpNvic(IRQn_Type interrupt_id, uint32_t priority);
 static bool IsRxFlagSet(const SPI_TypeDef *instance);
 static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance);
-static void EnableInterruptInHw(SPI_TypeDef *instance);
-static void DisableInterruptInHw(SPI_TypeDef *instance);
+static void EnableInterruptInDriver(SPI_TypeDef *instance);
+static void DisableInterruptInDriver(SPI_TypeDef *instance);
 
 /*
 |===================================================================================================================================|
     Function definitions
 |===================================================================================================================================|
 */
-
-
 
 /**
  * SpiInit - Initializes the SPI interface with the specified configuration.
@@ -69,8 +71,6 @@ void SpiInit(const Spi_Cfg_T* config)
     
     if(SPI_MODE_INTERRUPT == config->mode){
 
-        used_driver->CR2 |= SPI_CR2_RXNEIE;  /* Set the RXNEIE bit to enable RXNE interrupt */
-
         if(SPI1 == used_driver){
             interrupt_id = SPI1_IRQn;
         }
@@ -83,10 +83,17 @@ void SpiInit(const Spi_Cfg_T* config)
         else{
 
         }
-        NVIC_SetPriority(interrupt_id, config->int_priority);     /* Set priority */
-        NVIC_EnableIRQ(interrupt_id);                             /* Enable SPI2 interrupt */
+        SetUpNvic(interrupt_id, config->int_priority);
     }
+    SetUpDriverRegisters(config);
+}
 
+static void SetUpDriverRegisters(const Spi_Cfg_T* config)
+{
+    SPI_TypeDef* used_driver;
+    used_driver = config->instance;
+
+#ifndef _UNIT_TEST
     /* Clear register contents*/
     used_driver->CR1 = 0x0000U;
     used_driver->CR2 = 0x0000U;
@@ -102,6 +109,15 @@ void SpiInit(const Spi_Cfg_T* config)
 
     /* Enable spi */
     used_driver->CR1 |= config->spe;
+#endif
+}
+
+static void SetUpNvic(IRQn_Type int_id, uint32_t int_prio)
+{
+#ifndef _UNIT_TEST
+    NVIC_SetPriority(int_id, int_prio);
+    NVIC_EnableIRQ(int_id);
+#endif
 }
 
 /**
@@ -167,11 +183,6 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
     return ret_val;
 }
 
-
-uint8_t* pointer_to_save;
-static bool mess_ready = false;
-static uint32_t expected_length = 0U;
-
 void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
 {
     uint8_t residual_trash;
@@ -181,7 +192,7 @@ void SpiReadIt(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len
     mess_ready = false;
     pointer_to_save = dest_ptr;
     expected_length = mess_len;
-    EnableInterruptInHw(SPI2);
+    EnableInterruptInDriver(SPI2);
 }
 
 static bool IsRxFlagSet(const SPI_TypeDef *instance)
@@ -209,14 +220,14 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
     return result;
 }
 
-static void EnableInterruptInHw(SPI_TypeDef *instance)
+static void EnableInterruptInDriver(SPI_TypeDef *instance)
 {
 #ifndef _UNIT_TEST
     instance->CR2 |= SPI_CR2_RXNEIE;
 #endif
 }
 
-static void DisableInterruptInHw(SPI_TypeDef *instance)
+static void DisableInterruptInDriver(SPI_TypeDef *instance)
 {
 #ifndef _UNIT_TEST
     instance->CR2 &= ~(SPI_CR2_RXNEIE);
@@ -236,7 +247,7 @@ void SPI2_IRQHandler()
             pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
             byte_cnt = 0U;
             mess_ready = true;
-            DisableInterruptInHw(SPI2);
+            DisableInterruptInDriver(SPI2);
             Spi2_RxCompleteCbk();
         }
         else{

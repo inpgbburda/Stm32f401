@@ -2,6 +2,8 @@
 #include "spi.h"
 #include "spi_helper_UT.h"
 
+#define REG_FIELD_NOT_UT_RELEVANT 0U
+
 #define EXPECTED_MESS_LEN 4U
 
 static uint8_t Destination_Buffer[] = {0,0,0,0};
@@ -19,6 +21,7 @@ void tearDown(void)
 
 const uint32_t timeout = 20;
 const uint32_t exp_len = 4;
+const uint32_t spi1_int_prio = 1U;
 
 void spi_ReceivesChunkOfBytes(void)
 {
@@ -169,6 +172,28 @@ void spi_It_FailsToReceiveWholeMessage(void)
 
     SpiHelper_Clear_Spi2_RxCompleteCbkStatus();
 }
+
+const Spi_Cfg_T Spi1_Config =
+{
+    SPI1,
+    SPI_MODE_INTERRUPT,
+    spi1_int_prio,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT
+};
+
+void spi_It_IsProperlyInitialised(void)
+{
+    SpiInit(&Spi1_Config);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -184,6 +209,7 @@ int main(void)
     RUN_TEST(spi_It_ReceivesChunkOfBytes);
     RUN_TEST(spi_It_ReceivesMoreBytesThanRequested);
     RUN_TEST(spi_It_FailsToReceiveWholeMessage);
+    RUN_TEST(spi_It_IsProperlyInitialised);
 
     return UNITY_END();
 }
