@@ -27,16 +27,41 @@
     Local types definitions 
 |===================================================================================================================================|
 */
-static uint8_t* pointer_to_save;
-static bool mess_ready_1 = false;
-static bool mess_ready_2 = false;
-static uint32_t expected_length = 0U;
+typedef void (*Complete_Clb_Ptr_T)(void);
+
+typedef struct
+{
+    Complete_Clb_Ptr_T callback;
+    uint32_t byte_cnt;
+    bool mess_ready;
+    SPI_TypeDef* instance;
+}
+Spi_Storage_T;
 
 /*
 |===================================================================================================================================|
     Object allocations 
 |===================================================================================================================================|
 */
+static uint8_t* pointer_to_save;
+static uint32_t expected_length = 0U;
+
+static Spi_Storage_T Driver_Store_1 = 
+{
+    Spi1_RxCompleteCbk,
+    0U,
+    false,
+    SPI1
+};
+
+static Spi_Storage_T Driver_Store_2 = 
+{
+    Spi2_RxCompleteCbk,
+    0U,
+    false,
+    SPI2
+};
+
 
 /*
 |===================================================================================================================================|
@@ -190,10 +215,10 @@ void SpiReadIt(SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
     
     residual_trash = ReadHwDrBuffer(SPI2);
     if(SPI1 == instance){
-        mess_ready_1 = false;
+        Driver_Store_1.mess_ready = false;
     }
     else if(SPI2 == instance){
-        mess_ready_2 = false;
+        Driver_Store_2.mess_ready = false;
     }
     else{
 
@@ -242,56 +267,56 @@ static void DisableInterruptInDriver(SPI_TypeDef *instance)
 #endif
 }
 
+static void DoRxInterruptRoutine(Spi_Storage_T* storage);
+
 void SPI1_IRQHandler()
 {
-    static uint32_t byte_cnt = 0U;
-
-    if(!mess_ready_1){
-        if(byte_cnt < (expected_length - 1U)){
-            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI1);
-            byte_cnt++;
-        }
-        else if(byte_cnt == (expected_length - 1U)){
-            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI1);
-            byte_cnt = 0U;
-            mess_ready_1 = true;
-            DisableInterruptInDriver(SPI1);
-            Spi1_RxCompleteCbk();
-        }
-        else{
-            /* Error handling */
-            byte_cnt = 0U;
-        }
-    }
-    UT_GO_TO_NEXT_SAMPLE();
+    DoRxInterruptRoutine(&Driver_Store_1);
 }
 
 void SPI2_IRQHandler()
 {
-    static uint32_t byte_cnt = 0U;
+    DoRxInterruptRoutine(&Driver_Store_2);
+}
 
-    if(!mess_ready_2){
-        if(byte_cnt < (expected_length - 1U)){
-            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
-            byte_cnt++;
+static void DoRxInterruptRoutine(Spi_Storage_T* storage)
+{
+    uint32_t cnt;
+    cnt = storage->byte_cnt;
+
+    if(!storage->mess_ready){
+        if(cnt < (expected_length - 1U)){
+            pointer_to_save[cnt] = ReadHwDrBuffer(storage->instance);
+            cnt++;
         }
-        else if(byte_cnt == (expected_length - 1U)){
-            pointer_to_save[byte_cnt] = ReadHwDrBuffer(SPI2);
-            byte_cnt = 0U;
-            mess_ready_2 = true;
-            DisableInterruptInDriver(SPI2);
-            Spi2_RxCompleteCbk();
+        else if(cnt == (expected_length - 1U)){
+            pointer_to_save[cnt] = ReadHwDrBuffer(storage->instance);
+            cnt = 0U;
+            storage->mess_ready = true;
+            DisableInterruptInDriver(storage->instance);
+            storage->callback();
         }
         else{
             /* Error handling */
-            byte_cnt = 0U;
+            cnt = 0U;
         }
     }
+    storage->byte_cnt = cnt;
     UT_GO_TO_NEXT_SAMPLE();
 }
 
+void SPI3_IRQHandler(void)
+{
+
+}
+
 #ifndef _UNIT_TEST
-void Spi1_RxCompleteCbk()
+void Spi1_RxCompleteCbk(void)
+{
+
+}
+
+void Spi3_RxCompleteCbk(void)
 {
 
 }

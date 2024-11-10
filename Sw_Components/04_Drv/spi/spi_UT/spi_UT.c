@@ -233,6 +233,8 @@ void spi_It_IsProperlyInitialised(void)
     SpiHelper_Clear_RxCompleteCbkStatuses();
 }
 
+/* Create test which reads two spi drivers, each for interchangeably message pieces*/
+
 int main(void)
 {
     UNITY_BEGIN();

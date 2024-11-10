@@ -67,6 +67,11 @@ void Spi2_RxCompleteCbk(void)
     SpiRxCompleteStatuses[SPI_HELPER_DRV_2] = true;
 }
 
+void Spi3_RxCompleteCbk(void)
+{
+
+}
+
 bool SpiHelper_CheckIf_RxCompleteCbkCalled(SpiHelper_Driver_T driver)
 {
     return SpiRxCompleteStatuses[driver];
