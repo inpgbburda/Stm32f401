@@ -69,7 +69,7 @@ void Spi2_RxCompleteCbk(void)
 
 void Spi3_RxCompleteCbk(void)
 {
-
+    SpiRxCompleteStatuses[SPI_HELPER_DRV_3] = true;
 }
 
 bool SpiHelper_CheckIf_RxCompleteCbkCalled(SpiHelper_Driver_T driver)
@@ -81,6 +81,7 @@ void SpiHelper_Clear_RxCompleteCbkStatuses(void)
 {
     SpiRxCompleteStatuses[SPI_HELPER_DRV_1] = false;
     SpiRxCompleteStatuses[SPI_HELPER_DRV_2] = false;
+    SpiRxCompleteStatuses[SPI_HELPER_DRV_3] = false;
 }
 
 void SpiHelper_SetupTest(uint8_t* injected_message, bool* injected_flags, int len)

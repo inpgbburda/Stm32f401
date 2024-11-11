@@ -23,6 +23,7 @@ const uint32_t timeout = 20U;
 const uint32_t exp_len = 4U;
 const uint32_t spi1_int_prio = 1U;
 const uint32_t spi2_int_prio = 2U;
+const uint32_t spi3_int_prio = 3U;
 
 void spi_ReceivesChunkOfBytes(void)
 {
@@ -208,6 +209,22 @@ const Spi_Cfg_T Spi2_Config =
     REG_FIELD_NOT_UT_RELEVANT
 };
 
+const Spi_Cfg_T Spi3_Config =
+{
+    SPI3,
+    SPI_MODE_INTERRUPT,
+    spi3_int_prio,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT
+};
+
 void spi_It_IsProperlyInitialised(void)
 {
     /*Check if given interrupt is really using assigned hw and calls the expected callback in the end*/
@@ -234,6 +251,28 @@ void spi_It_IsProperlyInitialised(void)
 }
 
 /* Create test which reads two spi drivers, each for interchangeably message pieces*/
+void spi_It_OneDriverCompletesReceivingBeforeSecondDriver(void)
+{
+    SpiInit(&Spi1_Config);
+    SpiInit(&Spi3_Config);
+    
+    SpiReadIt(SPI1, Destination_Buffer, 4);
+    SpiReadIt(SPI3, Destination_Buffer, 3);
+
+    for(int i=0; i<3; i++){
+        SPI1_IRQHandler();
+    }
+    for(int i=0; i<3; i++){
+        SPI3_IRQHandler();
+    }
+    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_1));
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_3));
+
+    SpiHelper_Clear_RxCompleteCbkStatuses();
+}
+
+/*Test when mess len = 0*/
+
 
 int main(void)
 {
@@ -251,6 +290,6 @@ int main(void)
     RUN_TEST(spi_It_ReceivesMoreBytesThanRequested);
     RUN_TEST(spi_It_FailsToReceiveWholeMessage);
     RUN_TEST(spi_It_IsProperlyInitialised);
-
+    RUN_TEST(spi_It_OneDriverCompletesReceivingBeforeSecondDriver);
     return UNITY_END();
 }

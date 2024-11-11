@@ -35,6 +35,7 @@ typedef struct
     uint32_t byte_cnt;
     bool mess_ready;
     SPI_TypeDef* instance;
+    uint32_t expected_length;
 }
 Spi_Storage_T;
 
@@ -44,14 +45,14 @@ Spi_Storage_T;
 |===================================================================================================================================|
 */
 static uint8_t* pointer_to_save;
-static uint32_t expected_length = 0U;
 
 static Spi_Storage_T Driver_Store_1 = 
 {
     Spi1_RxCompleteCbk,
     0U,
     false,
-    SPI1
+    SPI1,
+    0U
 };
 
 static Spi_Storage_T Driver_Store_2 = 
@@ -59,9 +60,18 @@ static Spi_Storage_T Driver_Store_2 =
     Spi2_RxCompleteCbk,
     0U,
     false,
-    SPI2
+    SPI2,
+    0U
 };
 
+static Spi_Storage_T Driver_Store_3 = 
+{
+    Spi3_RxCompleteCbk,
+    0U,
+    false,
+    SPI3,
+    0U
+};
 
 /*
 |===================================================================================================================================|
@@ -213,18 +223,23 @@ void SpiReadIt(SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
 {
     uint8_t residual_trash;
     
-    residual_trash = ReadHwDrBuffer(SPI2);
+    residual_trash = ReadHwDrBuffer(instance);
     if(SPI1 == instance){
         Driver_Store_1.mess_ready = false;
+        Driver_Store_1.expected_length = mess_len;
     }
     else if(SPI2 == instance){
         Driver_Store_2.mess_ready = false;
+        Driver_Store_2.expected_length = mess_len;
+    }
+    else if(SPI3 == instance){
+        Driver_Store_3.mess_ready = false;
+        Driver_Store_3.expected_length = mess_len;
     }
     else{
 
     }
     pointer_to_save = dest_ptr;
-    expected_length = mess_len;
     EnableInterruptInDriver(instance);
 }
 
@@ -279,17 +294,25 @@ void SPI2_IRQHandler()
     DoRxInterruptRoutine(&Driver_Store_2);
 }
 
+void SPI3_IRQHandler(void)
+{
+    DoRxInterruptRoutine(&Driver_Store_3);
+}
+
 static void DoRxInterruptRoutine(Spi_Storage_T* storage)
 {
     uint32_t cnt;
+    uint32_t exp_len;
+
     cnt = storage->byte_cnt;
+    exp_len = storage->expected_length;
 
     if(!storage->mess_ready){
-        if(cnt < (expected_length - 1U)){
+        if(cnt < (exp_len - 1U)){
             pointer_to_save[cnt] = ReadHwDrBuffer(storage->instance);
             cnt++;
         }
-        else if(cnt == (expected_length - 1U)){
+        else if(cnt == (exp_len - 1U)){
             pointer_to_save[cnt] = ReadHwDrBuffer(storage->instance);
             cnt = 0U;
             storage->mess_ready = true;
@@ -303,11 +326,6 @@ static void DoRxInterruptRoutine(Spi_Storage_T* storage)
     }
     storage->byte_cnt = cnt;
     UT_GO_TO_NEXT_SAMPLE();
-}
-
-void SPI3_IRQHandler(void)
-{
-
 }
 
 #ifndef _UNIT_TEST
