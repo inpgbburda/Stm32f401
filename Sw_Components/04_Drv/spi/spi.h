@@ -20,9 +20,9 @@
 |===================================================================================================================================|
 */
 #ifdef _UNIT_TEST
-    #define UT_GO_TO_NEXT_SAMPLE() do { SpiHelper_GoToNextSample(); } while (0)
+    #define UT_GO_TO_NEXT_SAMPLE(drv) do { SpiHelper_GoToNextSample(drv); } while (0)
 #else
-    #define UT_GO_TO_NEXT_SAMPLE() do {} while (0)
+    #define UT_GO_TO_NEXT_SAMPLE(drv) do {} while (0)
 #endif
 
 

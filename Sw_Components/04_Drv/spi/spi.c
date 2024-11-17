@@ -214,7 +214,7 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
             ret_val = E_OK;
         }
         tick_cnt++;
-        UT_GO_TO_NEXT_SAMPLE();
+        UT_GO_TO_NEXT_SAMPLE(instance);
     }
     return ret_val;
 }
@@ -250,7 +250,7 @@ static bool IsRxFlagSet(const SPI_TypeDef *instance)
 #ifndef _UNIT_TEST
     result = SPI_SR_RXNE_FLAG(instance->SR);
 #else
-    result = SpiHelper_ReadRxNeFlagMock();
+    result = (bool)SpiHelper_ReadRxNeFlagMock(instance);
 #endif
     return result;
 }
@@ -263,7 +263,7 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
     /*Reading this buffer also clears the RXNE flag*/
     result = instance->DR;
 #else
-    result = SpiHelper_ReadDrMock();
+    result = SpiHelper_ReadDrMock(instance);
 #endif
     return result;
 }
@@ -325,7 +325,7 @@ static void DoRxInterruptRoutine(Spi_Storage_T* storage)
         }
     }
     storage->byte_cnt = cnt;
-    UT_GO_TO_NEXT_SAMPLE();
+    UT_GO_TO_NEXT_SAMPLE(storage->instance);
 }
 
 #ifndef _UNIT_TEST
