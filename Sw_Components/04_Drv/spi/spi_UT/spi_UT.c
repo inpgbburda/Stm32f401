@@ -259,6 +259,34 @@ void spi_It_OneDriverCompletesReceivingBeforeSecondDriver(void)
     SpiHelper_Clear_RxCompleteCbkStatuses();
 }
 
+void spi_It_TwoDriversReadsIndependently(void)
+{
+    uint8_t Injected_Message_1[] = {0xDE, 0xAD, 0xBE, 0xEF};
+    uint8_t Expected_Message_1[] = {0xDE, 0xAD, 0xBE, 0xEF};
+    uint8_t Injected_Message_2[] = {0x01, 0x02, 0x03, 0x04};
+    uint8_t Expected_Message_2[] = {0x01, 0x02, 0x03, 0x04};
+    uint8_t Destination_Buffer_1[4] = {0};
+    uint8_t Destination_Buffer_2[4] = {0};
+
+    bool InjectedFlags[] = {true, true, true, true};
+    SpiHelper_SetupTest(SPI_HELPER_DRV_1, Injected_Message_1, InjectedFlags, sizeof(Injected_Message_1));
+    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message_2, InjectedFlags, sizeof(Injected_Message_2));
+
+    SpiInit(&Spi1_Config);
+    SpiInit(&Spi2_Config);
+    
+    SpiReadIt(SPI1, Destination_Buffer_1, 4);
+    SpiReadIt(SPI2, Destination_Buffer_2, 4);
+
+    for(int a=0; a<4; a++){
+        SPI1_IRQHandler();
+        SPI2_IRQHandler();
+    }
+
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message_1, Destination_Buffer_1, 4);
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message_2, Destination_Buffer_2, 4);
+}
+
 /*Test when mess len = 0*/
 
 
@@ -279,5 +307,7 @@ int main(void)
     RUN_TEST(spi_It_FailsToReceiveWholeMessage);
     RUN_TEST(spi_It_ProperlyAssignsCallbacks);
     RUN_TEST(spi_It_OneDriverCompletesReceivingBeforeSecondDriver);
+    RUN_TEST(spi_It_TwoDriversReadsIndependently);
+
     return UNITY_END();
 }

@@ -36,6 +36,7 @@ typedef struct
     bool mess_ready;
     SPI_TypeDef* instance;
     uint32_t expected_length;
+    uint8_t* dest_ptr;
 }
 Spi_Storage_T;
 
@@ -52,7 +53,8 @@ static Spi_Storage_T Driver_Store_1 =
     0U,
     false,
     SPI1,
-    0U
+    0U,
+    NULL
 };
 
 static Spi_Storage_T Driver_Store_2 = 
@@ -61,7 +63,8 @@ static Spi_Storage_T Driver_Store_2 =
     0U,
     false,
     SPI2,
-    0U
+    0U,
+    NULL
 };
 
 static Spi_Storage_T Driver_Store_3 = 
@@ -70,7 +73,8 @@ static Spi_Storage_T Driver_Store_3 =
     0U,
     false,
     SPI3,
-    0U
+    0U,
+    NULL
 };
 
 /*
@@ -226,20 +230,25 @@ void SpiReadIt(SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
     residual_trash = ReadHwDrBuffer(instance);
     if(SPI1 == instance){
         Driver_Store_1.mess_ready = false;
+        Driver_Store_1.byte_cnt = 0U;
         Driver_Store_1.expected_length = mess_len;
+        Driver_Store_1.dest_ptr = dest_ptr;
     }
     else if(SPI2 == instance){
         Driver_Store_2.mess_ready = false;
+        Driver_Store_2.byte_cnt = 0U;
         Driver_Store_2.expected_length = mess_len;
+        Driver_Store_2.dest_ptr = dest_ptr;
     }
     else if(SPI3 == instance){
         Driver_Store_3.mess_ready = false;
+        Driver_Store_3.byte_cnt = 0U;
         Driver_Store_3.expected_length = mess_len;
+        Driver_Store_3.dest_ptr = dest_ptr;
     }
     else{
 
     }
-    pointer_to_save = dest_ptr;
     EnableInterruptInDriver(instance);
 }
 
@@ -309,11 +318,11 @@ static void DoRxInterruptRoutine(Spi_Storage_T* storage)
 
     if(!storage->mess_ready){
         if(cnt < (exp_len - 1U)){
-            pointer_to_save[cnt] = ReadHwDrBuffer(storage->instance);
+            (storage->dest_ptr)[cnt] = ReadHwDrBuffer(storage->instance);
             cnt++;
         }
         else if(cnt == (exp_len - 1U)){
-            pointer_to_save[cnt] = ReadHwDrBuffer(storage->instance);
+            (storage->dest_ptr)[cnt] = ReadHwDrBuffer(storage->instance);
             cnt = 0U;
             storage->mess_ready = true;
             DisableInterruptInDriver(storage->instance);
