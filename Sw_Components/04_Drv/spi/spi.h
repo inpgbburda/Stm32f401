@@ -19,6 +19,7 @@
     Macro definitions
 |===================================================================================================================================|
 */
+/* Macros needed for Unit Tests */
 #ifdef _UNIT_TEST
     #define UT_GO_TO_NEXT_SAMPLE(drv) do { SpiHelper_GoToNextSample(drv); } while (0)
 #else

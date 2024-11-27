@@ -45,8 +45,6 @@ Spi_Storage_T;
     Object allocations 
 |===================================================================================================================================|
 */
-static uint8_t* pointer_to_save;
-
 static Spi_Storage_T Driver_Store_1 = 
 {
     Spi1_RxCompleteCbk,
@@ -82,6 +80,7 @@ static Spi_Storage_T Driver_Store_3 =
     Local function declarations
 |===================================================================================================================================|
 */
+static void DoRxInterruptRoutine(Spi_Storage_T* storage);
 static void SetUpDriverRegisters(const Spi_Cfg_T* config);
 static void SetUpNvic(IRQn_Type interrupt_id, uint32_t priority);
 static bool IsRxFlagSet(const SPI_TypeDef *instance);
@@ -126,38 +125,6 @@ void SpiInit(const Spi_Cfg_T* config)
         SetUpNvic(interrupt_id, config->int_priority);
     }
     SetUpDriverRegisters(config);
-}
-
-static void SetUpDriverRegisters(const Spi_Cfg_T* config)
-{
-    SPI_TypeDef* used_driver;
-    used_driver = config->instance;
-
-#ifndef _UNIT_TEST
-    /* Clear register contents*/
-    used_driver->CR1 = 0x0000U;
-    used_driver->CR2 = 0x0000U;
-
-    used_driver->CR1 |= config->dff;
-    used_driver->CR1 |= config->clock_polarity;
-    used_driver->CR1 |= config->clock_phase;
-    used_driver->CR1 |= config->lsb_first;
-    used_driver->CR1 |= config->ssm;
-    used_driver->CR1 |= config->ssoe;
-    used_driver->CR1 |= config->mstr;
-    used_driver->CR2 |= config->frf;
-
-    /* Enable spi */
-    used_driver->CR1 |= config->spe;
-#endif
-}
-
-static void SetUpNvic(IRQn_Type int_id, uint32_t int_prio)
-{
-#ifndef _UNIT_TEST
-    NVIC_SetPriority(int_id, int_prio);
-    NVIC_EnableIRQ(int_id);
-#endif
 }
 
 /**
@@ -252,6 +219,67 @@ void SpiReadIt(SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
     EnableInterruptInDriver(instance);
 }
 
+static void DoRxInterruptRoutine(Spi_Storage_T* storage)
+{
+    uint32_t cnt;
+    uint32_t exp_len;
+
+    cnt = storage->byte_cnt;
+    exp_len = storage->expected_length;
+
+    if(!storage->mess_ready){
+        if(cnt < (exp_len - 1U)){
+            (storage->dest_ptr)[cnt] = ReadHwDrBuffer(storage->instance);
+            cnt++;
+        }
+        else if(cnt == (exp_len - 1U)){
+            (storage->dest_ptr)[cnt] = ReadHwDrBuffer(storage->instance);
+            cnt = 0U;
+            storage->mess_ready = true;
+            DisableInterruptInDriver(storage->instance);
+            storage->callback();
+        }
+        else{
+            /* Error handling */
+            cnt = 0U;
+        }
+    }
+    storage->byte_cnt = cnt;
+    UT_GO_TO_NEXT_SAMPLE(storage->instance);
+}
+
+static void SetUpDriverRegisters(const Spi_Cfg_T* config)
+{
+    SPI_TypeDef* used_driver;
+    used_driver = config->instance;
+
+#ifndef _UNIT_TEST
+    /* Clear register contents*/
+    used_driver->CR1 = 0x0000U;
+    used_driver->CR2 = 0x0000U;
+
+    used_driver->CR1 |= config->dff;
+    used_driver->CR1 |= config->clock_polarity;
+    used_driver->CR1 |= config->clock_phase;
+    used_driver->CR1 |= config->lsb_first;
+    used_driver->CR1 |= config->ssm;
+    used_driver->CR1 |= config->ssoe;
+    used_driver->CR1 |= config->mstr;
+    used_driver->CR2 |= config->frf;
+
+    /* Enable spi */
+    used_driver->CR1 |= config->spe;
+#endif
+}
+
+static void SetUpNvic(IRQn_Type int_id, uint32_t int_prio)
+{
+#ifndef _UNIT_TEST
+    NVIC_SetPriority(int_id, int_prio);
+    NVIC_EnableIRQ(int_id);
+#endif
+}
+
 static bool IsRxFlagSet(const SPI_TypeDef *instance)
 {
     bool result = false;
@@ -291,8 +319,6 @@ static void DisableInterruptInDriver(SPI_TypeDef *instance)
 #endif
 }
 
-static void DoRxInterruptRoutine(Spi_Storage_T* storage);
-
 void SPI1_IRQHandler()
 {
     DoRxInterruptRoutine(&Driver_Store_1);
@@ -306,35 +332,6 @@ void SPI2_IRQHandler()
 void SPI3_IRQHandler(void)
 {
     DoRxInterruptRoutine(&Driver_Store_3);
-}
-
-static void DoRxInterruptRoutine(Spi_Storage_T* storage)
-{
-    uint32_t cnt;
-    uint32_t exp_len;
-
-    cnt = storage->byte_cnt;
-    exp_len = storage->expected_length;
-
-    if(!storage->mess_ready){
-        if(cnt < (exp_len - 1U)){
-            (storage->dest_ptr)[cnt] = ReadHwDrBuffer(storage->instance);
-            cnt++;
-        }
-        else if(cnt == (exp_len - 1U)){
-            (storage->dest_ptr)[cnt] = ReadHwDrBuffer(storage->instance);
-            cnt = 0U;
-            storage->mess_ready = true;
-            DisableInterruptInDriver(storage->instance);
-            storage->callback();
-        }
-        else{
-            /* Error handling */
-            cnt = 0U;
-        }
-    }
-    storage->byte_cnt = cnt;
-    UT_GO_TO_NEXT_SAMPLE(storage->instance);
 }
 
 #ifndef _UNIT_TEST
