@@ -335,13 +335,15 @@ void SPI3_IRQHandler(void)
 }
 
 #ifndef _UNIT_TEST
-void Spi1_RxCompleteCbk(void)
+__WEAK void Spi1_RxCompleteCbk(void)
 {
-
 }
 
-void Spi3_RxCompleteCbk(void)
+__WEAK void Spi2_RxCompleteCbk(void)
 {
+}
 
+__WEAK void Spi3_RxCompleteCbk(void)
+{
 }
 #endif

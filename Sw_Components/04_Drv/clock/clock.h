@@ -14,6 +14,7 @@ typedef struct
 {
     uint32_t rcc_ahb1;
     uint32_t rcc_apb1;
+    uint32_t rcc_apb2;
 }
 Clock_Cfg_T;
 

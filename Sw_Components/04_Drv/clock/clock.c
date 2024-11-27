@@ -19,4 +19,5 @@ void ClockInit(const Clock_Cfg_T* config)
 {
     RCC->AHB1ENR |= config->rcc_ahb1;
     RCC->APB1ENR |= config->rcc_apb1;
+    RCC->APB2ENR |= config->rcc_apb2;
 }
