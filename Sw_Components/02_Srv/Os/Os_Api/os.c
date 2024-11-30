@@ -8,6 +8,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "spi.h"
+#include "spi_cfg.h"
 
 /**
  * @brief This function is called if a task overflows its stack.
@@ -54,7 +55,7 @@ uint8_t buffer[4] = {0};
  */
 void SpiTask(void *pvParameters) {
     for (;;) {
-        SpiReadIt(SPI2, buffer, 4);
+        SpiReadIt(&spi_storage, buffer, 4);
         vTaskDelay(pdMS_TO_TICKS(120));
     }
 }

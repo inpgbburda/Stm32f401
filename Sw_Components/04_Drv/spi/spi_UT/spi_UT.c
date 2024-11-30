@@ -5,6 +5,9 @@
 #define REG_FIELD_NOT_UT_RELEVANT 0U
 
 #define EXPECTED_MESS_LEN 4U
+#define SPI1_INT_PRIO 1U
+#define SPI2_INT_PRIO 2U
+#define SPI3_INT_PRIO 3U
 
 static uint8_t Destination_Buffer[] = {0,0,0,0};
 
@@ -21,9 +24,6 @@ void tearDown(void)
 
 const uint32_t timeout = 20U;
 const uint32_t exp_len = 4U;
-const uint32_t spi1_int_prio = 1U;
-const uint32_t spi2_int_prio = 2U;
-const uint32_t spi3_int_prio = 3U;
 
 void spi_ReceivesChunkOfBytes(void)
 {
@@ -115,8 +115,62 @@ void spi_ReturnsFailureBeingCalledWithInvalidPeripheral(void)
 
 
 /* Interrupt-mode receiving tests */
-
 const int Irq_Too_Few_Calls = 2U;
+
+static Spi_Storage_T Spi_Storage_1;
+static Spi_Storage_T Spi_Storage_2;
+static Spi_Storage_T Spi_Storage_3;
+
+const Spi_Cfg_T Spi1_Config =
+{
+    SPI1,
+    SPI_MODE_INTERRUPT,
+    SPI1_INT_PRIO,
+    Spi1_RxCompleteCbk,
+
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+};
+
+const Spi_Cfg_T Spi2_Config =
+{
+    SPI2,
+    SPI_MODE_INTERRUPT,
+    SPI2_INT_PRIO,
+    &Spi2_RxCompleteCbk,
+
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+};
+
+const Spi_Cfg_T Spi3_Config =
+{
+    SPI3,
+    SPI_MODE_INTERRUPT,
+    SPI3_INT_PRIO,
+    &Spi3_RxCompleteCbk,
+
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+    REG_FIELD_NOT_UT_RELEVANT,
+};
 
 void spi_It_ReceivesChunkOfBytes(void)
 {
@@ -126,8 +180,9 @@ void spi_It_ReceivesChunkOfBytes(void)
     bool InjectedFlags[] =       {true, true, true, true};
 
     SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiInit(&Spi_Storage_2, &Spi2_Config);
 
-    SpiReadIt(SPI2, Destination_Buffer, exp_len);
+    SpiReadIt(&Spi_Storage_2, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI2_IRQHandler, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
@@ -144,8 +199,9 @@ void spi_It_ReceivesMoreBytesThanRequested(void)
     bool InjectedFlags[] =       {true, true, true, true, true, true, true, true};
 
     SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
-    
-    SpiReadIt(SPI2, Destination_Buffer, exp_len);
+    SpiInit(&Spi_Storage_2, &Spi2_Config);
+
+    SpiReadIt(&Spi_Storage_2, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI2_IRQHandler, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
@@ -162,8 +218,9 @@ void spi_It_FailsToReceiveWholeMessage(void)
     bool InjectedFlags[] =       {true, true, true, true};
 
     SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiInit(&Spi_Storage_2, &Spi2_Config);
 
-    SpiReadIt(SPI2, Destination_Buffer, exp_len);
+    SpiReadIt(&Spi_Storage_2, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI2_IRQHandler, Irq_Too_Few_Calls);
 
     TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
@@ -171,61 +228,14 @@ void spi_It_FailsToReceiveWholeMessage(void)
     SpiHelper_Clear_RxCompleteCbkStatuses();
 }
 
-const Spi_Cfg_T Spi1_Config =
-{
-    SPI1,
-    SPI_MODE_INTERRUPT,
-    spi1_int_prio,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT
-};
-
-const Spi_Cfg_T Spi2_Config =
-{
-    SPI2,
-    SPI_MODE_INTERRUPT,
-    spi2_int_prio,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT
-};
-
-const Spi_Cfg_T Spi3_Config =
-{
-    SPI3,
-    SPI_MODE_INTERRUPT,
-    spi3_int_prio,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT,
-    REG_FIELD_NOT_UT_RELEVANT
-};
 
 void spi_It_ProperlyAssignsCallbacks(void)
 {
     /*Check if given interrupt is really calling the expected callback in the end*/
-    SpiInit(&Spi1_Config);
-    SpiInit(&Spi2_Config);
+    SpiInit(&Spi_Storage_1, &Spi1_Config);
+    SpiInit(&Spi_Storage_2, &Spi2_Config);
 
-    SpiReadIt(SPI1, Destination_Buffer, exp_len);
+    SpiReadIt(&Spi_Storage_1, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI1_IRQHandler, exp_len);
 
     TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_1));
@@ -233,7 +243,7 @@ void spi_It_ProperlyAssignsCallbacks(void)
     
     SpiHelper_Clear_RxCompleteCbkStatuses();
 
-    SpiReadIt(SPI2, Destination_Buffer, exp_len);
+    SpiReadIt(&Spi_Storage_2, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI2_IRQHandler, exp_len);
 
     TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_1));
@@ -244,11 +254,11 @@ void spi_It_ProperlyAssignsCallbacks(void)
 
 void spi_It_OneDriverCompletesReceivingBeforeSecondDriver(void)
 {
-    SpiInit(&Spi1_Config);
-    SpiInit(&Spi3_Config);
+    SpiInit(&Spi_Storage_1, &Spi1_Config);
+    SpiInit(&Spi_Storage_3, &Spi3_Config);
     
-    SpiReadIt(SPI1, Destination_Buffer, 4);
-    SpiReadIt(SPI3, Destination_Buffer, 3);
+    SpiReadIt(&Spi_Storage_1, Destination_Buffer, 4);
+    SpiReadIt(&Spi_Storage_3, Destination_Buffer, 3);
 
     SpiHelper_CallHandlerNumberOfTimes(SPI1_IRQHandler, 3);
     SpiHelper_CallHandlerNumberOfTimes(SPI3_IRQHandler, 3);
@@ -272,11 +282,11 @@ void spi_It_TwoDriversReadsIndependently(void)
     SpiHelper_SetupTest(SPI_HELPER_DRV_1, Injected_Message_1, InjectedFlags, sizeof(Injected_Message_1));
     SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message_2, InjectedFlags, sizeof(Injected_Message_2));
 
-    SpiInit(&Spi1_Config);
-    SpiInit(&Spi2_Config);
+    SpiInit(&Spi_Storage_1, &Spi1_Config);
+    SpiInit(&Spi_Storage_2, &Spi2_Config);
     
-    SpiReadIt(SPI1, Destination_Buffer_1, 4);
-    SpiReadIt(SPI2, Destination_Buffer_2, 4);
+    SpiReadIt(&Spi_Storage_1, Destination_Buffer_1, 4);
+    SpiReadIt(&Spi_Storage_2, Destination_Buffer_2, 4);
 
     for(int a=0; a<4; a++){
         SPI1_IRQHandler();

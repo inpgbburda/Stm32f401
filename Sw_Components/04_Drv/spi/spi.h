@@ -39,11 +39,26 @@ typedef enum
 }
 Spi_Mode_T;
 
+typedef void (*Complete_Clb_Ptr_T)(void);
+
+typedef struct
+{
+    Complete_Clb_Ptr_T callback;
+    uint32_t byte_cnt;
+    bool mess_ready;
+    SPI_TypeDef* instance;
+    uint32_t expected_length;
+    uint8_t* dest_ptr;
+}
+Spi_Storage_T;
+
 typedef struct
 {
     SPI_TypeDef* instance;
     Spi_Mode_T mode;
     uint8_t int_priority; /* priority of interrupt - leave empty if not used */
+    Complete_Clb_Ptr_T callback; /* pointer to function called after succ. reception  - leave empty in synchronous mode*/
+
     uint16_t dff;    /* frame format - 8 or 16 bit */
     uint16_t clock_polarity; /* clock_polarity */
     uint16_t clock_phase;    /* clock_phase */
@@ -52,7 +67,6 @@ typedef struct
     uint16_t ssoe;   /* NSS as output */
     uint16_t mstr;   /* master or slave selection*/
     uint16_t frf;    /* frame format - Motorola or TI*/
-    uint16_t spe;    /* enable spi */
 }
 Spi_Cfg_T;
 
@@ -67,10 +81,10 @@ Spi_Cfg_T;
     Exported functions declarations
 |===================================================================================================================================|
 */
-void SpiInit(const Spi_Cfg_T* config);
+void SpiInit(Spi_Storage_T* storage, const Spi_Cfg_T* config);
 uint16_t SpiReadBuffer(const SPI_TypeDef* instance);
 Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
-void SpiReadIt(SPI_TypeDef *instance, uint8_t *dest_ptr, uint32_t mess_len);
+void SpiReadIt(Spi_Storage_T* storage, uint8_t *dest_ptr, uint32_t mess_len);
 
 void Spi1_RxCompleteCbk(void);
 void Spi2_RxCompleteCbk(void);

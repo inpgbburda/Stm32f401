@@ -21,60 +21,19 @@
 |===================================================================================================================================|
 */
 #define SPI_SR_RXNE_FLAG(reg) (reg & SPI_SR_RXNE_Msk)
-
+#define MAX_HW_NUMBER 3U
 /*
 |===================================================================================================================================|
     Local types definitions 
 |===================================================================================================================================|
 */
-typedef void (*Complete_Clb_Ptr_T)(void);
-
-typedef struct
-{
-    Complete_Clb_Ptr_T callback;
-    uint32_t byte_cnt;
-    bool mess_ready;
-    SPI_TypeDef* instance;
-    uint32_t expected_length;
-    uint8_t* dest_ptr;
-}
-Spi_Storage_T;
 
 /*
 |===================================================================================================================================|
     Object allocations 
 |===================================================================================================================================|
 */
-static Spi_Storage_T Driver_Store_1 = 
-{
-    Spi1_RxCompleteCbk,
-    0U,
-    false,
-    SPI1,
-    0U,
-    NULL
-};
-
-static Spi_Storage_T Driver_Store_2 = 
-{
-    Spi2_RxCompleteCbk,
-    0U,
-    false,
-    SPI2,
-    0U,
-    NULL
-};
-
-static Spi_Storage_T Driver_Store_3 = 
-{
-    Spi3_RxCompleteCbk,
-    0U,
-    false,
-    SPI3,
-    0U,
-    NULL
-};
-
+Spi_Storage_T* Storage_To_Hw_Map[MAX_HW_NUMBER];
 /*
 |===================================================================================================================================|
     Local function declarations
@@ -101,13 +60,15 @@ static void DisableInterruptInDriver(SPI_TypeDef *instance);
  * This function initializes the SPI2 interface by enabling its clock, clearing the control registers, and setting the control
  * register values based on the provided configuration parameters. Finally, it enables the SPI interface.
  */
-void SpiInit(const Spi_Cfg_T* config)
+void SpiInit(Spi_Storage_T* storage,  const Spi_Cfg_T* config)
 {
     SPI_TypeDef* used_driver;
     IRQn_Type interrupt_id;
 
     used_driver = config->instance;
-    
+    storage->instance = used_driver;
+    storage->callback = config->callback;
+
     if(SPI_MODE_INTERRUPT == config->mode){
 
         if(SPI1 == used_driver){
@@ -190,32 +151,30 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
     return ret_val;
 }
 
-void SpiReadIt(SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len)
+void SpiReadIt(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t mess_len)
 {
     uint8_t residual_trash;
+    SPI_TypeDef * instance = storage->instance;
+
+    storage->mess_ready = false;
+    storage->byte_cnt = 0U;
+    storage->expected_length = mess_len;
+    storage->dest_ptr = dest_ptr;
     
-    residual_trash = ReadHwDrBuffer(instance);
     if(SPI1 == instance){
-        Driver_Store_1.mess_ready = false;
-        Driver_Store_1.byte_cnt = 0U;
-        Driver_Store_1.expected_length = mess_len;
-        Driver_Store_1.dest_ptr = dest_ptr;
+        Storage_To_Hw_Map[0] = storage;
     }
     else if(SPI2 == instance){
-        Driver_Store_2.mess_ready = false;
-        Driver_Store_2.byte_cnt = 0U;
-        Driver_Store_2.expected_length = mess_len;
-        Driver_Store_2.dest_ptr = dest_ptr;
+        Storage_To_Hw_Map[1] = storage;
     }
     else if(SPI3 == instance){
-        Driver_Store_3.mess_ready = false;
-        Driver_Store_3.byte_cnt = 0U;
-        Driver_Store_3.expected_length = mess_len;
-        Driver_Store_3.dest_ptr = dest_ptr;
+        Storage_To_Hw_Map[2] = storage;
     }
     else{
 
     }
+
+    residual_trash = ReadHwDrBuffer(instance);
     EnableInterruptInDriver(instance);
 }
 
@@ -268,7 +227,7 @@ static void SetUpDriverRegisters(const Spi_Cfg_T* config)
     used_driver->CR2 |= config->frf;
 
     /* Enable spi */
-    used_driver->CR1 |= config->spe;
+    used_driver->CR1 |= SPI_CR1_SPE;
 #endif
 }
 
@@ -321,21 +280,21 @@ static void DisableInterruptInDriver(SPI_TypeDef *instance)
 
 void SPI1_IRQHandler()
 {
-    DoRxInterruptRoutine(&Driver_Store_1);
+    DoRxInterruptRoutine(Storage_To_Hw_Map[0]);
 }
 
 void SPI2_IRQHandler()
 {
-    DoRxInterruptRoutine(&Driver_Store_2);
+    DoRxInterruptRoutine(Storage_To_Hw_Map[1]);
 }
 
 void SPI3_IRQHandler(void)
 {
-    DoRxInterruptRoutine(&Driver_Store_3);
+    DoRxInterruptRoutine(Storage_To_Hw_Map[2]);
 }
 
 #ifndef _UNIT_TEST
-__WEAK void Spi1_RxCompleteCbk(void)
+__WEAK void Spi1_RxCompleteCbk(void) //TODO: make this callback defined by user in application
 {
 }
 
