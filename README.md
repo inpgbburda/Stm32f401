@@ -3,7 +3,7 @@
        - arm-none-eabi
        - make
        - cmake
-       - mingw - required for Cmake generation
+       - mingw - required for Cmake generation and compilation
        - ruby - required for CMock 
     2) Open OCD
 
