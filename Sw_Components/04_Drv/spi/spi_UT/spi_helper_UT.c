@@ -5,10 +5,10 @@
 
 #define FAKE_MESSAGE_MAX_SIZE 100U
 
-static uint8_t Fake_Message[SPI_HELPER_DRV_MAX][FAKE_MESSAGE_MAX_SIZE];
-static bool Fake_Flags[SPI_HELPER_DRV_MAX][FAKE_MESSAGE_MAX_SIZE];
-static int sample_cnt[SPI_HELPER_DRV_MAX] = {0};
-static bool SpiRxCompleteStatuses[SPI_HELPER_DRV_MAX] = {false};
+static uint8_t Fake_Message[SPI_INSTANCE_COUNT_MAX][FAKE_MESSAGE_MAX_SIZE];
+static bool Fake_Flags[SPI_INSTANCE_COUNT_MAX][FAKE_MESSAGE_MAX_SIZE];
+static int sample_cnt[SPI_INSTANCE_COUNT_MAX] = {0};
+static bool SpiRxCompleteStatuses[SPI_INSTANCE_COUNT_MAX] = {false};
 
 bool SpiHelper_ReadRxNeFlagMock(const SPI_TypeDef* driver)
 {
@@ -16,16 +16,16 @@ bool SpiHelper_ReadRxNeFlagMock(const SPI_TypeDef* driver)
     int cnt;
 
     if(SPI1 == driver){
-        cnt = sample_cnt[SPI_HELPER_DRV_1];
-        result = Fake_Flags[SPI_HELPER_DRV_1][cnt];
+        cnt = sample_cnt[SPI_INSTANCE_1];
+        result = Fake_Flags[SPI_INSTANCE_1][cnt];
     }
     else if(SPI2 == driver){
-        cnt = sample_cnt[SPI_HELPER_DRV_2];
-        result = Fake_Flags[SPI_HELPER_DRV_2][cnt];
+        cnt = sample_cnt[SPI_INSTANCE_2];
+        result = Fake_Flags[SPI_INSTANCE_2][cnt];
     }
     else if(SPI3 == driver){
-        cnt = sample_cnt[SPI_HELPER_DRV_3];
-        result = Fake_Flags[SPI_HELPER_DRV_3][cnt];
+        cnt = sample_cnt[SPI_INSTANCE_3];
+        result = Fake_Flags[SPI_INSTANCE_3][cnt];
     }
     else{
 
@@ -39,16 +39,16 @@ uint8_t SpiHelper_ReadDrMock(const SPI_TypeDef* driver)
     int cnt;
 
     if(SPI1 == driver){
-        cnt = sample_cnt[SPI_HELPER_DRV_1];
-        result = Fake_Message[SPI_HELPER_DRV_1][cnt];
+        cnt = sample_cnt[SPI_INSTANCE_1];
+        result = Fake_Message[SPI_INSTANCE_1][cnt];
     }
     else if(SPI2 == driver){
-        cnt = sample_cnt[SPI_HELPER_DRV_2];
-        result = Fake_Message[SPI_HELPER_DRV_2][cnt];
+        cnt = sample_cnt[SPI_INSTANCE_2];
+        result = Fake_Message[SPI_INSTANCE_2][cnt];
     }
     else if(SPI3 == driver){
-        cnt = sample_cnt[SPI_HELPER_DRV_3];
-        result = Fake_Message[SPI_HELPER_DRV_3][cnt];
+        cnt = sample_cnt[SPI_INSTANCE_3];
+        result = Fake_Message[SPI_INSTANCE_3][cnt];
     }
     else{
 
@@ -59,27 +59,27 @@ uint8_t SpiHelper_ReadDrMock(const SPI_TypeDef* driver)
 void SpiHelper_GoToNextSample(const SPI_TypeDef* driver)
 {
     if(SPI1 == driver){
-        (sample_cnt[SPI_HELPER_DRV_1]) ++;
+        (sample_cnt[SPI_INSTANCE_1]) ++;
     }
     else if(SPI2 == driver){
-        (sample_cnt[SPI_HELPER_DRV_2]) ++;
+        (sample_cnt[SPI_INSTANCE_2]) ++;
     }
     else if(SPI3 == driver){
-        (sample_cnt[SPI_HELPER_DRV_3]) ++;
+        (sample_cnt[SPI_INSTANCE_3]) ++;
     }
     else{
 
     }
 }
 
-void SpiHelper_SetTestPreCondMess(const SpiHelper_Driver_T driver, uint8_t mess[], int len)
+void SpiHelper_SetTestPreCondMess(const Spi_Instance_Id_T driver, uint8_t mess[], int len)
 {
     for (size_t i = 0; i < len; i++)
     {
         Fake_Message[driver][i] = mess[i];
     }
 }
-void SpiHelper_SetTestPreCondFlags(const SpiHelper_Driver_T driver, bool flags[], int len)
+void SpiHelper_SetTestPreCondFlags(const Spi_Instance_Id_T driver, bool flags[], int len)
 {
     for (size_t i = 0; i < len; i++)
     {
@@ -89,7 +89,7 @@ void SpiHelper_SetTestPreCondFlags(const SpiHelper_Driver_T driver, bool flags[]
 
 void SpiHelper_ResetReadIdx(void)
 {
-    for(int i=0; i<SPI_HELPER_DRV_MAX; i++){
+    for(int i=0; i<SPI_INSTANCE_COUNT_MAX; i++){
         sample_cnt[i] = 0;
     }
 }
@@ -103,32 +103,32 @@ void SpiHelper_ResetBuffer(uint8_t buffer[], int len)
 
 void Spi1_RxCompleteCbk(void)
 {
-    SpiRxCompleteStatuses[SPI_HELPER_DRV_1] = true;
+    SpiRxCompleteStatuses[SPI_INSTANCE_1] = true;
 }
 
 void Spi2_RxCompleteCbk(void)
 {
-    SpiRxCompleteStatuses[SPI_HELPER_DRV_2] = true;
+    SpiRxCompleteStatuses[SPI_INSTANCE_2] = true;
 }
 
 void Spi3_RxCompleteCbk(void)
 {
-    SpiRxCompleteStatuses[SPI_HELPER_DRV_3] = true;
+    SpiRxCompleteStatuses[SPI_INSTANCE_3] = true;
 }
 
-bool SpiHelper_CheckIf_RxCompleteCbkCalled(SpiHelper_Driver_T driver)
+bool SpiHelper_CheckIf_RxCompleteCbkCalled(Spi_Instance_Id_T driver)
 {
     return SpiRxCompleteStatuses[driver];
 }
 
 void SpiHelper_Clear_RxCompleteCbkStatuses(void)
 {
-    SpiRxCompleteStatuses[SPI_HELPER_DRV_1] = false;
-    SpiRxCompleteStatuses[SPI_HELPER_DRV_2] = false;
-    SpiRxCompleteStatuses[SPI_HELPER_DRV_3] = false;
+    SpiRxCompleteStatuses[SPI_INSTANCE_1] = false;
+    SpiRxCompleteStatuses[SPI_INSTANCE_2] = false;
+    SpiRxCompleteStatuses[SPI_INSTANCE_3] = false;
 }
 
-void SpiHelper_SetupTest(SpiHelper_Driver_T driver, uint8_t* injected_message, bool* injected_flags, int len)
+void SpiHelper_SetupTest(Spi_Instance_Id_T driver, uint8_t* injected_message, bool* injected_flags, int len)
 {
     SpiHelper_SetTestPreCondMess(driver, injected_message, len);
     SpiHelper_SetTestPreCondFlags(driver, injected_flags, len);

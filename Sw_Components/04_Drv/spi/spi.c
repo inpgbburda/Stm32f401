@@ -1,6 +1,7 @@
 /**
 * File contains spi implementation
-*
+* Terms dictionary:
+*   'instance' - identifier of atomic, functional hardware e.g. SPI1, SPI3
 */
 
 /*
@@ -22,18 +23,36 @@
 */
 #define SPI_SR_RXNE_FLAG(reg) (reg & SPI_SR_RXNE_Msk)
 #define MAX_HW_NUMBER 3U
+
 /*
 |===================================================================================================================================|
     Local types definitions 
 |===================================================================================================================================|
 */
 
+typedef struct 
+{
+    SPI_TypeDef *instance;
+    IRQn_Type interrupt_id;
+}
+Storage_Hw_Pair_T;
+
+
 /*
 |===================================================================================================================================|
     Object allocations 
 |===================================================================================================================================|
 */
-Spi_Storage_T* Storage_To_Hw_Map[MAX_HW_NUMBER];
+/* Assignment of interrupt handlers for given instance */
+const Storage_Hw_Pair_T SpiInstanceMap[] = {
+    {SPI1, SPI1_IRQn},
+    {SPI2, SPI2_IRQn},
+    {SPI3, SPI3_IRQn},
+};
+
+/* Dynaming mapping of instances to storages */
+Spi_Storage_T* Storage_To_Hw_Map[SPI_INSTANCE_COUNT_MAX];
+
 /*
 |===================================================================================================================================|
     Local function declarations
@@ -70,18 +89,10 @@ void SpiInit(Spi_Storage_T* storage,  const Spi_Cfg_T* config)
     storage->callback = config->callback;
 
     if(SPI_MODE_INTERRUPT == config->mode){
-
-        if(SPI1 == used_driver){
-            interrupt_id = SPI1_IRQn;
-        }
-        else if(SPI2 == used_driver){
-            interrupt_id = SPI2_IRQn;
-        }
-        else if(SPI3 == used_driver){
-            interrupt_id = SPI3_IRQn;
-        }
-        else{
-
+        for(uint8_t i=0; i<SPI_INSTANCE_COUNT_MAX; i++){
+            if(SpiInstanceMap[i].instance == used_driver){
+                interrupt_id = SpiInstanceMap[i].interrupt_id;
+            }
         }
         SetUpNvic(interrupt_id, config->int_priority);
     }
@@ -154,28 +165,23 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
 void SpiReadIt(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t mess_len)
 {
     uint8_t residual_trash;
-    SPI_TypeDef * instance = storage->instance;
-
+    SPI_TypeDef * used_instance;
+    
     storage->mess_ready = false;
     storage->byte_cnt = 0U;
     storage->expected_length = mess_len;
     storage->dest_ptr = dest_ptr;
+    used_instance = storage->instance;
     
-    if(SPI1 == instance){
-        Storage_To_Hw_Map[0] = storage;
-    }
-    else if(SPI2 == instance){
-        Storage_To_Hw_Map[1] = storage;
-    }
-    else if(SPI3 == instance){
-        Storage_To_Hw_Map[2] = storage;
-    }
-    else{
-
+    for(uint8_t i=0; i<SPI_INSTANCE_COUNT_MAX; i++){
+        if(SpiInstanceMap[i].instance == used_instance){
+            Storage_To_Hw_Map[i] = storage;
+        }
     }
 
-    residual_trash = ReadHwDrBuffer(instance);
-    EnableInterruptInDriver(instance);
+    /* Read rx buffer to always start with empty one */
+    residual_trash = ReadHwDrBuffer(used_instance);
+    EnableInterruptInDriver(used_instance);
 }
 
 static void DoRxInterruptRoutine(Spi_Storage_T* storage)
@@ -199,7 +205,7 @@ static void DoRxInterruptRoutine(Spi_Storage_T* storage)
             storage->callback();
         }
         else{
-            /* Error handling */
+            /* Error handling - should never get here */
             cnt = 0U;
         }
     }
@@ -209,25 +215,25 @@ static void DoRxInterruptRoutine(Spi_Storage_T* storage)
 
 static void SetUpDriverRegisters(const Spi_Cfg_T* config)
 {
-    SPI_TypeDef* used_driver;
-    used_driver = config->instance;
+    SPI_TypeDef* used_instance;
+    used_instance = config->instance;
 
 #ifndef _UNIT_TEST
     /* Clear register contents*/
-    used_driver->CR1 = 0x0000U;
-    used_driver->CR2 = 0x0000U;
+    used_instance->CR1 = 0x0000U;
+    used_instance->CR2 = 0x0000U;
 
-    used_driver->CR1 |= config->dff;
-    used_driver->CR1 |= config->clock_polarity;
-    used_driver->CR1 |= config->clock_phase;
-    used_driver->CR1 |= config->lsb_first;
-    used_driver->CR1 |= config->ssm;
-    used_driver->CR1 |= config->ssoe;
-    used_driver->CR1 |= config->mstr;
-    used_driver->CR2 |= config->frf;
+    used_instance->CR1 |= config->dff;
+    used_instance->CR1 |= config->clock_polarity;
+    used_instance->CR1 |= config->clock_phase;
+    used_instance->CR1 |= config->lsb_first;
+    used_instance->CR1 |= config->ssm;
+    used_instance->CR1 |= config->ssoe;
+    used_instance->CR1 |= config->mstr;
+    used_instance->CR2 |= config->frf;
 
     /* Enable spi */
-    used_driver->CR1 |= SPI_CR1_SPE;
+    used_instance->CR1 |= SPI_CR1_SPE;
 #endif
 }
 
@@ -280,29 +286,15 @@ static void DisableInterruptInDriver(SPI_TypeDef *instance)
 
 void SPI1_IRQHandler()
 {
-    DoRxInterruptRoutine(Storage_To_Hw_Map[0]);
+    DoRxInterruptRoutine(Storage_To_Hw_Map[SPI_INSTANCE_1]);
 }
 
 void SPI2_IRQHandler()
 {
-    DoRxInterruptRoutine(Storage_To_Hw_Map[1]);
+    DoRxInterruptRoutine(Storage_To_Hw_Map[SPI_INSTANCE_2]);
 }
 
 void SPI3_IRQHandler(void)
 {
-    DoRxInterruptRoutine(Storage_To_Hw_Map[2]);
+    DoRxInterruptRoutine(Storage_To_Hw_Map[SPI_INSTANCE_3]);
 }
-
-#ifndef _UNIT_TEST
-__WEAK void Spi1_RxCompleteCbk(void) //TODO: make this callback defined by user in application
-{
-}
-
-__WEAK void Spi2_RxCompleteCbk(void)
-{
-}
-
-__WEAK void Spi3_RxCompleteCbk(void)
-{
-}
-#endif

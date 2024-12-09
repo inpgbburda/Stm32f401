@@ -32,7 +32,7 @@ void spi_ReceivesChunkOfBytes(void)
     uint8_t Injected_Message[] = { 0x11, 0x22, 0x33, 0x44};
     bool InjectedFlags[] =       {true, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(E_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
@@ -45,7 +45,7 @@ void spi_ReceivesChunkOfBytesWithFewSpaces(void)
     uint8_t Injected_Message[] = {0x11, 0x22, 0x00,  0x00,  0x33, 0x00,  0x44, 0x00 };
     bool InjectedFlags[] =       {true, true, false, false, true, false, true, false};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(E_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
@@ -58,7 +58,7 @@ void spi_ReceivesTwoChunksOfBytesWhenOnlyFirstOneIsExpected(void)
     uint8_t Injected_Message[] = {0x11, 0x22, 0x33, 0x44, 0x00,  0x55, 0x66, 0x77, 0x88};
     bool InjectedFlags[] =       {true, true, true, true, false, true, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(E_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
@@ -71,7 +71,7 @@ void spi_ReceivesChunkOfBytesWithOneByteMore(void)
     uint8_t Injected_Message[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x00,  0x66, 0x77, 0x88};
     bool InjectedFlags[] =       {true, true, true, true, true, false, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(E_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, timeout));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
@@ -84,7 +84,7 @@ void spi_DoesntReceiveInTimeout(void)
     uint8_t Injected_Message[] = { 0x11, 0x22, 0x33, 0x44};
     bool InjectedFlags[] =       {true, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(E_NOT_OK, SpiReadSynch(SPI2, Destination_Buffer, exp_len, too_short_timeout));
 }
@@ -96,7 +96,7 @@ void spi_ReturnsFailureBeingCalledWithInvalidBuffer(void)
     uint8_t Injected_Message[] = { 0x11, 0x22, 0x33, 0x44};
     bool InjectedFlags[] =       {true, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(E_NOT_OK, SpiReadSynch(SPI2, Inv_Dest_Buff, exp_len, timeout));
 }
@@ -108,7 +108,7 @@ void spi_ReturnsFailureBeingCalledWithInvalidPeripheral(void)
     uint8_t Injected_Message[] = { 0x11, 0x22, 0x33, 0x44};
     bool InjectedFlags[] =       {true, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
 
     TEST_ASSERT_EQUAL(E_NOT_OK, SpiReadSynch(inv_spi_hdl, Destination_Buffer, exp_len, timeout));
 }
@@ -179,13 +179,13 @@ void spi_It_ReceivesChunkOfBytes(void)
     uint8_t Injected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF};
     bool InjectedFlags[] =       {true, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
     SpiInit(&Spi_Storage_2, &Spi2_Config);
 
     SpiReadIt(&Spi_Storage_2, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI2_IRQHandler, sizeof(Injected_Message));
 
-    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_2));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
 
     SpiHelper_Clear_RxCompleteCbkStatuses();
@@ -198,13 +198,13 @@ void spi_It_ReceivesMoreBytesThanRequested(void)
     uint8_t Injected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF, 0x11, 0x22, 0x33, 0x44};
     bool InjectedFlags[] =       {true, true, true, true, true, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
     SpiInit(&Spi_Storage_2, &Spi2_Config);
 
     SpiReadIt(&Spi_Storage_2, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI2_IRQHandler, sizeof(Injected_Message));
 
-    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_2));
     TEST_ASSERT_EQUAL_HEX8_ARRAY(Expected_Message, Destination_Buffer, exp_len);
     
     SpiHelper_Clear_RxCompleteCbkStatuses();
@@ -217,13 +217,13 @@ void spi_It_FailsToReceiveWholeMessage(void)
     uint8_t Injected_Message[] = {0xDE, 0xAD, 0xBE, 0xEF};
     bool InjectedFlags[] =       {true, true, true, true};
 
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message, InjectedFlags, sizeof(Injected_Message));
     SpiInit(&Spi_Storage_2, &Spi2_Config);
 
     SpiReadIt(&Spi_Storage_2, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI2_IRQHandler, Irq_Too_Few_Calls);
 
-    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
+    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_2));
 
     SpiHelper_Clear_RxCompleteCbkStatuses();
 }
@@ -238,16 +238,16 @@ void spi_It_ProperlyAssignsCallbacks(void)
     SpiReadIt(&Spi_Storage_1, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI1_IRQHandler, exp_len);
 
-    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_1));
-    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_1));
+    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_2));
     
     SpiHelper_Clear_RxCompleteCbkStatuses();
 
     SpiReadIt(&Spi_Storage_2, Destination_Buffer, exp_len);
     SpiHelper_CallHandlerNumberOfTimes(SPI2_IRQHandler, exp_len);
 
-    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_1));
-    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_2));
+    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_1));
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_2));
     
     SpiHelper_Clear_RxCompleteCbkStatuses();
 }
@@ -263,8 +263,8 @@ void spi_It_OneDriverCompletesReceivingBeforeSecondDriver(void)
     SpiHelper_CallHandlerNumberOfTimes(SPI1_IRQHandler, 3);
     SpiHelper_CallHandlerNumberOfTimes(SPI3_IRQHandler, 3);
 
-    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_1));
-    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_HELPER_DRV_3));
+    TEST_ASSERT_EQUAL(false, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_1));
+    TEST_ASSERT_EQUAL(true, SpiHelper_CheckIf_RxCompleteCbkCalled(SPI_INSTANCE_3));
 
     SpiHelper_Clear_RxCompleteCbkStatuses();
 }
@@ -279,8 +279,8 @@ void spi_It_TwoDriversReadsIndependently(void)
     uint8_t Destination_Buffer_2[4] = {0};
 
     bool InjectedFlags[] = {true, true, true, true};
-    SpiHelper_SetupTest(SPI_HELPER_DRV_1, Injected_Message_1, InjectedFlags, sizeof(Injected_Message_1));
-    SpiHelper_SetupTest(SPI_HELPER_DRV_2, Injected_Message_2, InjectedFlags, sizeof(Injected_Message_2));
+    SpiHelper_SetupTest(SPI_INSTANCE_1, Injected_Message_1, InjectedFlags, sizeof(Injected_Message_1));
+    SpiHelper_SetupTest(SPI_INSTANCE_2, Injected_Message_2, InjectedFlags, sizeof(Injected_Message_2));
 
     SpiInit(&Spi_Storage_1, &Spi1_Config);
     SpiInit(&Spi_Storage_2, &Spi2_Config);

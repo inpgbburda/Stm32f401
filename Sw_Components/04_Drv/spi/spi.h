@@ -70,6 +70,15 @@ typedef struct
 }
 Spi_Cfg_T;
 
+typedef enum
+{
+    SPI_INSTANCE_1 = 0,
+    SPI_INSTANCE_2,
+    SPI_INSTANCE_3,
+    SPI_INSTANCE_COUNT_MAX
+} 
+Spi_Instance_Id_T;
+
 /*
 |===================================================================================================================================|
     Exported objects declarations
