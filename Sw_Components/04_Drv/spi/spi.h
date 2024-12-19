@@ -1,7 +1,10 @@
 /**
 * File contains Spi interface
 *
+* note: term "instance" means specific hardware that this driver can use - eg. SPI1, SPI2
+* In general module is stateless and doesn't own memory. The only exception is dynamic Storage_To_Hw_Map.
 */
+
 #ifndef SPI_H
 #define SPI_H
 /*
@@ -54,9 +57,9 @@ Spi_Storage_T;
 
 typedef struct
 {
-    SPI_TypeDef* instance;
-    Spi_Mode_T mode;
-    uint8_t int_priority; /* priority of interrupt - leave empty if not used */
+    SPI_TypeDef* instance;  /* hw instance that will be assigned */
+    Spi_Mode_T mode;        /* synchronous, interrupt */
+    uint8_t int_priority;   /* priority of interrupt - leave empty if not used */
     Complete_Clb_Ptr_T callback; /* pointer to function called after succ. reception  - leave empty in synchronous mode*/
 
     uint16_t dff;    /* frame format - 8 or 16 bit */
@@ -90,11 +93,64 @@ Spi_Instance_Id_T;
     Exported functions declarations
 |===================================================================================================================================|
 */
+
+/**
+ * SpiInit - Initializes the SPI interface with the specified configuration.
+ * @storage: A pointer to the storage, which configuration will be assigned to.
+ * @config: A pointer to an Spi_Cfg_T structure containing the configuration parameters.
+ * 
+ * This function initializes the SPI2 interface by enabling its clock, clearing the control registers, and setting the control
+ * register values based on the provided configuration parameters. In case of interrupt mode it also sets the NVIC configuration.
+ * Finally, it enables the SPI interface.
+ * To enable multiple instances, this function must be called separately for each one of them.
+ */
 void SpiInit(Spi_Storage_T* storage, const Spi_Cfg_T* config);
+
+/**
+ * SpiReadBuffer - Reads data from the SPI receive buffer.
+ * @instance: A pointer to the SPI_TypeDef structure representing the SPI instance to read from.
+ * 
+ * This function reads a 16-bit value from the SPI data register after waiting for the RXNE (Receive Buffer Not Empty) flag to be set,
+ * indicating that data is available in the receive buffer.
+ * 
+ * Returns: The 16-bit value read from the SPI data register.
+ */
 uint16_t SpiReadBuffer(const SPI_TypeDef* instance);
+
+/**
+ * SpiReadSynch - Synchronously reads data from an SPI peripheral.
+ * @instance: A pointer to the SPI_TypeDef structure representing the SPI instance to read from.
+ * @dest_ptr: A pointer to the destination buffer where the read data will be stored.
+ * @mess_len: The number of bytes to read from the SPI instance.
+ * @timeout: The maximum time (in CPU ticks) to wait for the read operation to complete.
+ * 
+ * This function performs a synchronous read operation from the specified SPI instance. It reads up to the specified 
+ * number of bytes (`mess_len`) and stores them in the provided buffer (`dest_ptr`). The function will continue reading 
+ * until either the message length is reached or the specified timeout expires.
+ * 
+ * Returns: 
+ * - E_OK: If the data is successfully read from the SPI peripheral.
+ * - E_NOT_OK: If there is a timeout, invalid input (null pointers), or other errors during the operation.
+ */
 Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
+
+/**
+ * SpiReadIt - Initiates an interrupt-driven SPI read operation.
+ * @storage:  A pointer to the storage, which specifics and statuses of reading will be assigned to.
+ * @dest_ptr: A pointer to the destination buffer where the read data will be stored.
+ * @mess_len: The number of bytes to read from the SPI instance.
+ * 
+ * This function sets up an interrupt-driven SPI read operation. It configures
+ * the SPI storage structure with the provided parameters and enables the
+ * receive buffer not empty (RXNE) interrupt to start the data reception.
+ * 
+ * Returns: none
+ */
 void SpiReadIt(Spi_Storage_T* storage, uint8_t *dest_ptr, uint32_t mess_len);
 
+/**
+*Spi interrupts declarations
+ */
 void Spi1_RxCompleteCbk(void);
 void Spi2_RxCompleteCbk(void);
 void Spi3_RxCompleteCbk(void);

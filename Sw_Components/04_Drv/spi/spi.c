@@ -74,10 +74,13 @@ static void DisableInterruptInDriver(SPI_TypeDef *instance);
 
 /**
  * SpiInit - Initializes the SPI interface with the specified configuration.
+ * @storage: A pointer to the storage, which configuration will be assigned to.
  * @config: A pointer to an Spi_Cfg_T structure containing the configuration parameters.
  * 
  * This function initializes the SPI2 interface by enabling its clock, clearing the control registers, and setting the control
- * register values based on the provided configuration parameters. Finally, it enables the SPI interface.
+ * register values based on the provided configuration parameters. In case of interrupt mode it also sets the NVIC configuration.
+ * Finally, it enables the SPI interface.
+ * To enable multiple instances, this function must be called separately for each one of them.
  */
 void SpiInit(Spi_Storage_T* storage,  const Spi_Cfg_T* config)
 {
@@ -162,6 +165,18 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
     return ret_val;
 }
 
+/**
+ * SpiReadIt - Initiates an interrupt-driven SPI read operation.
+ * @storage:  A pointer to the storage, which specifics and statuses of reading will be assigned to.
+ * @dest_ptr: A pointer to the destination buffer where the read data will be stored.
+ * @mess_len: The number of bytes to read from the SPI instance.
+ * 
+ * This function sets up an interrupt-driven SPI read operation. It configures
+ * the SPI storage structure with the provided parameters and enables the
+ * receive buffer not empty (RXNE) interrupt to start the data reception.
+ * 
+ * Returns: none
+ */
 void SpiReadIt(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t mess_len)
 {
     uint8_t residual_trash;
