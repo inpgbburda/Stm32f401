@@ -17,9 +17,9 @@
 
 #define SPI2_INTER_PRIO 1U
 
-Spi_Storage_T spi_storage;
+Spi_Storage_T Spi_Storage;
 
-const Spi_Cfg_T Spi2_Config =
+const Spi_Cfg_T Spi2_It_Config =
 {
     SPI2,
     SPI_MODE_INTERRUPT,

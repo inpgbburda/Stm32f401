@@ -59,8 +59,8 @@ typedef struct
 {
     SPI_TypeDef* instance;  /* hw instance that will be assigned */
     Spi_Mode_T mode;        /* synchronous, interrupt */
-    uint8_t int_priority;   /* priority of interrupt - leave empty if not used */
-    Complete_Clb_Ptr_T callback; /* pointer to function called after succ. reception  - leave empty in synchronous mode*/
+    uint8_t int_priority;   /* priority of interrupt - place 0 if interrupt mode not used */
+    Complete_Clb_Ptr_T callback; /* pointer to function called after succ. reception  - leave null ptr in synchronous mode*/
 
     uint16_t dff;    /* frame format - 8 or 16 bit */
     uint16_t clock_polarity; /* clock_polarity */
@@ -73,6 +73,7 @@ typedef struct
 }
 Spi_Cfg_T;
 
+/* Number of instances must match their number in hardware */
 typedef enum
 {
     SPI_INSTANCE_1 = 0,
@@ -132,7 +133,7 @@ uint16_t SpiReadBuffer(const SPI_TypeDef* instance);
  * - E_OK: If the data is successfully read from the SPI peripheral.
  * - E_NOT_OK: If there is a timeout, invalid input (null pointers), or other errors during the operation.
  */
-Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
+Std_Return_T SpiReadSynch(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout);
 
 /**
  * SpiReadIt - Initiates an interrupt-driven SPI read operation.

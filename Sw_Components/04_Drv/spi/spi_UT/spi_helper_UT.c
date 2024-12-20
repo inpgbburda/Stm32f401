@@ -3,11 +3,12 @@
 #include <stddef.h>
 #include "spi.h"
 
+/* Maximum size that fake sequences can be simulated */
 #define FAKE_MESSAGE_MAX_SIZE 100U
 
 static uint8_t Fake_Message[SPI_INSTANCE_COUNT_MAX][FAKE_MESSAGE_MAX_SIZE];
 static bool Fake_Flags[SPI_INSTANCE_COUNT_MAX][FAKE_MESSAGE_MAX_SIZE];
-static int sample_cnt[SPI_INSTANCE_COUNT_MAX] = {0};
+static int Sample_Cnts[SPI_INSTANCE_COUNT_MAX] = {0};
 static bool SpiRxCompleteStatuses[SPI_INSTANCE_COUNT_MAX] = {false};
 
 bool SpiHelper_ReadRxNeFlagMock(const SPI_TypeDef* driver)
@@ -16,15 +17,15 @@ bool SpiHelper_ReadRxNeFlagMock(const SPI_TypeDef* driver)
     int cnt;
 
     if(SPI1 == driver){
-        cnt = sample_cnt[SPI_INSTANCE_1];
+        cnt = Sample_Cnts[SPI_INSTANCE_1];
         result = Fake_Flags[SPI_INSTANCE_1][cnt];
     }
     else if(SPI2 == driver){
-        cnt = sample_cnt[SPI_INSTANCE_2];
+        cnt = Sample_Cnts[SPI_INSTANCE_2];
         result = Fake_Flags[SPI_INSTANCE_2][cnt];
     }
     else if(SPI3 == driver){
-        cnt = sample_cnt[SPI_INSTANCE_3];
+        cnt = Sample_Cnts[SPI_INSTANCE_3];
         result = Fake_Flags[SPI_INSTANCE_3][cnt];
     }
     else{
@@ -39,15 +40,15 @@ uint8_t SpiHelper_ReadDrMock(const SPI_TypeDef* driver)
     int cnt;
 
     if(SPI1 == driver){
-        cnt = sample_cnt[SPI_INSTANCE_1];
+        cnt = Sample_Cnts[SPI_INSTANCE_1];
         result = Fake_Message[SPI_INSTANCE_1][cnt];
     }
     else if(SPI2 == driver){
-        cnt = sample_cnt[SPI_INSTANCE_2];
+        cnt = Sample_Cnts[SPI_INSTANCE_2];
         result = Fake_Message[SPI_INSTANCE_2][cnt];
     }
     else if(SPI3 == driver){
-        cnt = sample_cnt[SPI_INSTANCE_3];
+        cnt = Sample_Cnts[SPI_INSTANCE_3];
         result = Fake_Message[SPI_INSTANCE_3][cnt];
     }
     else{
@@ -59,13 +60,13 @@ uint8_t SpiHelper_ReadDrMock(const SPI_TypeDef* driver)
 void SpiHelper_GoToNextSample(const SPI_TypeDef* driver)
 {
     if(SPI1 == driver){
-        (sample_cnt[SPI_INSTANCE_1]) ++;
+        (Sample_Cnts[SPI_INSTANCE_1]) ++;
     }
     else if(SPI2 == driver){
-        (sample_cnt[SPI_INSTANCE_2]) ++;
+        (Sample_Cnts[SPI_INSTANCE_2]) ++;
     }
     else if(SPI3 == driver){
-        (sample_cnt[SPI_INSTANCE_3]) ++;
+        (Sample_Cnts[SPI_INSTANCE_3]) ++;
     }
     else{
 
@@ -90,7 +91,7 @@ void SpiHelper_SetTestPreCondFlags(const Spi_Instance_Id_T driver, bool flags[],
 void SpiHelper_ResetReadIdx(void)
 {
     for(int i=0; i<SPI_INSTANCE_COUNT_MAX; i++){
-        sample_cnt[i] = 0;
+        Sample_Cnts[i] = 0;
     }
 }
 
@@ -123,9 +124,9 @@ bool SpiHelper_CheckIf_RxCompleteCbkCalled(Spi_Instance_Id_T driver)
 
 void SpiHelper_Clear_RxCompleteCbkStatuses(void)
 {
-    SpiRxCompleteStatuses[SPI_INSTANCE_1] = false;
-    SpiRxCompleteStatuses[SPI_INSTANCE_2] = false;
-    SpiRxCompleteStatuses[SPI_INSTANCE_3] = false;
+    for(int i=0; i<SPI_INSTANCE_COUNT_MAX; i++){
+        SpiRxCompleteStatuses[i] = false;
+    }
 }
 
 void SpiHelper_SetupTest(Spi_Instance_Id_T driver, uint8_t* injected_message, bool* injected_flags, int len)

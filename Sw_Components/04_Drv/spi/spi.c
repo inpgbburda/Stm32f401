@@ -137,21 +137,21 @@ uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
  * - E_OK: If the data is successfully read from the SPI peripheral.
  * - E_NOT_OK: If there is a timeout, invalid input (null pointers), or other errors during the operation.
  */
-Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
+Std_Return_T SpiReadSynch(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
 {
     Std_Return_T ret_val = E_NOT_OK;
     uint32_t byte_num = 0;
     uint32_t tick_cnt = 0;
     bool mess_ready = false;
 
-    if((NULL == instance)||(NULL == dest_ptr)){
+    if((NULL == (storage->instance))||(NULL == dest_ptr)){
         return E_NOT_OK;
     }
 
     while((tick_cnt < timeout) && (!mess_ready)){
-        if(IsRxFlagSet(instance)){
+        if(IsRxFlagSet(storage->instance)){
             if(byte_num < mess_len){
-                dest_ptr[byte_num] = ReadHwDrBuffer(instance);
+                dest_ptr[byte_num] = ReadHwDrBuffer(storage->instance);
                 byte_num++;
             }
         }
@@ -160,7 +160,7 @@ Std_Return_T SpiReadSynch(const SPI_TypeDef *instance, uint8_t* dest_ptr, uint32
             ret_val = E_OK;
         }
         tick_cnt++;
-        UT_GO_TO_NEXT_SAMPLE(instance);
+        UT_GO_TO_NEXT_SAMPLE(storage->instance);
     }
     return ret_val;
 }

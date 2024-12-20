@@ -17,7 +17,7 @@ int main(void)
     ClockInit(&Clock_Config);
     PortInit(Port_Config);
     PwmInit(&Pwm2_Config);
-    SpiInit(&spi_storage, &Spi2_Config);
+    SpiInit(&Spi_Storage, &Spi2_It_Config);
     SystickInit();
     OsInit();
     

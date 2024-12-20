@@ -55,7 +55,7 @@ uint8_t buffer[4] = {0};
  */
 void SpiTask(void *pvParameters) {
     for (;;) {
-        SpiReadIt(&spi_storage, buffer, 4);
+        SpiReadIt(&Spi_Storage, buffer, 4);
         vTaskDelay(pdMS_TO_TICKS(120));
     }
 }

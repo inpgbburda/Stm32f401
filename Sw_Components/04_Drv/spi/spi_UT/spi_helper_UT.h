@@ -5,8 +5,24 @@
 #include "spi.h"
 
 /* Api called from tested source file */
+
+/**
+ * @brief Reads the content of current fake Rx flag.
+ * @param driver Pointer to the SPI driver instance.
+ */
 bool SpiHelper_ReadRxNeFlagMock(const SPI_TypeDef* driver);
+
+/**
+ * @brief Reads the content of current fake Dr register.
+ * @param driver Pointer to the SPI driver instance.
+ */
 uint8_t SpiHelper_ReadDrMock(const SPI_TypeDef* driver);
+/**
+ * @brief Advances the SPI driver to the next sample.
+ * @param driver Pointer to the SPI driver instance.
+ * This function moves the SPI driver to the next fake sample in the prepared sequence.
+ * Must be called after each fake read of Rx flag and Dr register.
+ */
 void SpiHelper_GoToNextSample(const SPI_TypeDef* driver);
 
 /* Api called from test file to control used mocks*/

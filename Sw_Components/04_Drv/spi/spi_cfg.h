@@ -7,8 +7,8 @@
 
 #include "spi.h"
 
-extern Spi_Storage_T spi_storage;
-extern const Spi_Cfg_T Spi2_Config;
+extern Spi_Storage_T Spi_Storage;
+extern const Spi_Cfg_T Spi2_It_Config;
 
 extern void Spi2_RxCompleteCbk(void);
 
