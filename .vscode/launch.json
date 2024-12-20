@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
-    "configurations": [
+    "configurations": 
+    [
         {
             "type": "cortex-debug",
             "request": "launch",
@@ -16,6 +17,82 @@
             "configFiles": [
                 "interface/stlink.cfg", "target/stm32f4x.cfg"
             ]
+        },
+
+        {
+            "name": "UT - motor_ctrl debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/Output_UT/motor_ctrl_UT.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "${config:gccPathDir}/gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+        },
+        {
+            "name": "UT - spi debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Sw_Components/04_Drv/spi/spi_UT/Output_UT/spi_UT.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "${config:gccPathDir}/gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+        },
+        {
+            "name": "UT - pwm debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Sw_Components/04_Drv/pwm/pwm_UT/Output_UT/pwm_UT.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "${config:gccPathDir}/gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
         }
     ]
 }

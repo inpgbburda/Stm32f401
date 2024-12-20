@@ -139,7 +139,7 @@
             "command": "\"${workspaceFolder}/Tools/Scripts/ut_clean_all_modules.bat\"",
             "args": [
                         "${config:makePath}",
-                        "${workspaceFolder}/UT/Pr_Settings/ut_modules_config.txt",
+                        "${workspaceFolder}/Pr_Settings/UT/ut_modules_config.txt",
                     ],
             "options": {
                 "cwd": "${workspaceFolder}"

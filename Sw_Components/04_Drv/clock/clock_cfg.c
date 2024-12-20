@@ -15,5 +15,8 @@ const Clock_Cfg_T Clock_Config =
 
     /* rcc_apb1*/
     RCC_APB1ENR_TIM2EN|        /* Enable clock for Timer 2 */
-    RCC_APB1ENR_SPI2EN         /* Enable clock for SPI2 */
+    RCC_APB1ENR_SPI2EN,        /* Enable clock for SPI2 */
+
+    /* rcc_apb2*/
+    0U,
 };

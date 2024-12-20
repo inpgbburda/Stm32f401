@@ -13,6 +13,7 @@
         "generator": "MinGW Makefiles",
         "binaryDir": "${sourceDir}../Output_UT",
         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug"
         },
         "environment": {
         }

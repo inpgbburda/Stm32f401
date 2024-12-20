@@ -8,6 +8,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "spi.h"
+#include "spi_cfg.h"
 
 /**
  * @brief This function is called if a task overflows its stack.
@@ -40,6 +41,8 @@ void PwmTask(void *pvParameters) {
     }
 }
 
+uint8_t buffer[4] = {0};
+
 /**
  * @brief This function is a task that reads data from an SPI peripheral and updates a variable.
  *
@@ -52,9 +55,15 @@ void PwmTask(void *pvParameters) {
  */
 void SpiTask(void *pvParameters) {
     for (;;) {
-        static uint16_t spi_data = 0;
-        spi_data = SpiReadBuffer(SPI2);
-        vTaskDelay(pdMS_TO_TICKS(10));
+        SpiReadIt(&Spi_Storage, buffer, 4);
+        vTaskDelay(pdMS_TO_TICKS(120));
+    }
+}
+
+void Spi2_RxCompleteCbk(void)
+{
+    for(int i =0; i<4; i++){
+        buffer[i] = 0;
     }
 }
 
