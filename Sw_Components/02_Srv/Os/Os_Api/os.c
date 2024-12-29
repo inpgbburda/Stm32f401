@@ -15,7 +15,26 @@
 #define SPI_TASK_PERIOD_MS 10
 #define PWM_TASK_PERIOD_MS 20
 
-QueueHandle_t  qeue1;
+#define PWM_TASK_PRIORITY 2
+#define SPI_TASK_PRIORITY 1
+
+#define ARRAY_SIZE 4
+#define DEBUG_BUFFER_SIZE 100
+
+#define TICKS_TO_WAIT 10
+#define MAX_QUEUE_LENGTH 10
+
+typedef struct {
+    uint8_t data[ARRAY_SIZE]; 
+} PowerRequestsPackage_T;
+
+static QueueHandle_t  SpiToPWmQueue;
+static bool MessageReceived = true; 
+static PowerRequestsPackage_T Debug_Buffer[DEBUG_BUFFER_SIZE] = {0};
+static int cnt = 0;
+
+static void PwmTask(void *pvParameters);
+static void SpiTask(void *pvParameters);
 
 
 /**
@@ -35,32 +54,45 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
     };
 }
 
+
+/**
+ * @brief This function initializes the operating system (OS) by creating tasks.
+ *
+ * @return This function does not return.
+ */
+void OsInit(void)
+{
+    SpiToPWmQueue = xQueueCreate(MAX_QUEUE_LENGTH, sizeof(PowerRequestsPackage_T));
+    xTaskCreate(PwmTask, "PwmTask", configMINIMAL_STACK_SIZE + 100, NULL, PWM_TASK_PRIORITY, NULL);
+    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, NULL, SPI_TASK_PRIORITY, NULL);
+}
+
+
 /**
  * @brief This function is a task that updates the PWM output.
  * @param pvParameters A pointer to the task's parameters. This parameter is not used in this function.
  *
  * @return This function does not return. It runs in an infinite loop.
  */
-void PwmTask(void *pvParameters) {
+static void PwmTask(void *pvParameters) {
 
-    uint8_t receivedValue[20];
+    PowerRequestsPackage_T receivedMessage;
 
     for (;;) {
         /* Task updating the PWM output */
-        /* TODO */
-    
-        if( qeue1 != NULL )
-        {
-            if( xQueueReceive( qeue1, &receivedValue, (TickType_t)10 ) == pdPASS )
-            {
+        if( SpiToPWmQueue != NULL ){
+            if( xQueueReceive(SpiToPWmQueue, &receivedMessage, (TickType_t)TICKS_TO_WAIT) == pdPASS ){
                 /* xRxedStructure now contains a copy of xMessage. */
+            }
+            if( cnt < DEBUG_BUFFER_SIZE ){
+                Debug_Buffer[cnt] = receivedMessage;
+                cnt++;
             }
         }
         vTaskDelay(pdMS_TO_TICKS(PWM_TASK_PERIOD_MS));
     }
 }
 
-uint8_t buffer[4] = {0};
 
 /**
  * @brief This function is a task that reads data from an SPI peripheral and updates a variable.
@@ -72,31 +104,19 @@ uint8_t buffer[4] = {0};
  *
  * @return This function runs in an infinite loop and does not return.
  */
-
-bool MessageReceived = true; 
-
-void SpiTask(void *pvParameters) {
+static void SpiTask(void *pvParameters) {
     /* Task reading data from an SPI peripheral */
-    uint8_t ulVar = 0;
+    PowerRequestsPackage_T dataToPass;
 
     for (;;) {
         if( MessageReceived){
-            if( qeue1 != 0 )
-            {
-                /* Send an unsigned long. Wait for 10 ticks for space to become
-                available if necessary. */
-                if( xQueueSendToBack( qeue1,
-                                    ( void * ) &buffer[0],
-                                    ( TickType_t ) 10 ) != pdPASS )
-                {
+            if( SpiToPWmQueue != 0 ){
+                if( xQueueSendToFront(SpiToPWmQueue,( void * ) &dataToPass,( TickType_t ) TICKS_TO_WAIT) != pdPASS ){
                     /* Failed to post the message, even after 10 ticks. */
                 }
             }
-            for(int i =0; i<4; i++){
-                buffer[i] = 0;
-            }
             MessageReceived = false;
-            SpiReadIt(&Spi_Storage, buffer, 4);
+            SpiReadIt(&Spi_Storage, dataToPass.data, ARRAY_SIZE);
         }
         else{
             /*Do nothing*/
@@ -110,17 +130,6 @@ void Spi2_RxCompleteCbk(void)
     MessageReceived = true;
 }
 
-/**
- * @brief This function initializes the operating system (OS) by creating tasks.
- *
- * @return This function does not return.
- */
-void OsInit(void)
-{
-    qeue1 = xQueueCreate(10, 4);
-    xTaskCreate(PwmTask, "PwmTask", configMINIMAL_STACK_SIZE + 100, NULL, 1, NULL);
-    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, NULL, 2, NULL);
-}
 
 /**
  * @brief This function starts the operating system scheduler.
