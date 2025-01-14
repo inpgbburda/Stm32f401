@@ -21,9 +21,9 @@ int main(void)
     SystickInit();
     OsInit();
     
-    OsStart();
     PwmStart(&Pwm2_Config);
     PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, RANDOM_PWM_VAL);
+    OsStart();
 
     while (1){
         /* Unreachable code */
