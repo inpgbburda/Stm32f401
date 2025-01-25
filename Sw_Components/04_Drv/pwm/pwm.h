@@ -1,9 +1,18 @@
 /**
-* File contains 
+* @file pwm.h
+* @brief PWM driver header file
 *
+* This file contains the declarations for the PWM driver functions and types.
+*
+* @note -
+* @attention -
+* @see -
+* @date 
 */
+
 #ifndef PWM_H
 #define PWM_H
+
 /*
 |===================================================================================================================================|
     File includes 
@@ -12,6 +21,12 @@
 #include <stdbool.h>
 #include "stm32f401xc.h"
 #include "pwm_types.h"
+
+/*
+|===================================================================================================================================|
+    Macro definitions
+|===================================================================================================================================|
+*/
 
 /*
 |===================================================================================================================================|
@@ -31,9 +46,7 @@
 |===================================================================================================================================|
 */
 void PwmInit(const Pwm_Cfg_T* config);
-
 void PwmStart(const Pwm_Cfg_T *config);
-
 void PwmSetDuty(const Pwm_Cfg_T* config, Pwm_Timer_Chan_T channel, uint32_t cc_reg_val);
 
 #endif /* PWM_H */

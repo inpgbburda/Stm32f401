@@ -1,7 +1,16 @@
 /**
-* File contains spi implementation
-* Terms dictionary:
-*   'instance' - identifier of atomic, functional hardware e.g. SPI1, SPI3
+* @file spi.c
+* @brief SPI driver implementation for STM32F401 microcontroller.
+*
+* This file contains the implementation of the SPI driver for the STM32F401 microcontroller.
+* It includes functions for initializing the SPI interface, reading data synchronously and 
+* asynchronously using interrupts, and handling SPI interrupts.
+*
+* @note This driver supports multiple SPI instances (SPI1, SPI2, SPI3) and can be configured 
+*       for interrupt-driven or polling-based operation.
+* @attention Ensure that the SPI peripheral clock is enabled before using this driver.
+* @see Refer to the STM32F401 reference manual for detailed information on the SPI peripheral.
+* @date day/month/year
 */
 
 /*
@@ -16,6 +25,7 @@
 #ifdef _UNIT_TEST
 #include "spi_helper_UT.h"
 #endif
+
 /*
 |===================================================================================================================================|
     Macro definitions
@@ -29,14 +39,12 @@
     Local types definitions 
 |===================================================================================================================================|
 */
-
 typedef struct 
 {
     SPI_TypeDef *instance;
     IRQn_Type interrupt_id;
 }
 Storage_Hw_Pair_T;
-
 
 /*
 |===================================================================================================================================|
@@ -50,7 +58,7 @@ const Storage_Hw_Pair_T SpiInstanceMap[] = {
     {SPI3, SPI3_IRQn},
 };
 
-/* Dynaming mapping of instances to storages */
+/* Dynamic mapping of instances to storages */
 Spi_Storage_T* Storage_To_Hw_Map[SPI_INSTANCE_COUNT_MAX];
 
 /*

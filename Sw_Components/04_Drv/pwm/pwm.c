@@ -1,7 +1,13 @@
 /**
- * @file pwm.c
- * @brief This file contains functions to initialize, start, and set the duty cycle of a PWM signal.
- * @date 26/07/2024
+* @file pwm.c
+* @brief PWM driver source file
+*
+* This file contains the implementation of the PWM driver functions.
+*
+* @note This driver is designed for the STM32F401 microcontroller.
+* @attention Ensure that the timer and GPIO configurations are properly set before using the PWM functions.
+* @see pwm.h for the function declarations and types.
+* @date 26/07/2024
  */
 
 /*
@@ -9,7 +15,6 @@
     File includes 
 |===================================================================================================================================|
 */
-
 #include "pwm.h"
 
 /*
@@ -44,8 +49,6 @@
     Function definitions
 |===================================================================================================================================|
 */
-#define PERIOD_VAL 100U
-
 
 /**
  * @brief Initializes the PWM signal using the provided configuration.

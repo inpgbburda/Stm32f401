@@ -1,22 +1,42 @@
 /**
- * @file clock.h
- * @brief Functions for initializing and handling the clocks of microcontroller.
- * @date 28/07/2024
- */
+* @file clock.h
+* @brief Functions for initializing and handling the clocks of microcontroller.
+*
+* Detailed description of the module
+*
+* @author -
+* @date 28/07/2024
+*/
+
 
 #ifndef CLOCK_H
 #define CLOCK_H
 
+/*
+|===================================================================================================================================|
+    File includes 
+|===================================================================================================================================|
+*/
 #include "stdint.h"
 #include "stm32f401xc.h"
 
+/*
+|===================================================================================================================================|
+    Exported types declarations
+|===================================================================================================================================|
+*/
 typedef struct
 {
     uint32_t rcc_ahb1;
     uint32_t rcc_apb1;
     uint32_t rcc_apb2;
-}
-Clock_Cfg_T;
+} Clock_Cfg_T;
+
+/*
+|===================================================================================================================================|
+    Exported functions declarations
+|===================================================================================================================================|
+*/
 
 void ClockInit(const Clock_Cfg_T* config);
 
