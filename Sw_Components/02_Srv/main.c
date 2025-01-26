@@ -1,3 +1,20 @@
+/**
+* @file main.c
+* @brief Main application entry point.
+*
+* This file contains the main function which initializes the system and starts the application.
+*
+* @note - other notes if needed
+* @attention - other notes if needed
+* @see - other notes if needed
+* @date day/month/year
+*/
+
+/*
+|===================================================================================================================================|
+    File includes 
+|===================================================================================================================================|
+*/
 #include "pwm.h"
 #include "pwm_cfg.h"
 #include "spi.h"
@@ -10,8 +27,18 @@
 #include "clock_cfg.h"
 #include "os.h"
 
+/*
+|===================================================================================================================================|
+    Macro definitions
+|===================================================================================================================================|
+*/
 #define RANDOM_PWM_VAL 10U
 
+/*
+|===================================================================================================================================|
+    Function definitions
+|===================================================================================================================================|
+*/
 int main(void)
 {
     ClockInit(&Clock_Config);
@@ -20,12 +47,13 @@ int main(void)
     SpiInit(&Spi_Storage, &Spi2_It_Config);
     SystickInit();
     OsInit();
-    
+
     OsStart();
     PwmStart(&Pwm2_Config);
     PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, RANDOM_PWM_VAL);
 
-    while (1){
+    while (1)
+    {
         /* Unreachable code */
     }
 }

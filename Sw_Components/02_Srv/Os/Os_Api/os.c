@@ -4,11 +4,48 @@
  *
  */
 
+/*
+|===================================================================================================================================|
+    File includes 
+|===================================================================================================================================|
+*/
 #include "os.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "spi.h"
 #include "spi_cfg.h"
+
+/*
+|===================================================================================================================================|
+    Macro definitions
+|===================================================================================================================================|
+*/
+
+/*
+|===================================================================================================================================|
+    Local types definitions 
+|===================================================================================================================================|
+*/
+
+/*
+|===================================================================================================================================|
+    Object allocations 
+|===================================================================================================================================|
+*/
+
+uint8_t buffer[4] = {0};
+
+/*
+|===================================================================================================================================|
+    Local function declarations
+|===================================================================================================================================|
+*/
+
+/*
+|===================================================================================================================================|
+    Function definitions
+|===================================================================================================================================|
+*/
 
 /**
  * @brief This function is called if a task overflows its stack.
@@ -21,9 +58,10 @@
  *
  * @return This function does not return. It enters an infinite loop to prevent the program from continuing.
  */
-void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
-    while(1){
-
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char* pcTaskName)
+{
+    while (1)
+    {
     };
 }
 
@@ -33,15 +71,15 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
  *
  * @return This function does not return. It runs in an infinite loop.
  */
-void PwmTask(void *pvParameters) {
-    for (;;) {
+void PwmTask(void* pvParameters)
+{
+    for (;;)
+    {
         /* Task updating the PWM output */
         /* TODO */
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
-
-uint8_t buffer[4] = {0};
 
 /**
  * @brief This function is a task that reads data from an SPI peripheral and updates a variable.
@@ -53,8 +91,10 @@ uint8_t buffer[4] = {0};
  *
  * @return This function runs in an infinite loop and does not return.
  */
-void SpiTask(void *pvParameters) {
-    for (;;) {
+void SpiTask(void* pvParameters)
+{
+    for (;;)
+    {
         SpiReadIt(&Spi_Storage, buffer, 4);
         vTaskDelay(pdMS_TO_TICKS(120));
     }
@@ -62,7 +102,8 @@ void SpiTask(void *pvParameters) {
 
 void Spi2_RxCompleteCbk(void)
 {
-    for(int i =0; i<4; i++){
+    for (int i = 0; i < 4; i++)
+    {
         buffer[i] = 0;
     }
 }

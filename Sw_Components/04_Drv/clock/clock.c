@@ -1,10 +1,24 @@
 /**
- * @file clock.c
- * @brief Functions for initializing and handling the clocks of microcontroller.
- * @date 28/07/2024
- */
-
+* @file clock.h
+* @brief Functions for initializing and handling the clocks of microcontroller.
+*
+* Detailed description of the module
+*
+* @author -
+* @date 28/07/2024
+*/
+/*
+|===================================================================================================================================|
+    File includes 
+|===================================================================================================================================|
+*/
 #include "clock.h"
+
+/*
+|===================================================================================================================================|
+    Function definitions
+|===================================================================================================================================|
+*/
 
 /**
  * @brief Initializes the clocks of the microcontroller based on the provided configuration.

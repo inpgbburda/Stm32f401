@@ -1,20 +1,23 @@
 /**
-* @file pwm_types.h
-* @brief PWM driver types header file
+* @file port_cfg.h
+* @brief Short description of the module
 *
-* This file contains the type definitions for the PWM driver.
+* Detailed description of the module
 *
+* @note - other notes if needed
+* @attention - other notes if needed
+* @see - other notes if needed
+* @author
+* @date day/month/year
 */
 
-#ifndef PWM_TYPES_H
-#define PWM_TYPES_H
-
+#ifndef SW_MODULE_NAME_H
+#define SW_MODULE_NAME_H
 /*
 |===================================================================================================================================|
     File includes 
 |===================================================================================================================================|
 */
-#include "stm32f401xc.h"
 
 /*
 |===================================================================================================================================|
@@ -27,21 +30,6 @@
     Exported types declarations
 |===================================================================================================================================|
 */
-typedef struct
-{
-    TIM_TypeDef* instance;
-    uint16_t prescaler_val;
-    uint32_t reload_val;
-    uint16_t chan_sel;
-} Pwm_Cfg_T;
-
-typedef enum
-{
-    PWM_CHAN_1,
-    PWM_CHAN_2,
-    PWM_CHAN_3,
-    PWM_CHAN_4
-} Pwm_Timer_Chan_T;
 
 /*
 |===================================================================================================================================|
@@ -55,4 +43,22 @@ typedef enum
 |===================================================================================================================================|
 */
 
-#endif /* PWM_TYPES_H */
+/** Function declaration doc template */
+
+/**
+ * Function name
+ * @brief:
+ * @param:
+ * @param:
+ * @param:
+ * 
+ * Description
+ * 
+ * @return:
+ * 
+ * @note - other notes if needed
+ */
+
+
+#endif /* SW_MODULE_NAME_H */
+
