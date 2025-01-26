@@ -39,12 +39,11 @@
     Local types definitions 
 |===================================================================================================================================|
 */
-typedef struct 
+typedef struct
 {
-    SPI_TypeDef *instance;
-    IRQn_Type interrupt_id;
-}
-Storage_Hw_Pair_T;
+    SPI_TypeDef* instance;
+    IRQn_Type    interrupt_id;
+} Storage_Hw_Pair_T;
 
 /*
 |===================================================================================================================================|
@@ -90,18 +89,21 @@ static void DisableInterruptInDriver(SPI_TypeDef *instance);
  * Finally, it enables the SPI interface.
  * To enable multiple instances, this function must be called separately for each one of them.
  */
-void SpiInit(Spi_Storage_T* storage,  const Spi_Cfg_T* config)
+void SpiInit(Spi_Storage_T* storage, const Spi_Cfg_T* config)
 {
     SPI_TypeDef* used_driver;
-    IRQn_Type interrupt_id;
+    IRQn_Type    interrupt_id;
 
     used_driver = config->instance;
     storage->instance = used_driver;
     storage->callback = config->callback;
 
-    if(SPI_MODE_INTERRUPT == config->mode){
-        for(uint8_t i=0; i<SPI_INSTANCE_COUNT_MAX; i++){
-            if(SpiInstanceMap[i].instance == used_driver){
+    if (SPI_MODE_INTERRUPT == config->mode)
+    {
+        for (uint8_t i = 0; i < SPI_INSTANCE_COUNT_MAX; i++)
+        {
+            if (SpiInstanceMap[i].instance == used_driver)
+            {
                 interrupt_id = SpiInstanceMap[i].interrupt_id;
             }
         }
@@ -119,10 +121,11 @@ void SpiInit(Spi_Storage_T* storage,  const Spi_Cfg_T* config)
  * 
  * @return: The 16-bit value read from the SPI data register.
  */
-uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
+uint16_t SpiReadBuffer(const SPI_TypeDef* instance)
 {
     uint16_t buffer_val = 0;
-    while(0U == (SPI_SR_RXNE_FLAG(instance->SR))){
+    while (0U == (SPI_SR_RXNE_FLAG(instance->SR)))
+    {
         /* wait for data */
     }
     buffer_val = instance->DR;
@@ -148,22 +151,27 @@ uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
 Std_Return_T SpiReadSynch(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t mess_len, uint32_t timeout)
 {
     Std_Return_T ret_val = E_NOT_OK;
-    uint32_t byte_num = 0;
-    uint32_t tick_cnt = 0;
-    bool mess_ready = false;
+    uint32_t     byte_num = 0;
+    uint32_t     tick_cnt = 0;
+    bool         mess_ready = false;
 
-    if((NULL == (storage->instance))||(NULL == dest_ptr)){
+    if ((NULL == (storage->instance)) || (NULL == dest_ptr))
+    {
         return E_NOT_OK;
     }
 
-    while((tick_cnt < timeout) && (!mess_ready)){
-        if(IsRxFlagSet(storage->instance)){
-            if(byte_num < mess_len){
+    while ((tick_cnt < timeout) && (!mess_ready))
+    {
+        if (IsRxFlagSet(storage->instance))
+        {
+            if (byte_num < mess_len)
+            {
                 dest_ptr[byte_num] = ReadHwDrBuffer(storage->instance);
                 byte_num++;
             }
         }
-        if(byte_num >= mess_len){
+        if (byte_num >= mess_len)
+        {
             mess_ready = true;
             ret_val = E_OK;
         }
@@ -187,17 +195,19 @@ Std_Return_T SpiReadSynch(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t me
  */
 void SpiReadIt(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t mess_len)
 {
-    uint8_t residual_trash;
-    SPI_TypeDef * used_instance;
-    
+    uint8_t      residual_trash;
+    SPI_TypeDef* used_instance;
+
     storage->mess_ready = false;
     storage->byte_cnt = 0U;
     storage->expected_length = mess_len;
     storage->dest_ptr = dest_ptr;
     used_instance = storage->instance;
-    
-    for(uint8_t i=0; i<SPI_INSTANCE_COUNT_MAX; i++){
-        if(SpiInstanceMap[i].instance == used_instance){
+
+    for (uint8_t i = 0; i < SPI_INSTANCE_COUNT_MAX; i++)
+    {
+        if (SpiInstanceMap[i].instance == used_instance)
+        {
             Storage_To_Hw_Map[i] = storage;
         }
     }
@@ -215,19 +225,23 @@ static void DoRxInterruptRoutine(Spi_Storage_T* storage)
     cnt = storage->byte_cnt;
     exp_len = storage->expected_length;
 
-    if(!storage->mess_ready){
-        if(cnt < (exp_len - 1U)){
+    if (!storage->mess_ready)
+    {
+        if (cnt < (exp_len - 1U))
+        {
             (storage->dest_ptr)[cnt] = ReadHwDrBuffer(storage->instance);
             cnt++;
         }
-        else if(cnt == (exp_len - 1U)){
+        else if (cnt == (exp_len - 1U))
+        {
             (storage->dest_ptr)[cnt] = ReadHwDrBuffer(storage->instance);
             cnt = 0U;
             storage->mess_ready = true;
             DisableInterruptInDriver(storage->instance);
             storage->callback();
         }
-        else{
+        else
+        {
             /* Error handling - should never get here */
             cnt = 0U;
         }
@@ -268,7 +282,7 @@ static void SetUpNvic(IRQn_Type int_id, uint32_t int_prio)
 #endif
 }
 
-static bool IsRxFlagSet(const SPI_TypeDef *instance)
+static bool IsRxFlagSet(const SPI_TypeDef* instance)
 {
     bool result = false;
 
@@ -280,7 +294,7 @@ static bool IsRxFlagSet(const SPI_TypeDef *instance)
     return result;
 }
 
-static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
+static uint8_t ReadHwDrBuffer(const SPI_TypeDef* instance)
 {
     uint8_t result;
 
@@ -293,14 +307,14 @@ static uint8_t ReadHwDrBuffer(const SPI_TypeDef *instance)
     return result;
 }
 
-static void EnableInterruptInDriver(SPI_TypeDef *instance)
+static void EnableInterruptInDriver(SPI_TypeDef* instance)
 {
 #ifndef _UNIT_TEST
     instance->CR2 |= SPI_CR2_RXNEIE;
 #endif
 }
 
-static void DisableInterruptInDriver(SPI_TypeDef *instance)
+static void DisableInterruptInDriver(SPI_TypeDef* instance)
 {
 #ifndef _UNIT_TEST
     instance->CR2 &= ~(SPI_CR2_RXNEIE);

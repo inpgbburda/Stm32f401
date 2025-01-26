@@ -30,13 +30,11 @@
 |===================================================================================================================================|
 */
 
-
 /*
 |===================================================================================================================================|
     Object allocations 
 |===================================================================================================================================|
 */
-
 
 /*
 |===================================================================================================================================|
@@ -58,17 +56,17 @@
  * The function configures the GPIO pin, timer instance, and sets the initial parameters for the PWM signal.
  * It also enables the necessary clocks and alternate functions for the GPIO pin.
  */
-void PwmInit(const Pwm_Cfg_T* config)
+void PwmInit(const Pwm_Cfg_T *config)
 {
-    TIM_TypeDef* timer_instance;
+    TIM_TypeDef *timer_instance;
     timer_instance = config->instance;
 
-    timer_instance->PSC = config->prescaler_val;    /* Set prescaler value */
-    timer_instance->ARR = FIRST_PERIOD;         /* Must be set before enabling automatic preload to avoid waiting for first overflow*/
-    timer_instance->CCMR1 |= (TIM_CCMR1_OC1M_1|TIM_CCMR1_OC1M_2);     /*Pwm mode 1*/
-    timer_instance->CCMR1 |=  TIM_CCMR1_OC1PE;                        /*Enable the Preload register*/
-    timer_instance->CR1 |= TIM_CR1_ARPE;                              /*Enable the auto-reload Preload register */
-    timer_instance->CCER |= config->chan_sel;      /* Set channels as output */
+    timer_instance->PSC = config->prescaler_val;                    /* Set prescaler value */
+    timer_instance->ARR = FIRST_PERIOD;                             /* Must be set before enabling automatic preload to avoid waiting for first overflow*/
+    timer_instance->CCMR1 |= (TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2); /*Pwm mode 1*/
+    timer_instance->CCMR1 |= TIM_CCMR1_OC1PE;                       /*Enable the Preload register*/
+    timer_instance->CR1 |= TIM_CR1_ARPE;                            /*Enable the auto-reload Preload register */
+    timer_instance->CCER |= config->chan_sel;                       /* Set channels as output */
 
     timer_instance->ARR = config->reload_val;
     timer_instance->CCR1 = 0U;
@@ -82,10 +80,10 @@ void PwmInit(const Pwm_Cfg_T* config)
  *
  * @param config Pointer to the PWM configuration structure.
  */
-void PwmStart(const Pwm_Cfg_T* config)
+void PwmStart(const Pwm_Cfg_T *config)
 {
-    TIM_TypeDef* timer_instance = config->instance;
-    timer_instance->CR1 |= TIM_CR1_CEN;  /*Set Counter Enable Bit*/
+    TIM_TypeDef *timer_instance = config->instance;
+    timer_instance->CR1 |= TIM_CR1_CEN; /*Set Counter Enable Bit*/
 }
 
 /**
@@ -95,10 +93,10 @@ void PwmStart(const Pwm_Cfg_T* config)
  * @param channel The PWM channel to set the duty cycle for.
  * @param cc_reg_val The value to set in the corresponding capture/compare register.
  */
-void PwmSetDuty(const Pwm_Cfg_T* config, Pwm_Timer_Chan_T channel, uint32_t cc_reg_val)
+void PwmSetDuty(const Pwm_Cfg_T *config, Pwm_Timer_Chan_T channel, uint32_t cc_reg_val)
 {
-    TIM_TypeDef* timer_instance = config->instance;
-    switch(channel)
+    TIM_TypeDef *timer_instance = config->instance;
+    switch (channel)
     {
     case PWM_CHAN_1:
         timer_instance->CCR1 = cc_reg_val;

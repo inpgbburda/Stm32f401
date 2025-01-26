@@ -47,12 +47,13 @@ int main(void)
     SpiInit(&Spi_Storage, &Spi2_It_Config);
     SystickInit();
     OsInit();
-    
+
     OsStart();
     PwmStart(&Pwm2_Config);
     PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, RANDOM_PWM_VAL);
 
-    while (1){
+    while (1)
+    {
         /* Unreachable code */
     }
 }
