@@ -1,14 +1,13 @@
 /**
 * @file motor_ctrl.c
-* @brief 
+* @brief Module for converting received data into motor control signals.
 *
-* 
 *
 * @note - 
 * @attention - 
 * @see - 
-* @author inpgbburda
-* @date 23/12/2024
+* @author
+* @date 
 */
 
 /*

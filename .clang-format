@@ -1,0 +1,17 @@
+BasedOnStyle: LLVM           # Start with LLVM style as the base
+IndentWidth: 4               # Indentation with 4 spaces
+UseTab: Never                # Use spaces, not tabs
+BreakBeforeBraces: Allman    # Place braces on a new line
+AllowShortIfStatementsOnASingleLine: false # Force braces for single-line if statements
+ColumnLimit: 0               # Disable line length enforcement
+SortIncludes: false          # Do not sort include statements
+
+BraceWrapping:
+  AfterStruct: true           # Add a line break after `typedef struct`
+  BeforeElse: true            # Add braces consistently
+  SplitEmptyFunction: true   # Do not split empty function bodies
+
+AlignConsecutiveDeclarations: true # Align structure members vertically
+AlignTrailingComments: true  # Align comments for better readability
+
+PointerAlignment: Left        # Format pointers like `const Type* name`
