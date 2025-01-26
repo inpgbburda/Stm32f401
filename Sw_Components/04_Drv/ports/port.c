@@ -51,12 +51,12 @@
 /**
  * @brief Initializes the GPIO ports based on the provided configuration.
  *
- * This function iterates through the provided configuration array and sets the
- * mode and alternate function
- *
  * @param config An array of Port_Cfg_T structures, where each structure contains
  * the configuration for a single GPIO port.
  *
+ * This function iterates through the provided configuration array and sets the
+ * mode and alternate function
+ * 
  * @return void
  *
  * @note The PORT_MAX_NUMBER macro should be defined to indicate the maximum number
@@ -82,13 +82,13 @@ void PortInit(const Port_Cfg_T config[])
 /**
  * @brief Sets the state of a specific GPIO pin.
  *
- * This function allows the user to set the state of a specified GPIO pin to either
- * high (true) or low (false). The function uses the GPIO Data Output Register (ODR)
- * to achieve this.
- *
  * @param port A pointer to the GPIO_TypeDef structure representing the GPIO port.
  * @param pin The pin number within the specified GPIO port.
  * @param state The desired state of the pin. true for high, false for low.
+ * 
+ * This function allows the user to set the state of a specified GPIO pin to either
+ * high (true) or low (false). The function uses the GPIO Data Output Register (ODR)
+ * to achieve this.
  *
  * @return void
  *

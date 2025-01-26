@@ -4,9 +4,6 @@
 *
 * This file contains the type definitions for the PWM driver.
 *
-* @note -
-* @attention -
-* @see -
 */
 
 #ifndef PWM_TYPES_H

@@ -117,7 +117,7 @@ void SpiInit(Spi_Storage_T* storage,  const Spi_Cfg_T* config)
  * This function reads a 16-bit value from the SPI data register after waiting for the RXNE (Receive Buffer Not Empty) flag to be set,
  * indicating that data is available in the receive buffer.
  * 
- * Returns: The 16-bit value read from the SPI data register.
+ * @return: The 16-bit value read from the SPI data register.
  */
 uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
 {
@@ -141,7 +141,7 @@ uint16_t SpiReadBuffer(const SPI_TypeDef *instance)
  * number of bytes (`mess_len`) and stores them in the provided buffer (`dest_ptr`). The function will continue reading 
  * until either the message length is reached or the specified timeout expires.
  * 
- * Returns: 
+ * @return:
  * - E_OK: If the data is successfully read from the SPI peripheral.
  * - E_NOT_OK: If there is a timeout, invalid input (null pointers), or other errors during the operation.
  */
@@ -183,7 +183,7 @@ Std_Return_T SpiReadSynch(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t me
  * the SPI storage structure with the provided parameters and enables the
  * receive buffer not empty (RXNE) interrupt to start the data reception.
  * 
- * Returns: none
+ * @return: none
  */
 void SpiReadIt(Spi_Storage_T* storage, uint8_t* dest_ptr, uint32_t mess_len)
 {

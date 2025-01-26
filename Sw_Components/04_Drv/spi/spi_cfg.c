@@ -4,10 +4,6 @@
 *
 * This file contains the configuration definitions for the SPI driver.
 *
-* @note -
-* @attention -
-* @see - 
-* @date -
 */
 
 /*

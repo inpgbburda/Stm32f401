@@ -38,6 +38,16 @@ typedef struct
 |===================================================================================================================================|
 */
 
+/**
+ * @brief Initializes the clock with the specified configuration.
+ * @param config Pointer to a Clock_Cfg_T structure that contains the configuration information for the clock.
+ * 
+ * This function sets up the clock according to the provided configuration.
+ * 
+ * @return None
+ * 
+ * @note Ensure that the config parameter is not NULL and points to a valid Clock_Cfg_T structure.
+ */
 void ClockInit(const Clock_Cfg_T* config);
 
 #endif /* CLOCK_H */
