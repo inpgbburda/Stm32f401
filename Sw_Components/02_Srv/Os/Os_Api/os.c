@@ -28,8 +28,8 @@
 #define SPI_TASK_PERIOD_MS 10
 #define PWM_TASK_PERIOD_MS 20
 
-#define PWM_TASK_PRIORITY 2
-#define SPI_TASK_PRIORITY 1
+#define PWM_TASK_PRIORITY 1
+#define SPI_TASK_PRIORITY 2
 
 #define MOTORS_NUMBER 4
 #define DEBUG_BUFFER_SIZE 100
@@ -81,6 +81,8 @@ uint16_t Motor_Req_To_Pwm_Lut[LUT_SIZE] = {
 
 uint8_t buffer[4] = {0};
 
+TaskHandle_t SpiTaskHandle;
+
 /*
 |===================================================================================================================================|
     Local function declarations
@@ -120,7 +122,7 @@ void OsInit(void)
 {
     Spi_To_Pwm_Queue = xQueueCreate(MAX_QUEUE_LENGTH, sizeof(PowerRequestsPackage_T));
     xTaskCreate(PwmTask, "PwmTask", configMINIMAL_STACK_SIZE + 100, NULL, PWM_TASK_PRIORITY, NULL);
-    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, NULL, SPI_TASK_PRIORITY, NULL);
+    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, NULL, SPI_TASK_PRIORITY, &SpiTaskHandle);
 }
 
 /**
@@ -196,30 +198,26 @@ static void SpiTask(void* pvParameters)
 
     for (;;)
     {
-        if (Is_Spi_Message_Received)
+        SpiReadIt(&Spi_Storage, dataToPass.req_vals, MOTORS_NUMBER);
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+
+        if (Spi_To_Pwm_Queue != 0)
         {
-            if (Spi_To_Pwm_Queue != 0)
+            queue_tx_status = xQueueSendToFront(Spi_To_Pwm_Queue, (void*)&dataToPass, (TickType_t)TICKS_TO_WAIT);
+            if (pdPASS != queue_tx_status)
             {
-                queue_tx_status = xQueueSendToFront(Spi_To_Pwm_Queue, (void*)&dataToPass, (TickType_t)TICKS_TO_WAIT);
-                if (pdPASS != queue_tx_status)
-                {
-                    /* Failed to post the message on queue in given timeout */
-                }
+                /* Failed to post the message on queue in given timeout */
             }
-            Is_Spi_Message_Received = false;
-            SpiReadIt(&Spi_Storage, dataToPass.req_vals, MOTORS_NUMBER);
         }
-        else
-        {
-            /*Do nothing*/
-        }
-        vTaskDelay(pdMS_TO_TICKS(SPI_TASK_PERIOD_MS));
     }
 }
 
 void Spi2_RxCompleteCbk(void)
 {
-    Is_Spi_Message_Received = true;
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    /* Notify the SPI task */
+    vTaskNotifyGiveFromISR(SpiTaskHandle, &xHigherPriorityTaskWoken);
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 /**
