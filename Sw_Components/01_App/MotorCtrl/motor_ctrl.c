@@ -16,7 +16,7 @@
 |===================================================================================================================================|
 */
 #include "motor_ctrl.h"
-
+#include "queue.h"
 #include "pwm.h"
 #include "pwm_cfg.h"
 
@@ -49,6 +49,13 @@
     Function definitions
 |===================================================================================================================================|
 */
+
+void* MotorCtrlInit(void)
+{
+    static QueueHandle_t          Spi_To_Pwm_Queue;
+    Spi_To_Pwm_Queue = xQueueCreate(2, 3);
+    return NULL;
+}
 
 void CalculateMotorsSets(void)
 {
