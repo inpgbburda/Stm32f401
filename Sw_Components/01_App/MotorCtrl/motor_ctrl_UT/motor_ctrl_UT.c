@@ -2,9 +2,8 @@
 #include "motor_ctrl.h"
 #include "pwm_types.h"
 #include "pwm.h"
-// #include "FreeRTOS.h"
 #include "queue.h"
-#include "rtos_types.h"
+#include "rtos_types_UT.h"
 
 void setUp(void)
 {

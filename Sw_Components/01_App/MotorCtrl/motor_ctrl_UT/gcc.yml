@@ -1,6 +1,6 @@
 :cmock:
   :plugins: [ignore_arg , expect_any_args]
   :mock_prefix: ''  # No prefix, so it will generate pwm.h instead of Mockpwm.h
-  :includes: [pwm_types.h]
+  :includes: [pwm_types.h, rtos_types_UT.h]
   :mock_path: Sw_Components/01_App/MotorCtrl/motor_ctrl_UT/mocks/
   :strippables: [PRIVILEGED_FUNCTION] #Macro used in FreeRTOS

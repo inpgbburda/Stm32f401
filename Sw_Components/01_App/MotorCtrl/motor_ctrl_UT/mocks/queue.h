@@ -4,9 +4,8 @@
 
 #include "unity.h"
 #include "pwm_types.h"
-
-// #include "portmacro.h"
-#include "rtos_types.h"
+#include "rtos_types_UT.h"
+#include "queue.h"
 
 /* Ignore the following warnings, since we are copying code */
 #if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
@@ -28,7 +27,8 @@ void queue_Init(void);
 void queue_Destroy(void);
 void queue_Verify(void);
 
-#define xQueueCreate( uxQueueLength, uxItemSize )    xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
+
+
 
 #define xQueueGenericSend_ExpectAnyArgsAndReturn(cmock_retval) xQueueGenericSend_CMockExpectAnyArgsAndReturn(__LINE__, cmock_retval)
 void xQueueGenericSend_CMockExpectAnyArgsAndReturn(UNITY_LINE_TYPE cmock_line, BaseType_t cmock_to_return);
