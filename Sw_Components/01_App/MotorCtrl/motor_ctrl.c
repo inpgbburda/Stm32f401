@@ -15,6 +15,10 @@
     File includes 
 |===================================================================================================================================|
 */
+#ifdef UNIT_TEST
+#include "FreeRTOS.h"
+#endif
+
 #include "motor_ctrl.h"
 #include "queue.h"
 #include "pwm.h"
@@ -25,6 +29,7 @@
     Macro definitions
 |===================================================================================================================================|
 */
+#define MAX_QUEUE_LENGTH 10
 
 /*
 |===================================================================================================================================|
@@ -52,9 +57,9 @@
 
 void* MotorCtrlInit(void)
 {
-    static QueueHandle_t          Spi_To_Pwm_Queue;
-    Spi_To_Pwm_Queue = xQueueCreate(2, 3);
-    return NULL;
+    static QueueHandle_t          inbox_queue_handle;
+    inbox_queue_handle = xQueueCreate(MAX_QUEUE_LENGTH, MOTORS_NUMBER);
+    return inbox_queue_handle;
 }
 
 void CalculateMotorsSets(void)

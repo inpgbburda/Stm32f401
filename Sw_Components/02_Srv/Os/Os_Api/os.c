@@ -20,6 +20,8 @@
 #include "pwm.h"
 #include "pwm_cfg.h"
 
+#include "motor_ctrl.h"
+
 /*
 |===================================================================================================================================|
     Macro definitions
@@ -31,7 +33,6 @@
 #define PWM_TASK_PRIORITY 1
 #define SPI_TASK_PRIORITY 2
 
-#define MOTORS_NUMBER 4
 #define DEBUG_BUFFER_SIZE 100
 
 #define TICKS_TO_WAIT 10
@@ -50,7 +51,6 @@ typedef struct
 } PowerRequestsPackage_T;
 
 static QueueHandle_t          Spi_To_Pwm_Queue;
-static bool                   Is_Spi_Message_Received = true;
 static PowerRequestsPackage_T Debug_Buffer[DEBUG_BUFFER_SIZE] = {0};
 static int                    Debug_Samples_Cnt = 0;
 
