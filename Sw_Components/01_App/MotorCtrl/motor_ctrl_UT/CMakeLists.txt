@@ -9,6 +9,8 @@ SET(CMOCK_RLV_PATH
     ../../../../Tools/Unit_Testing/Cmock
 )
 
+add_definitions(-D_UNIT_TEST)
+
 include_directories(
     mocks/
     mocks/portable/GCC/ARM_CM4F/

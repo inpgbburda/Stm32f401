@@ -45,10 +45,6 @@
     Local types definitions 
 |===================================================================================================================================|
 */
-typedef struct
-{
-    uint8_t req_vals[MOTORS_NUMBER];
-} PowerRequestsPackage_T;
 
 static QueueHandle_t          Spi_To_Pwm_Queue;
 static PowerRequestsPackage_T Debug_Buffer[DEBUG_BUFFER_SIZE] = {0};

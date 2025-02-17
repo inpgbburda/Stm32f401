@@ -36,11 +36,21 @@ void motor_ctrl_Initialise(void)
     TEST_ASSERT_NOT_NULL(Queue_Handler);
 }
 
+void motor_ctrl_ExecutesPeriodically(void)
+{
+    xQueueReceive_ExpectAnyArgsAndReturn(pdPASS);
+    
+    PwmSetDuty_Expect(NULL, PWM_CHAN_1, 0);
+    PwmSetDuty_IgnoreArg_config();
+
+    MotorCtrlExecutePeriodic();
+}
+
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(motor_ctrl_Initialise);
     RUN_TEST(motor_ctrl_CalculatesMotorsSets);
-
+    RUN_TEST(motor_ctrl_ExecutesPeriodically);
     return UNITY_END();
 }

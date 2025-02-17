@@ -15,7 +15,7 @@
     File includes 
 |===================================================================================================================================|
 */
-#ifdef UNIT_TEST
+#ifndef _UNIT_TEST
 #include "FreeRTOS.h"
 #endif
 
@@ -42,7 +42,7 @@
     Object allocations 
 |===================================================================================================================================|
 */
-
+static QueueHandle_t          inbox_queue_handle;
 /*
 |===================================================================================================================================|
     Local function declarations
@@ -55,13 +55,21 @@
 |===================================================================================================================================|
 */
 
+
 void* MotorCtrlInit(void)
 {
-    static QueueHandle_t          inbox_queue_handle;
     inbox_queue_handle = xQueueCreate(MAX_QUEUE_LENGTH, MOTORS_NUMBER);
     return inbox_queue_handle;
 }
 
+void MotorCtrlExecutePeriodic(void)
+{
+    PowerRequestsPackage_T receivedMessage;
+    BaseType_t queue_rx_status;
+    PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, 0);
+    queue_rx_status = xQueueReceive(inbox_queue_handle, &receivedMessage, (TickType_t)100);
+    
+}
 void CalculateMotorsSets(void)
 {
     PwmSetDuty(&Pwm2_Config, 1, 1);
