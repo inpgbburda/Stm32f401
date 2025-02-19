@@ -18,8 +18,12 @@
     File includes 
 |===================================================================================================================================|
 */
-#include <stdint.h>
+#ifndef _UNIT_TEST
+#include "FreeRTOS.h"
+#endif
 
+#include <stdint.h>
+#include "queue.h"
 /*
 |===================================================================================================================================|
     Macro definitions
@@ -49,8 +53,9 @@ typedef struct
 |===================================================================================================================================|
 */
 
-void* MotorCtrlInit(void);
+void MotorCtrlInit(QueueHandle_t inbox_queue_handle);
 void CalculateMotorsSets(void);
 void MotorCtrlExecutePeriodic(void);
+QueueHandle_t MotorCtrlGetInboxQueueHandle(void);
 
 #endif /* MOTOR_CTRL_H */

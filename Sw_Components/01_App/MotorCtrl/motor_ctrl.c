@@ -15,12 +15,7 @@
     File includes 
 |===================================================================================================================================|
 */
-#ifndef _UNIT_TEST
-#include "FreeRTOS.h"
-#endif
-
 #include "motor_ctrl.h"
-#include "queue.h"
 #include "pwm.h"
 #include "pwm_cfg.h"
 
@@ -54,23 +49,74 @@ static QueueHandle_t          inbox_queue_handle;
     Function definitions
 |===================================================================================================================================|
 */
+static QueueHandle_t AssignedQueue;
 
-
-void* MotorCtrlInit(void)
+void MotorCtrlInit(QueueHandle_t inbox_queue_handle)
 {
-    inbox_queue_handle = xQueueCreate(MAX_QUEUE_LENGTH, MOTORS_NUMBER);
-    return inbox_queue_handle;
+    AssignedQueue = inbox_queue_handle;
 }
+
+uint16_t Lut[255] = {
+    1000, 1003, 1007, 1011, 1015, 1019, 1023, 1027,
+    1031, 1035, 1039, 1043, 1047, 1051, 1055, 1059,
+    1063, 1067, 1071, 1075, 1079, 1083, 1087, 1091,
+    1095, 1099, 1103, 1107, 1111, 1115, 1119, 1123,
+    1127, 1131, 1135, 1139, 1143, 1147, 1151, 1155,
+    1159, 1163, 1167, 1171, 1175, 1179, 1183, 1187,
+    1191, 1195, 1199, 1203, 1207, 1211, 1215, 1219,
+    1223, 1227, 1231, 1235, 1239, 1243, 1247, 1251,
+    1255, 1259, 1263, 1267, 1271, 1275, 1279, 1283,
+    1287, 1291, 1295, 1299, 1303, 1307, 1311, 1315,
+    1319, 1323, 1327, 1331, 1335, 1339, 1343, 1347,
+    1351, 1355, 1359, 1363, 1367, 1371, 1375, 1379,
+    1383, 1387, 1391, 1395, 1399, 1403, 1407, 1411,
+    1415, 1419, 1423, 1427, 1431, 1435, 1439, 1443,
+    1447, 1451, 1455, 1459, 1463, 1467, 1471, 1475,
+    1479, 1483, 1487, 1491, 1495, 1499, 1503, 1507,
+    1511, 1515, 1519, 1523, 1527, 1531, 1535, 1539,
+    1543, 1547, 1551, 1555, 1559, 1563, 1567, 1571,
+    1575, 1579, 1583, 1587, 1591, 1595, 1599, 1603,
+    1607, 1611, 1615, 1619, 1623, 1627, 1631, 1635,
+    1639, 1643, 1647, 1651, 1655, 1659, 1663, 1667,
+    1671, 1675, 1679, 1683, 1687, 1691, 1695, 1699,
+    1703, 1707, 1711, 1715, 1719, 1723, 1727, 1731,
+    1735, 1739, 1743, 1747, 1751, 1755, 1759, 1763,
+    1767, 1771, 1775, 1779, 1783, 1787, 1791, 1795,
+    1799, 1803, 1807, 1811, 1815, 1819, 1823, 1827,
+    1831, 1835, 1839, 1843, 1847, 1851, 1855, 1859,
+    1863, 1867, 1871, 1875, 1879, 1883, 1887, 1891,
+    1895, 1899, 1903, 1907, 1911, 1915, 1919, 1923,
+    1927, 1931, 1935, 1939, 1943, 1947, 1951, 1955,
+    1959, 1963, 1967, 1971, 1975, 1979, 1983, 1987,
+    1991, 1995, 1999
+};
 
 void MotorCtrlExecutePeriodic(void)
 {
     PowerRequestsPackage_T receivedMessage;
     BaseType_t queue_rx_status;
-    PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, 0);
+    uint16_t Converted_Values[4] = {0};
+    uint8_t a = 0;
+
     queue_rx_status = xQueueReceive(inbox_queue_handle, &receivedMessage, (TickType_t)100);
+    for(int i = 0; i < MOTORS_NUMBER; i++)
+    {
+        a = receivedMessage.req_vals[i];
+        Converted_Values[i] = Lut[a];
+    }
+    PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, Converted_Values[0]);
+    PwmSetDuty(&Pwm2_Config, PWM_CHAN_2, Converted_Values[1]);
+    PwmSetDuty(&Pwm2_Config, PWM_CHAN_3, Converted_Values[2]);
+    PwmSetDuty(&Pwm2_Config, PWM_CHAN_4, Converted_Values[3]);
+
     
 }
 void CalculateMotorsSets(void)
 {
     PwmSetDuty(&Pwm2_Config, 1, 1);
+}
+
+QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
+{
+    return AssignedQueue;
 }

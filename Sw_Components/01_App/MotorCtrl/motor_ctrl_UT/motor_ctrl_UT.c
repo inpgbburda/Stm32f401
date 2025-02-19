@@ -9,6 +9,15 @@ const int Max_Queue_Length = 10;
 const int Max_Queue_Item_Size = 4;
 const QueueHandle_t Arbitrary_Queue_Handle = (void*)0x1234; /*Variable used only to store non NULL pointer */
 
+static void ExpectPwmSetDutyCallWithConfigIgnore(uint16_t channel_values[] )
+{
+    for(int i = 0; (Pwm_Timer_Chan_T)i < PWM_CHAN_MAX; i++)
+    {
+        PwmSetDuty_Expect(NULL, i, channel_values[i]);
+        PwmSetDuty_IgnoreArg_config();
+    }
+}
+
 void setUp(void)
 {
     pwm_Init();
@@ -26,22 +35,32 @@ void motor_ctrl_CalculatesMotorsSets(void)
     CalculateMotorsSets();
 }
 
-void motor_ctrl_Initialise(void)
+void motor_ctrl_Initialises(void)
 {
-    void *Queue_Handler;
+    MotorCtrlInit(Arbitrary_Queue_Handle);
 
-    xQueueGenericCreate_ExpectAndReturn(Max_Queue_Length, Max_Queue_Item_Size, queueQUEUE_TYPE_BASE, Arbitrary_Queue_Handle);
-    Queue_Handler = MotorCtrlInit();
-
-    TEST_ASSERT_NOT_NULL(Queue_Handler);
+    TEST_ASSERT_EQUAL(Arbitrary_Queue_Handle, MotorCtrlGetInboxQueueHandle());
 }
 
 void motor_ctrl_ExecutesPeriodically(void)
 {
+    uint16_t channel_values[] = {0, 0, 0, 0};
+
     xQueueReceive_ExpectAnyArgsAndReturn(pdPASS);
-    
-    PwmSetDuty_Expect(NULL, PWM_CHAN_1, 0);
-    PwmSetDuty_IgnoreArg_config();
+    ExpectPwmSetDutyCallWithConfigIgnore(channel_values);
+
+    MotorCtrlExecutePeriodic();
+}
+
+void motor_ctrl_ExecutesPeriodicallyWithCorrectValues(void)
+{
+    uint16_t channel_values[] = {1490, 1235, 1999, 1003};
+    const uint8_t received_values[] = {100, 50, 255, 1};
+    PowerRequestsPackage_T received_message = {{100, 50, 255, 1}};
+
+    xQueueReceive_ExpectAnyArgsAndReturn(pdPASS);
+    xQueueReceive_ReturnThruPtr_pvBuffer(&received_message);
+    ExpectPwmSetDutyCallWithConfigIgnore(channel_values);
 
     MotorCtrlExecutePeriodic();
 }
@@ -49,8 +68,9 @@ void motor_ctrl_ExecutesPeriodically(void)
 int main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(motor_ctrl_Initialise);
+    RUN_TEST(motor_ctrl_Initialises);
     RUN_TEST(motor_ctrl_CalculatesMotorsSets);
-    RUN_TEST(motor_ctrl_ExecutesPeriodically);
+    // RUN_TEST(motor_ctrl_ExecutesPeriodically);
+    RUN_TEST(motor_ctrl_ExecutesPeriodicallyWithCorrectValues);
     return UNITY_END();
 }

@@ -100,6 +100,9 @@ typedef struct _CMOCK_xQueuePeek_CALL_INSTANCE
   QueueHandle_t Expected_xQueue;
   void* Expected_pvBuffer;
   TickType_t Expected_xTicksToWait;
+  char ReturnThruPtr_pvBuffer_Used;
+  void const* ReturnThruPtr_pvBuffer_Val;
+  size_t ReturnThruPtr_pvBuffer_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_pvBuffer;
   char IgnoreArg_xTicksToWait;
@@ -113,6 +116,9 @@ typedef struct _CMOCK_xQueuePeekFromISR_CALL_INSTANCE
   BaseType_t ReturnVal;
   QueueHandle_t Expected_xQueue;
   void* Expected_pvBuffer;
+  char ReturnThruPtr_pvBuffer_Used;
+  void const* ReturnThruPtr_pvBuffer_Val;
+  size_t ReturnThruPtr_pvBuffer_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_pvBuffer;
 
@@ -126,6 +132,9 @@ typedef struct _CMOCK_xQueueReceive_CALL_INSTANCE
   QueueHandle_t Expected_xQueue;
   void* Expected_pvBuffer;
   TickType_t Expected_xTicksToWait;
+  char ReturnThruPtr_pvBuffer_Used;
+  void const* ReturnThruPtr_pvBuffer_Val;
+  size_t ReturnThruPtr_pvBuffer_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_pvBuffer;
   char IgnoreArg_xTicksToWait;
@@ -170,6 +179,9 @@ typedef struct _CMOCK_xQueueGenericSendFromISR_CALL_INSTANCE
   const void* Expected_pvItemToQueue;
   BaseType_t* Expected_pxHigherPriorityTaskWoken;
   BaseType_t Expected_xCopyPosition;
+  char ReturnThruPtr_pxHigherPriorityTaskWoken_Used;
+  BaseType_t const* ReturnThruPtr_pxHigherPriorityTaskWoken_Val;
+  size_t ReturnThruPtr_pxHigherPriorityTaskWoken_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_pvItemToQueue;
   char IgnoreArg_pxHigherPriorityTaskWoken;
@@ -184,6 +196,9 @@ typedef struct _CMOCK_xQueueGiveFromISR_CALL_INSTANCE
   BaseType_t ReturnVal;
   QueueHandle_t Expected_xQueue;
   BaseType_t* Expected_pxHigherPriorityTaskWoken;
+  char ReturnThruPtr_pxHigherPriorityTaskWoken_Used;
+  BaseType_t const* ReturnThruPtr_pxHigherPriorityTaskWoken_Val;
+  size_t ReturnThruPtr_pxHigherPriorityTaskWoken_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_pxHigherPriorityTaskWoken;
 
@@ -197,6 +212,12 @@ typedef struct _CMOCK_xQueueReceiveFromISR_CALL_INSTANCE
   QueueHandle_t Expected_xQueue;
   void* Expected_pvBuffer;
   BaseType_t* Expected_pxHigherPriorityTaskWoken;
+  char ReturnThruPtr_pvBuffer_Used;
+  void const* ReturnThruPtr_pvBuffer_Val;
+  size_t ReturnThruPtr_pvBuffer_Size;
+  char ReturnThruPtr_pxHigherPriorityTaskWoken_Used;
+  BaseType_t const* ReturnThruPtr_pxHigherPriorityTaskWoken_Val;
+  size_t ReturnThruPtr_pxHigherPriorityTaskWoken_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_pvBuffer;
   char IgnoreArg_pxHigherPriorityTaskWoken;
@@ -255,6 +276,12 @@ typedef struct _CMOCK_xQueueCRReceiveFromISR_CALL_INSTANCE
   QueueHandle_t Expected_xQueue;
   void* Expected_pvBuffer;
   BaseType_t* Expected_pxTaskWoken;
+  char ReturnThruPtr_pvBuffer_Used;
+  void const* ReturnThruPtr_pvBuffer_Val;
+  size_t ReturnThruPtr_pvBuffer_Size;
+  char ReturnThruPtr_pxTaskWoken_Used;
+  BaseType_t const* ReturnThruPtr_pxTaskWoken_Val;
+  size_t ReturnThruPtr_pxTaskWoken_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_pvBuffer;
   char IgnoreArg_pxTaskWoken;
@@ -283,6 +310,9 @@ typedef struct _CMOCK_xQueueCRReceive_CALL_INSTANCE
   QueueHandle_t Expected_xQueue;
   void* Expected_pvBuffer;
   TickType_t Expected_xTicksToWait;
+  char ReturnThruPtr_pvBuffer_Used;
+  void const* ReturnThruPtr_pvBuffer_Val;
+  size_t ReturnThruPtr_pvBuffer_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_pvBuffer;
   char IgnoreArg_xTicksToWait;
@@ -306,6 +336,9 @@ typedef struct _CMOCK_xQueueCreateMutexStatic_CALL_INSTANCE
   QueueHandle_t ReturnVal;
   uint8_t Expected_ucQueueType;
   StaticQueue_t* Expected_pxStaticQueue;
+  char ReturnThruPtr_pxStaticQueue_Used;
+  StaticQueue_t const* ReturnThruPtr_pxStaticQueue_Val;
+  size_t ReturnThruPtr_pxStaticQueue_Size;
   char IgnoreArg_ucQueueType;
   char IgnoreArg_pxStaticQueue;
 
@@ -331,6 +364,9 @@ typedef struct _CMOCK_xQueueCreateCountingSemaphoreStatic_CALL_INSTANCE
   UBaseType_t Expected_uxMaxCount;
   UBaseType_t Expected_uxInitialCount;
   StaticQueue_t* Expected_pxStaticQueue;
+  char ReturnThruPtr_pxStaticQueue_Used;
+  StaticQueue_t const* ReturnThruPtr_pxStaticQueue_Val;
+  size_t ReturnThruPtr_pxStaticQueue_Size;
   char IgnoreArg_uxMaxCount;
   char IgnoreArg_uxInitialCount;
   char IgnoreArg_pxStaticQueue;
@@ -445,6 +481,12 @@ typedef struct _CMOCK_xQueueGenericCreateStatic_CALL_INSTANCE
   uint8_t* Expected_pucQueueStorage;
   StaticQueue_t* Expected_pxStaticQueue;
   uint8_t Expected_ucQueueType;
+  char ReturnThruPtr_pucQueueStorage_Used;
+  uint8_t const* ReturnThruPtr_pucQueueStorage_Val;
+  size_t ReturnThruPtr_pucQueueStorage_Size;
+  char ReturnThruPtr_pxStaticQueue_Used;
+  StaticQueue_t const* ReturnThruPtr_pxStaticQueue_Val;
+  size_t ReturnThruPtr_pxStaticQueue_Size;
   char IgnoreArg_uxQueueLength;
   char IgnoreArg_uxItemSize;
   char IgnoreArg_pucQueueStorage;
@@ -461,6 +503,12 @@ typedef struct _CMOCK_xQueueGenericGetStaticBuffers_CALL_INSTANCE
   QueueHandle_t Expected_xQueue;
   uint8_t** Expected_ppucQueueStorage;
   StaticQueue_t** Expected_ppxStaticQueue;
+  char ReturnThruPtr_ppucQueueStorage_Used;
+  uint8_t* const* ReturnThruPtr_ppucQueueStorage_Val;
+  size_t ReturnThruPtr_ppucQueueStorage_Size;
+  char ReturnThruPtr_ppxStaticQueue_Used;
+  StaticQueue_t* const* ReturnThruPtr_ppxStaticQueue_Val;
+  size_t ReturnThruPtr_ppxStaticQueue_Size;
   char IgnoreArg_xQueue;
   char IgnoreArg_ppucQueueStorage;
   char IgnoreArg_ppxStaticQueue;
@@ -1070,6 +1118,12 @@ BaseType_t xQueuePeek(QueueHandle_t xQueue, void* const pvBuffer, TickType_t xTi
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_xTicksToWait), (void*)(&xTicksToWait), sizeof(TickType_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pvBuffer_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pvBuffer, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pvBuffer, (const void*)cmock_call_instance->ReturnThruPtr_pvBuffer_Val,
+      cmock_call_instance->ReturnThruPtr_pvBuffer_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -1082,6 +1136,7 @@ void CMockExpectParameters_xQueuePeek(CMOCK_xQueuePeek_CALL_INSTANCE* cmock_call
   cmock_call_instance->IgnoreArg_xQueue = 0;
   cmock_call_instance->Expected_pvBuffer = pvBuffer;
   cmock_call_instance->IgnoreArg_pvBuffer = 0;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 0;
   memcpy((void*)(&cmock_call_instance->Expected_xTicksToWait), (void*)(&xTicksToWait),
          sizeof(TickType_t[sizeof(xTicksToWait) == sizeof(TickType_t) ? 1 : -1])); /* add TickType_t to :treat_as_array if this causes an error */
   cmock_call_instance->IgnoreArg_xTicksToWait = 0;
@@ -1112,6 +1167,15 @@ void xQueuePeek_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, QueueHandle_t x
   CMockExpectParameters_xQueuePeek(cmock_call_instance, xQueue, pvBuffer, xTicksToWait);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueuePeek_CMockReturnMemThruPtr_pvBuffer(UNITY_LINE_TYPE cmock_line, void const* pvBuffer, size_t cmock_size)
+{
+  CMOCK_xQueuePeek_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueuePeek_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueuePeek_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Val = pvBuffer;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Size = cmock_size;
 }
 
 void xQueuePeek_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)
@@ -1160,6 +1224,12 @@ BaseType_t xQueuePeekFromISR(QueueHandle_t xQueue, void* const pvBuffer)
       { UNITY_TEST_ASSERT_EQUAL_HEX8_ARRAY(cmock_call_instance->Expected_pvBuffer, pvBuffer, 1, cmock_line, CMockStringMismatch); }
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pvBuffer_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pvBuffer, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pvBuffer, (const void*)cmock_call_instance->ReturnThruPtr_pvBuffer_Val,
+      cmock_call_instance->ReturnThruPtr_pvBuffer_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -1172,6 +1242,7 @@ void CMockExpectParameters_xQueuePeekFromISR(CMOCK_xQueuePeekFromISR_CALL_INSTAN
   cmock_call_instance->IgnoreArg_xQueue = 0;
   cmock_call_instance->Expected_pvBuffer = pvBuffer;
   cmock_call_instance->IgnoreArg_pvBuffer = 0;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 0;
 }
 
 void xQueuePeekFromISR_CMockExpectAnyArgsAndReturn(UNITY_LINE_TYPE cmock_line, BaseType_t cmock_to_return)
@@ -1199,6 +1270,15 @@ void xQueuePeekFromISR_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, QueueHan
   CMockExpectParameters_xQueuePeekFromISR(cmock_call_instance, xQueue, pvBuffer);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueuePeekFromISR_CMockReturnMemThruPtr_pvBuffer(UNITY_LINE_TYPE cmock_line, void const* pvBuffer, size_t cmock_size)
+{
+  CMOCK_xQueuePeekFromISR_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueuePeekFromISR_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueuePeekFromISR_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Val = pvBuffer;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Size = cmock_size;
 }
 
 void xQueuePeekFromISR_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)
@@ -1245,6 +1325,12 @@ BaseType_t xQueueReceive(QueueHandle_t xQueue, void* const pvBuffer, TickType_t 
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_xTicksToWait), (void*)(&xTicksToWait), sizeof(TickType_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pvBuffer_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pvBuffer, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pvBuffer, (const void*)cmock_call_instance->ReturnThruPtr_pvBuffer_Val,
+      cmock_call_instance->ReturnThruPtr_pvBuffer_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -1257,6 +1343,7 @@ void CMockExpectParameters_xQueueReceive(CMOCK_xQueueReceive_CALL_INSTANCE* cmoc
   cmock_call_instance->IgnoreArg_xQueue = 0;
   cmock_call_instance->Expected_pvBuffer = pvBuffer;
   cmock_call_instance->IgnoreArg_pvBuffer = 0;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 0;
   memcpy((void*)(&cmock_call_instance->Expected_xTicksToWait), (void*)(&xTicksToWait),
          sizeof(TickType_t[sizeof(xTicksToWait) == sizeof(TickType_t) ? 1 : -1])); /* add TickType_t to :treat_as_array if this causes an error */
   cmock_call_instance->IgnoreArg_xTicksToWait = 0;
@@ -1287,6 +1374,15 @@ void xQueueReceive_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, QueueHandle_
   CMockExpectParameters_xQueueReceive(cmock_call_instance, xQueue, pvBuffer, xTicksToWait);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueueReceive_CMockReturnMemThruPtr_pvBuffer(UNITY_LINE_TYPE cmock_line, void const* pvBuffer, size_t cmock_size)
+{
+  CMOCK_xQueueReceive_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueReceive_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueReceive_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Val = pvBuffer;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Size = cmock_size;
 }
 
 void xQueueReceive_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)
@@ -1530,6 +1626,12 @@ BaseType_t xQueueGenericSendFromISR(QueueHandle_t xQueue, const void* const pvIt
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_xCopyPosition), (void*)(&xCopyPosition), sizeof(BaseType_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pxHigherPriorityTaskWoken, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pxHigherPriorityTaskWoken, (const void*)cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Val,
+      cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -1544,6 +1646,7 @@ void CMockExpectParameters_xQueueGenericSendFromISR(CMOCK_xQueueGenericSendFromI
   cmock_call_instance->IgnoreArg_pvItemToQueue = 0;
   cmock_call_instance->Expected_pxHigherPriorityTaskWoken = pxHigherPriorityTaskWoken;
   cmock_call_instance->IgnoreArg_pxHigherPriorityTaskWoken = 0;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used = 0;
   memcpy((void*)(&cmock_call_instance->Expected_xCopyPosition), (void*)(&xCopyPosition),
          sizeof(BaseType_t[sizeof(xCopyPosition) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
   cmock_call_instance->IgnoreArg_xCopyPosition = 0;
@@ -1574,6 +1677,15 @@ void xQueueGenericSendFromISR_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, Q
   CMockExpectParameters_xQueueGenericSendFromISR(cmock_call_instance, xQueue, pvItemToQueue, pxHigherPriorityTaskWoken, xCopyPosition);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueueGenericSendFromISR_CMockReturnMemThruPtr_pxHigherPriorityTaskWoken(UNITY_LINE_TYPE cmock_line, BaseType_t const* pxHigherPriorityTaskWoken, size_t cmock_size)
+{
+  CMOCK_xQueueGenericSendFromISR_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueGenericSendFromISR_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueGenericSendFromISR_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Val = pxHigherPriorityTaskWoken;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Size = cmock_size;
 }
 
 void xQueueGenericSendFromISR_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)
@@ -1626,6 +1738,12 @@ BaseType_t xQueueGiveFromISR(QueueHandle_t xQueue, BaseType_t* const pxHigherPri
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_pxHigherPriorityTaskWoken), (void*)(pxHigherPriorityTaskWoken), sizeof(BaseType_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pxHigherPriorityTaskWoken, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pxHigherPriorityTaskWoken, (const void*)cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Val,
+      cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -1638,6 +1756,7 @@ void CMockExpectParameters_xQueueGiveFromISR(CMOCK_xQueueGiveFromISR_CALL_INSTAN
   cmock_call_instance->IgnoreArg_xQueue = 0;
   cmock_call_instance->Expected_pxHigherPriorityTaskWoken = pxHigherPriorityTaskWoken;
   cmock_call_instance->IgnoreArg_pxHigherPriorityTaskWoken = 0;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used = 0;
 }
 
 void xQueueGiveFromISR_CMockExpectAnyArgsAndReturn(UNITY_LINE_TYPE cmock_line, BaseType_t cmock_to_return)
@@ -1665,6 +1784,15 @@ void xQueueGiveFromISR_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, QueueHan
   CMockExpectParameters_xQueueGiveFromISR(cmock_call_instance, xQueue, pxHigherPriorityTaskWoken);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueueGiveFromISR_CMockReturnMemThruPtr_pxHigherPriorityTaskWoken(UNITY_LINE_TYPE cmock_line, BaseType_t const* pxHigherPriorityTaskWoken, size_t cmock_size)
+{
+  CMOCK_xQueueGiveFromISR_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueGiveFromISR_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueGiveFromISR_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Val = pxHigherPriorityTaskWoken;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Size = cmock_size;
 }
 
 void xQueueGiveFromISR_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)
@@ -1711,6 +1839,18 @@ BaseType_t xQueueReceiveFromISR(QueueHandle_t xQueue, void* const pvBuffer, Base
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_pxHigherPriorityTaskWoken), (void*)(pxHigherPriorityTaskWoken), sizeof(BaseType_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pvBuffer_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pvBuffer, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pvBuffer, (const void*)cmock_call_instance->ReturnThruPtr_pvBuffer_Val,
+      cmock_call_instance->ReturnThruPtr_pvBuffer_Size);
+  }
+  if (cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pxHigherPriorityTaskWoken, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pxHigherPriorityTaskWoken, (const void*)cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Val,
+      cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -1723,8 +1863,10 @@ void CMockExpectParameters_xQueueReceiveFromISR(CMOCK_xQueueReceiveFromISR_CALL_
   cmock_call_instance->IgnoreArg_xQueue = 0;
   cmock_call_instance->Expected_pvBuffer = pvBuffer;
   cmock_call_instance->IgnoreArg_pvBuffer = 0;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 0;
   cmock_call_instance->Expected_pxHigherPriorityTaskWoken = pxHigherPriorityTaskWoken;
   cmock_call_instance->IgnoreArg_pxHigherPriorityTaskWoken = 0;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used = 0;
 }
 
 void xQueueReceiveFromISR_CMockExpectAnyArgsAndReturn(UNITY_LINE_TYPE cmock_line, BaseType_t cmock_to_return)
@@ -1752,6 +1894,24 @@ void xQueueReceiveFromISR_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, Queue
   CMockExpectParameters_xQueueReceiveFromISR(cmock_call_instance, xQueue, pvBuffer, pxHigherPriorityTaskWoken);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueueReceiveFromISR_CMockReturnMemThruPtr_pvBuffer(UNITY_LINE_TYPE cmock_line, void const* pvBuffer, size_t cmock_size)
+{
+  CMOCK_xQueueReceiveFromISR_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueReceiveFromISR_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueReceiveFromISR_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Val = pvBuffer;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Size = cmock_size;
+}
+
+void xQueueReceiveFromISR_CMockReturnMemThruPtr_pxHigherPriorityTaskWoken(UNITY_LINE_TYPE cmock_line, BaseType_t const* pxHigherPriorityTaskWoken, size_t cmock_size)
+{
+  CMOCK_xQueueReceiveFromISR_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueReceiveFromISR_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueReceiveFromISR_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Val = pxHigherPriorityTaskWoken;
+  cmock_call_instance->ReturnThruPtr_pxHigherPriorityTaskWoken_Size = cmock_size;
 }
 
 void xQueueReceiveFromISR_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)
@@ -2089,6 +2249,18 @@ BaseType_t xQueueCRReceiveFromISR(QueueHandle_t xQueue, void* pvBuffer, BaseType
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_pxTaskWoken), (void*)(pxTaskWoken), sizeof(BaseType_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pvBuffer_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pvBuffer, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pvBuffer, (const void*)cmock_call_instance->ReturnThruPtr_pvBuffer_Val,
+      cmock_call_instance->ReturnThruPtr_pvBuffer_Size);
+  }
+  if (cmock_call_instance->ReturnThruPtr_pxTaskWoken_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pxTaskWoken, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pxTaskWoken, (const void*)cmock_call_instance->ReturnThruPtr_pxTaskWoken_Val,
+      cmock_call_instance->ReturnThruPtr_pxTaskWoken_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -2101,8 +2273,10 @@ void CMockExpectParameters_xQueueCRReceiveFromISR(CMOCK_xQueueCRReceiveFromISR_C
   cmock_call_instance->IgnoreArg_xQueue = 0;
   cmock_call_instance->Expected_pvBuffer = pvBuffer;
   cmock_call_instance->IgnoreArg_pvBuffer = 0;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 0;
   cmock_call_instance->Expected_pxTaskWoken = pxTaskWoken;
   cmock_call_instance->IgnoreArg_pxTaskWoken = 0;
+  cmock_call_instance->ReturnThruPtr_pxTaskWoken_Used = 0;
 }
 
 void xQueueCRReceiveFromISR_CMockExpectAnyArgsAndReturn(UNITY_LINE_TYPE cmock_line, BaseType_t cmock_to_return)
@@ -2130,6 +2304,24 @@ void xQueueCRReceiveFromISR_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, Que
   CMockExpectParameters_xQueueCRReceiveFromISR(cmock_call_instance, xQueue, pvBuffer, pxTaskWoken);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueueCRReceiveFromISR_CMockReturnMemThruPtr_pvBuffer(UNITY_LINE_TYPE cmock_line, void const* pvBuffer, size_t cmock_size)
+{
+  CMOCK_xQueueCRReceiveFromISR_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueCRReceiveFromISR_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueCRReceiveFromISR_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Val = pvBuffer;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Size = cmock_size;
+}
+
+void xQueueCRReceiveFromISR_CMockReturnMemThruPtr_pxTaskWoken(UNITY_LINE_TYPE cmock_line, BaseType_t const* pxTaskWoken, size_t cmock_size)
+{
+  CMOCK_xQueueCRReceiveFromISR_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueCRReceiveFromISR_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueCRReceiveFromISR_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pxTaskWoken_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pxTaskWoken_Val = pxTaskWoken;
+  cmock_call_instance->ReturnThruPtr_pxTaskWoken_Size = cmock_size;
 }
 
 void xQueueCRReceiveFromISR_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)
@@ -2278,6 +2470,12 @@ BaseType_t xQueueCRReceive(QueueHandle_t xQueue, void* pvBuffer, TickType_t xTic
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(&cmock_call_instance->Expected_xTicksToWait), (void*)(&xTicksToWait), sizeof(TickType_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pvBuffer_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pvBuffer, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pvBuffer, (const void*)cmock_call_instance->ReturnThruPtr_pvBuffer_Val,
+      cmock_call_instance->ReturnThruPtr_pvBuffer_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -2290,6 +2488,7 @@ void CMockExpectParameters_xQueueCRReceive(CMOCK_xQueueCRReceive_CALL_INSTANCE* 
   cmock_call_instance->IgnoreArg_xQueue = 0;
   cmock_call_instance->Expected_pvBuffer = pvBuffer;
   cmock_call_instance->IgnoreArg_pvBuffer = 0;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 0;
   memcpy((void*)(&cmock_call_instance->Expected_xTicksToWait), (void*)(&xTicksToWait),
          sizeof(TickType_t[sizeof(xTicksToWait) == sizeof(TickType_t) ? 1 : -1])); /* add TickType_t to :treat_as_array if this causes an error */
   cmock_call_instance->IgnoreArg_xTicksToWait = 0;
@@ -2320,6 +2519,15 @@ void xQueueCRReceive_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, QueueHandl
   CMockExpectParameters_xQueueCRReceive(cmock_call_instance, xQueue, pvBuffer, xTicksToWait);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueueCRReceive_CMockReturnMemThruPtr_pvBuffer(UNITY_LINE_TYPE cmock_line, void const* pvBuffer, size_t cmock_size)
+{
+  CMOCK_xQueueCRReceive_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueCRReceive_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueCRReceive_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Val = pvBuffer;
+  cmock_call_instance->ReturnThruPtr_pvBuffer_Size = cmock_size;
 }
 
 void xQueueCRReceive_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)
@@ -2427,6 +2635,12 @@ QueueHandle_t xQueueCreateMutexStatic(const uint8_t ucQueueType, StaticQueue_t* 
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_pxStaticQueue), (void*)(pxStaticQueue), sizeof(StaticQueue_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pxStaticQueue, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pxStaticQueue, (const void*)cmock_call_instance->ReturnThruPtr_pxStaticQueue_Val,
+      cmock_call_instance->ReturnThruPtr_pxStaticQueue_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -2438,6 +2652,7 @@ void CMockExpectParameters_xQueueCreateMutexStatic(CMOCK_xQueueCreateMutexStatic
   cmock_call_instance->IgnoreArg_ucQueueType = 0;
   cmock_call_instance->Expected_pxStaticQueue = pxStaticQueue;
   cmock_call_instance->IgnoreArg_pxStaticQueue = 0;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used = 0;
 }
 
 void xQueueCreateMutexStatic_CMockExpectAnyArgsAndReturn(UNITY_LINE_TYPE cmock_line, QueueHandle_t cmock_to_return)
@@ -2465,6 +2680,15 @@ void xQueueCreateMutexStatic_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, co
   CMockExpectParameters_xQueueCreateMutexStatic(cmock_call_instance, ucQueueType, pxStaticQueue);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(QueueHandle_t[sizeof(cmock_to_return) == sizeof(QueueHandle_t) ? 1 : -1])); /* add QueueHandle_t to :treat_as_array if this causes an error */
+}
+
+void xQueueCreateMutexStatic_CMockReturnMemThruPtr_pxStaticQueue(UNITY_LINE_TYPE cmock_line, StaticQueue_t const* pxStaticQueue, size_t cmock_size)
+{
+  CMOCK_xQueueCreateMutexStatic_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueCreateMutexStatic_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueCreateMutexStatic_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Val = pxStaticQueue;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Size = cmock_size;
 }
 
 void xQueueCreateMutexStatic_CMockIgnoreArg_ucQueueType(UNITY_LINE_TYPE cmock_line)
@@ -2586,6 +2810,12 @@ QueueHandle_t xQueueCreateCountingSemaphoreStatic(const UBaseType_t uxMaxCount, 
     UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_pxStaticQueue), (void*)(pxStaticQueue), sizeof(StaticQueue_t), cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pxStaticQueue, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pxStaticQueue, (const void*)cmock_call_instance->ReturnThruPtr_pxStaticQueue_Val,
+      cmock_call_instance->ReturnThruPtr_pxStaticQueue_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -2601,6 +2831,7 @@ void CMockExpectParameters_xQueueCreateCountingSemaphoreStatic(CMOCK_xQueueCreat
   cmock_call_instance->IgnoreArg_uxInitialCount = 0;
   cmock_call_instance->Expected_pxStaticQueue = pxStaticQueue;
   cmock_call_instance->IgnoreArg_pxStaticQueue = 0;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used = 0;
 }
 
 void xQueueCreateCountingSemaphoreStatic_CMockExpectAnyArgsAndReturn(UNITY_LINE_TYPE cmock_line, QueueHandle_t cmock_to_return)
@@ -2628,6 +2859,15 @@ void xQueueCreateCountingSemaphoreStatic_CMockExpectAndReturn(UNITY_LINE_TYPE cm
   CMockExpectParameters_xQueueCreateCountingSemaphoreStatic(cmock_call_instance, uxMaxCount, uxInitialCount, pxStaticQueue);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(QueueHandle_t[sizeof(cmock_to_return) == sizeof(QueueHandle_t) ? 1 : -1])); /* add QueueHandle_t to :treat_as_array if this causes an error */
+}
+
+void xQueueCreateCountingSemaphoreStatic_CMockReturnMemThruPtr_pxStaticQueue(UNITY_LINE_TYPE cmock_line, StaticQueue_t const* pxStaticQueue, size_t cmock_size)
+{
+  CMOCK_xQueueCreateCountingSemaphoreStatic_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueCreateCountingSemaphoreStatic_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueCreateCountingSemaphoreStatic_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Val = pxStaticQueue;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Size = cmock_size;
 }
 
 void xQueueCreateCountingSemaphoreStatic_CMockIgnoreArg_uxMaxCount(UNITY_LINE_TYPE cmock_line)
@@ -3322,6 +3562,18 @@ QueueHandle_t xQueueGenericCreateStatic(const UBaseType_t uxQueueLength, const U
     UNITY_TEST_ASSERT_EQUAL_HEX8(cmock_call_instance->Expected_ucQueueType, ucQueueType, cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_pucQueueStorage_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pucQueueStorage, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pucQueueStorage, (const void*)cmock_call_instance->ReturnThruPtr_pucQueueStorage_Val,
+      cmock_call_instance->ReturnThruPtr_pucQueueStorage_Size);
+  }
+  if (cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(pxStaticQueue, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)pxStaticQueue, (const void*)cmock_call_instance->ReturnThruPtr_pxStaticQueue_Val,
+      cmock_call_instance->ReturnThruPtr_pxStaticQueue_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -3337,8 +3589,10 @@ void CMockExpectParameters_xQueueGenericCreateStatic(CMOCK_xQueueGenericCreateSt
   cmock_call_instance->IgnoreArg_uxItemSize = 0;
   cmock_call_instance->Expected_pucQueueStorage = pucQueueStorage;
   cmock_call_instance->IgnoreArg_pucQueueStorage = 0;
+  cmock_call_instance->ReturnThruPtr_pucQueueStorage_Used = 0;
   cmock_call_instance->Expected_pxStaticQueue = pxStaticQueue;
   cmock_call_instance->IgnoreArg_pxStaticQueue = 0;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used = 0;
   cmock_call_instance->Expected_ucQueueType = ucQueueType;
   cmock_call_instance->IgnoreArg_ucQueueType = 0;
 }
@@ -3368,6 +3622,24 @@ void xQueueGenericCreateStatic_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, 
   CMockExpectParameters_xQueueGenericCreateStatic(cmock_call_instance, uxQueueLength, uxItemSize, pucQueueStorage, pxStaticQueue, ucQueueType);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(QueueHandle_t[sizeof(cmock_to_return) == sizeof(QueueHandle_t) ? 1 : -1])); /* add QueueHandle_t to :treat_as_array if this causes an error */
+}
+
+void xQueueGenericCreateStatic_CMockReturnMemThruPtr_pucQueueStorage(UNITY_LINE_TYPE cmock_line, uint8_t const* pucQueueStorage, size_t cmock_size)
+{
+  CMOCK_xQueueGenericCreateStatic_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueGenericCreateStatic_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueGenericCreateStatic_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pucQueueStorage_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pucQueueStorage_Val = pucQueueStorage;
+  cmock_call_instance->ReturnThruPtr_pucQueueStorage_Size = cmock_size;
+}
+
+void xQueueGenericCreateStatic_CMockReturnMemThruPtr_pxStaticQueue(UNITY_LINE_TYPE cmock_line, StaticQueue_t const* pxStaticQueue, size_t cmock_size)
+{
+  CMOCK_xQueueGenericCreateStatic_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueGenericCreateStatic_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueGenericCreateStatic_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Used = 1;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Val = pxStaticQueue;
+  cmock_call_instance->ReturnThruPtr_pxStaticQueue_Size = cmock_size;
 }
 
 void xQueueGenericCreateStatic_CMockIgnoreArg_uxQueueLength(UNITY_LINE_TYPE cmock_line)
@@ -3432,6 +3704,18 @@ BaseType_t xQueueGenericGetStaticBuffers(QueueHandle_t xQueue, uint8_t** ppucQue
     UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_ppxStaticQueue, ppxStaticQueue, cmock_line, CMockStringMismatch);
   }
   }
+  if (cmock_call_instance->ReturnThruPtr_ppucQueueStorage_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(ppucQueueStorage, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)ppucQueueStorage, (const void*)cmock_call_instance->ReturnThruPtr_ppucQueueStorage_Val,
+      cmock_call_instance->ReturnThruPtr_ppucQueueStorage_Size);
+  }
+  if (cmock_call_instance->ReturnThruPtr_ppxStaticQueue_Used)
+  {
+    UNITY_TEST_ASSERT_NOT_NULL(ppxStaticQueue, cmock_line, CMockStringPtrIsNULL);
+    memcpy((void*)ppxStaticQueue, (const void*)cmock_call_instance->ReturnThruPtr_ppxStaticQueue_Val,
+      cmock_call_instance->ReturnThruPtr_ppxStaticQueue_Size);
+  }
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
 }
@@ -3444,8 +3728,10 @@ void CMockExpectParameters_xQueueGenericGetStaticBuffers(CMOCK_xQueueGenericGetS
   cmock_call_instance->IgnoreArg_xQueue = 0;
   cmock_call_instance->Expected_ppucQueueStorage = ppucQueueStorage;
   cmock_call_instance->IgnoreArg_ppucQueueStorage = 0;
+  cmock_call_instance->ReturnThruPtr_ppucQueueStorage_Used = 0;
   cmock_call_instance->Expected_ppxStaticQueue = ppxStaticQueue;
   cmock_call_instance->IgnoreArg_ppxStaticQueue = 0;
+  cmock_call_instance->ReturnThruPtr_ppxStaticQueue_Used = 0;
 }
 
 void xQueueGenericGetStaticBuffers_CMockExpectAnyArgsAndReturn(UNITY_LINE_TYPE cmock_line, BaseType_t cmock_to_return)
@@ -3473,6 +3759,24 @@ void xQueueGenericGetStaticBuffers_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_li
   CMockExpectParameters_xQueueGenericGetStaticBuffers(cmock_call_instance, xQueue, ppucQueueStorage, ppxStaticQueue);
   memcpy((void*)(&cmock_call_instance->ReturnVal), (void*)(&cmock_to_return),
          sizeof(BaseType_t[sizeof(cmock_to_return) == sizeof(BaseType_t) ? 1 : -1])); /* add BaseType_t to :treat_as_array if this causes an error */
+}
+
+void xQueueGenericGetStaticBuffers_CMockReturnMemThruPtr_ppucQueueStorage(UNITY_LINE_TYPE cmock_line, uint8_t* const* ppucQueueStorage, size_t cmock_size)
+{
+  CMOCK_xQueueGenericGetStaticBuffers_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueGenericGetStaticBuffers_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueGenericGetStaticBuffers_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_ppucQueueStorage_Used = 1;
+  cmock_call_instance->ReturnThruPtr_ppucQueueStorage_Val = ppucQueueStorage;
+  cmock_call_instance->ReturnThruPtr_ppucQueueStorage_Size = cmock_size;
+}
+
+void xQueueGenericGetStaticBuffers_CMockReturnMemThruPtr_ppxStaticQueue(UNITY_LINE_TYPE cmock_line, StaticQueue_t* const* ppxStaticQueue, size_t cmock_size)
+{
+  CMOCK_xQueueGenericGetStaticBuffers_CALL_INSTANCE* cmock_call_instance = (CMOCK_xQueueGenericGetStaticBuffers_CALL_INSTANCE*)CMock_Guts_GetAddressFor(CMock_Guts_MemEndOfChain(Mock.xQueueGenericGetStaticBuffers_CallInstance));
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringPtrPreExp);
+  cmock_call_instance->ReturnThruPtr_ppxStaticQueue_Used = 1;
+  cmock_call_instance->ReturnThruPtr_ppxStaticQueue_Val = ppxStaticQueue;
+  cmock_call_instance->ReturnThruPtr_ppxStaticQueue_Size = cmock_size;
 }
 
 void xQueueGenericGetStaticBuffers_CMockIgnoreArg_xQueue(UNITY_LINE_TYPE cmock_line)

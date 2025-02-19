@@ -37,10 +37,11 @@ typedef struct
 
 typedef enum
 {
-    PWM_CHAN_1,
+    PWM_CHAN_1 = 0U,
     PWM_CHAN_2,
     PWM_CHAN_3,
-    PWM_CHAN_4
+    PWM_CHAN_4,
+    PWM_CHAN_MAX
 } Pwm_Timer_Chan_T;
 
 /*
