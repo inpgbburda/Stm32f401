@@ -54,7 +54,6 @@ typedef struct
 */
 
 void MotorCtrlInit(QueueHandle_t inbox_queue_handle);
-void CalculateMotorsSets(void);
 void MotorCtrlExecutePeriodic(void);
 QueueHandle_t MotorCtrlGetInboxQueueHandle(void);
 
