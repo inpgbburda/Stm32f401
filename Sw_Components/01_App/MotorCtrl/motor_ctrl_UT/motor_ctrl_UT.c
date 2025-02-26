@@ -4,6 +4,7 @@
 #include "pwm.h"
 #include "queue.h"
 #include "rtos_types_UT.h"
+#include "spi.h"
 
 const int Max_Queue_Length = 10;
 const int Max_Queue_Item_Size = 4;
@@ -21,11 +22,19 @@ static void ExpectPwmSetDutyCallWithConfigIgnore(uint16_t Expected_Pwm_Values[] 
 void setUp(void)
 {
     pwm_Init();
+    spi_Init();
+    queue_Init();
 }
 
 void tearDown(void)
 {
     pwm_Verify();
+    spi_Verify();
+    queue_Verify();
+
+    pwm_Destroy();
+    spi_Destroy();
+    queue_Destroy();
 }
 
 void motor_ctrl_Initialises(void)
@@ -47,10 +56,18 @@ void motor_ctrl_ExecutesPeriodicallyWithCorrectValues(void)
     MotorCtrlExecutePeriodic();
 }
 
+void receiver_Executes(void)
+{
+    SpiReadIt_ExpectAnyArgs();
+
+    Receiver_Execute();
+}
+
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(motor_ctrl_Initialises);
     RUN_TEST(motor_ctrl_ExecutesPeriodicallyWithCorrectValues);
+    RUN_TEST(receiver_Executes);
     return UNITY_END();
 }

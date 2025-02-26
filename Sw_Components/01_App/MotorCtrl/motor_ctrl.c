@@ -105,3 +105,7 @@ QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
 {
     return AssignedQueue;
 }
+
+void Receiver_Execute(void)
+{
+}
