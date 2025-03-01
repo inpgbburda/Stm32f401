@@ -19,6 +19,7 @@
 #include "pwm.h"
 #include "pwm_cfg.h"
 
+#include "spi.h"
 /*
 |===================================================================================================================================|
     Macro definitions
@@ -37,8 +38,8 @@
     Object allocations 
 |===================================================================================================================================|
 */
-static QueueHandle_t inbox_queue_handle;
 static QueueHandle_t AssignedQueue;
+Spi_Storage_T Spi_Storage;
 
 static uint16_t Lut[256] = {
     1000, 1004, 1008, 1012, 1016, 1020, 1024, 1027, 1031, 1035,
@@ -92,7 +93,7 @@ void MotorCtrlExecutePeriodic(void)
     uint16_t converted_value = 0;
     uint8_t snapshot = 0;
 
-    queue_rx_status = xQueueReceive(inbox_queue_handle, &receivedMessage, (TickType_t)100);
+    queue_rx_status = xQueueReceive(AssignedQueue, &receivedMessage, (TickType_t)100);
     for(int i = 0; i < MOTORS_NUMBER; i++)
     {
         snapshot = receivedMessage.req_vals[i];
@@ -106,6 +107,10 @@ QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
     return AssignedQueue;
 }
 
+//TODO: Think me trhough!
 void Receiver_Execute(void)
 {
+    PowerRequestsPackage_T dataToPass;
+
+    SpiReadIt(&Spi_Storage, dataToPass.req_vals, MOTORS_NUMBER);
 }
