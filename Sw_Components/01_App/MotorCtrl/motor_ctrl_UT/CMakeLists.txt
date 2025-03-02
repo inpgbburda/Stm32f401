@@ -29,6 +29,7 @@ add_executable(${CMAKE_PROJECT_NAME}
     ../motor_ctrl.c
     mocks/pwm.c
     mocks/queue.c
+    mocks/task.c
     mocks/spi.c
     ../../../../Sw_Components/04_Drv/pwm/pwm_cfg.c
     ${CMAKE_CURRENT_SOURCE_DIR}/${UNITY_RLV_PATH}/Unity/src/unity.c

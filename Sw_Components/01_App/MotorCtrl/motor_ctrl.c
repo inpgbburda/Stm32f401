@@ -26,7 +26,8 @@
 |===================================================================================================================================|
 */
 #define MAX_QUEUE_LENGTH 10
-
+#define MAX_WAIT_TICKS 100
+#define LUT_SIZE 256
 /*
 |===================================================================================================================================|
     Local types definitions 
@@ -38,10 +39,10 @@
     Object allocations 
 |===================================================================================================================================|
 */
-static QueueHandle_t AssignedQueue;
+static QueueHandle_t Assigned_Queue;
 Spi_Storage_T Spi_Storage;
 
-static uint16_t Lut[256] = {
+const static uint16_t Req2Pwm_Lut[LUT_SIZE] = {
     1000, 1004, 1008, 1012, 1016, 1020, 1024, 1027, 1031, 1035,
     1039, 1043, 1047, 1051, 1055, 1059, 1063, 1067, 1071, 1075,
     1078, 1082, 1086, 1090, 1094, 1098, 1102, 1106, 1110, 1114,
@@ -83,7 +84,7 @@ static uint16_t Lut[256] = {
 
 void MotorCtrlInit(QueueHandle_t inbox_queue_handle)
 {
-    AssignedQueue = inbox_queue_handle;
+    Assigned_Queue = inbox_queue_handle;
 }
 
 void MotorCtrlExecutePeriodic(void)
@@ -93,24 +94,24 @@ void MotorCtrlExecutePeriodic(void)
     uint16_t converted_value = 0;
     uint8_t snapshot = 0;
 
-    queue_rx_status = xQueueReceive(AssignedQueue, &receivedMessage, (TickType_t)100);
+    queue_rx_status = xQueueReceive(Assigned_Queue, &receivedMessage, (TickType_t)MAX_WAIT_TICKS);
     for(int i = 0; i < MOTORS_NUMBER; i++)
     {
         snapshot = receivedMessage.req_vals[i];
-        converted_value = Lut[snapshot];
+        converted_value = Req2Pwm_Lut[snapshot];
         PwmSetDuty(&Pwm2_Config, (Pwm_Timer_Chan_T)i, converted_value);
     }
 }
 
 QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
 {
-    return AssignedQueue;
+    return Assigned_Queue;
 }
 
 //TODO: Think me trhough!
 void Receiver_Execute(void)
 {
-    PowerRequestsPackage_T dataToPass;
+    PowerRequestsPackage_T data_to_pass;
 
-    SpiReadIt(&Spi_Storage, dataToPass.req_vals, MOTORS_NUMBER);
+    SpiReadIt(&Spi_Storage, data_to_pass.req_vals, MOTORS_NUMBER);
 }

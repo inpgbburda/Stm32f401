@@ -3,6 +3,7 @@
 #include "pwm_types.h"
 #include "pwm.h"
 #include "queue.h"
+#include "task.h"
 #include "rtos_types_UT.h"
 #include "spi.h"
 
@@ -24,6 +25,7 @@ void setUp(void)
     pwm_Init();
     spi_Init();
     queue_Init();
+    task_Init();
 }
 
 void tearDown(void)
@@ -31,10 +33,12 @@ void tearDown(void)
     pwm_Verify();
     spi_Verify();
     queue_Verify();
+    task_Verify();
 
     pwm_Destroy();
     spi_Destroy();
     queue_Destroy();
+    task_Destroy();
 }
 
 void motor_ctrl_Initialises(void)
@@ -59,6 +63,7 @@ void motor_ctrl_ExecutesPeriodicallyWithCorrectValues(void)
 void receiver_Executes(void)
 {
     SpiReadIt_ExpectAnyArgs();
+    ulTaskGenericNotifyTake_ExpectAnyArgsAndReturn(pdTRUE);
 
     Receiver_Execute();
 }
