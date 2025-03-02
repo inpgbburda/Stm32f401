@@ -100,7 +100,12 @@ typedef uint32_t eSleepModeStatus;
 
 typedef portSTACK_TYPE   StackType_t;
 
-/** Macro for queue creation */
+#define portMAX_DELAY    ( TickType_t ) 0xffffffffffffffffULL
+#define tskDEFAULT_INDEX_TO_NOTIFY     ( 0 )
+
+/** Macros for functions */
 #define xQueueCreate( uxQueueLength, uxItemSize )    xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
+#define ulTaskNotifyTake( xClearCountOnExit, xTicksToWait ) \
+    ulTaskGenericNotifyTake( ( tskDEFAULT_INDEX_TO_NOTIFY ), ( xClearCountOnExit ), ( xTicksToWait ) )
 
 #endif // RTOS_TYPES_UT_H

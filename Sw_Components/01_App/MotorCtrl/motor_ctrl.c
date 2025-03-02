@@ -15,6 +15,13 @@
     File includes 
 |===================================================================================================================================|
 */
+#ifndef _UNIT_TEST
+#include "FreeRTOS.h"
+#endif
+
+#include "task.h"
+#include "queue.h"
+
 #include "motor_ctrl.h"
 #include "pwm.h"
 #include "pwm_cfg.h"
@@ -108,10 +115,12 @@ QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
     return Assigned_Queue;
 }
 
-//TODO: Think me trhough!
 void Receiver_Execute(void)
 {
     PowerRequestsPackage_T data_to_pass;
 
     SpiReadIt(&Spi_Storage, data_to_pass.req_vals, MOTORS_NUMBER);
+
+    /*Wait here for single notification for maximum allowed time*/
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 }

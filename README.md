@@ -37,7 +37,11 @@ Unit tests are added inside every module directory. There need to be the followi
  |  +-- CmakePresets.json
  |  +-- <funcional_module>_UT.c
  ```
-To achieve generation of mocks, add path of mocked header into 'mocked_headers.txt' file.
+To achieve generation of mocks, add path of mocked header into `mocked_headers.txt` file.
+
+The `rtos_types_UT.h` file is used across the project, to provide lightweight and hw independent types of RTOS functions. It allows mocks used with RTOS api compile properly.
+It **must be updated** together with Os updates.
+
 
 ## Code formatter
 Formatter uses the `.clang-format` file as a configuration.\

@@ -195,6 +195,7 @@ static void SpiTask(void* pvParameters)
     for (;;)
     {
         SpiReadIt(&Spi_Storage, dataToPass.req_vals, MOTORS_NUMBER);
+        /*Block the task untill the SPI callback comes*/
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
         if (Spi_To_Pwm_Queue != 0)

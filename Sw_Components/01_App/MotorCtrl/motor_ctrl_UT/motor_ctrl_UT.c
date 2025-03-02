@@ -62,8 +62,11 @@ void motor_ctrl_ExecutesPeriodicallyWithCorrectValues(void)
 
 void receiver_Executes(void)
 {
+    const TickType_t undefined_wait_period = portMAX_DELAY;
+    const BaseType_t expected_single_event = pdTRUE;
+
     SpiReadIt_ExpectAnyArgs();
-    ulTaskGenericNotifyTake_ExpectAnyArgsAndReturn(pdTRUE);
+    ulTaskGenericNotifyTake_ExpectAndReturn(tskDEFAULT_INDEX_TO_NOTIFY, expected_single_event, undefined_wait_period, pdTRUE);
 
     Receiver_Execute();
 }
