@@ -46,8 +46,9 @@
     Object allocations 
 |===================================================================================================================================|
 */
+extern Spi_Storage_T Spi_Storage; // To be fixed
+
 static QueueHandle_t Assigned_Queue;
-Spi_Storage_T Spi_Storage;
 
 const static uint16_t Req2Pwm_Lut[LUT_SIZE] = {
     1000, 1004, 1008, 1012, 1016, 1020, 1024, 1027, 1031, 1035,
@@ -88,8 +89,8 @@ const static uint16_t Req2Pwm_Lut[LUT_SIZE] = {
     Function definitions
 |===================================================================================================================================|
 */
-
-void MotorCtrlInit(QueueHandle_t inbox_queue_handle)
+//TODO: Rename to Assign queue and create other init function that takes the Spi_Storage_T as argument
+void MotorCtrlAsignInputQueue(QueueHandle_t inbox_queue_handle)
 {
     Assigned_Queue = inbox_queue_handle;
 }
@@ -115,12 +116,14 @@ QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
     return Assigned_Queue;
 }
 
-void Receiver_Execute(void)
+void ReceiverExecute(void)
 {
     PowerRequestsPackage_T data_to_pass;
 
     SpiReadIt(&Spi_Storage, data_to_pass.req_vals, MOTORS_NUMBER);
 
-    /*Wait here for single notification for maximum allowed time*/
+    /*Switch task to Blocked State - Wait here for single notification for maximum allowed time*/
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+
+    xQueueSendToFront(Assigned_Queue, (void*)&data_to_pass, (TickType_t)MAX_WAIT_TICKS);
 }

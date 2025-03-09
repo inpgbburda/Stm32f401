@@ -21,7 +21,6 @@
     Exported objects declarations
 |===================================================================================================================================|
 */
-extern Spi_Storage_T Spi_Storage;
 extern const Spi_Cfg_T Spi2_It_Config;
 
 extern void Spi2_RxCompleteCbk(void);

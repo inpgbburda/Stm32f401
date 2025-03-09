@@ -33,7 +33,7 @@ set(CPP_SRCS
 )
 
 set(C_SRCS
-    # ${REL_PATH}Sw_Components/01_App/MotorCtrl/motor_ctrl.c
+    ${REL_PATH}Sw_Components/01_App/MotorCtrl/motor_ctrl.c
     ${REL_PATH}Sw_Components/02_Srv/main.c
     ${REL_PATH}Sw_Components/02_Srv/Os/Os_Api/os.c
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/croutine.c

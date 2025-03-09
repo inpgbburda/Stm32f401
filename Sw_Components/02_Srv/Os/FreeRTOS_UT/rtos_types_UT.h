@@ -105,7 +105,11 @@ typedef portSTACK_TYPE   StackType_t;
 
 /** Macros for functions */
 #define xQueueCreate( uxQueueLength, uxItemSize )    xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
+
 #define ulTaskNotifyTake( xClearCountOnExit, xTicksToWait ) \
     ulTaskGenericNotifyTake( ( tskDEFAULT_INDEX_TO_NOTIFY ), ( xClearCountOnExit ), ( xTicksToWait ) )
+
+#define xQueueSendToFront( xQueue, pvItemToQueue, xTicksToWait ) \
+    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
 
 #endif // RTOS_TYPES_UT_H

@@ -4,10 +4,10 @@
 *
 * This file contains the main function which initializes the system and starts the application.
 *
-* @note - other notes if needed
-* @attention - other notes if needed
-* @see - other notes if needed
-* @date day/month/year
+* @note - 
+* @attention - 
+* @see - 
+* @date 09/03/2025
 */
 
 /*
@@ -32,7 +32,13 @@
     Macro definitions
 |===================================================================================================================================|
 */
-#define RANDOM_PWM_VAL 10U
+
+/*
+|===================================================================================================================================|
+    Object allocations 
+|===================================================================================================================================|
+*/
+Spi_Storage_T Spi_Storage;
 
 /*
 |===================================================================================================================================|
@@ -49,7 +55,6 @@ int main(void)
     OsInit();
     
     PwmStart(&Pwm2_Config);
-    PwmSetDuty(&Pwm2_Config, PWM_CHAN_1, RANDOM_PWM_VAL);
     OsStart();
 
     while (1)
