@@ -24,6 +24,8 @@
 
 #include <stdint.h>
 #include "queue.h"
+#include "spi.h"
+
 /*
 |===================================================================================================================================|
     Macro definitions
@@ -41,6 +43,11 @@ typedef struct
     uint8_t req_vals[MOTORS_NUMBER];
 } PowerRequestsPackage_T;
 
+typedef struct
+{
+    Spi_Storage_T spi_handler;
+} Receiver_Handler_T;
+
 /*
 |===================================================================================================================================|
     Exported objects declarations
@@ -56,6 +63,6 @@ typedef struct
 void MotorCtrlAsignInputQueue(QueueHandle_t inbox_queue_handle);
 void MotorCtrlExecutePeriodic(void);
 QueueHandle_t MotorCtrlGetInboxQueueHandle(void);
-void ReceiverExecute(void);
+void ReceiverExecute(Receiver_Handler_T* rec_handle);
 
 #endif /* MOTOR_CTRL_H */

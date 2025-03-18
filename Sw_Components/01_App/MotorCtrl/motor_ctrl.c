@@ -46,11 +46,9 @@
     Object allocations 
 |===================================================================================================================================|
 */
-extern Spi_Storage_T Spi_Storage; // To be fixed
-
 static QueueHandle_t Assigned_Queue;
 
-const static uint16_t Req2Pwm_Lut[LUT_SIZE] = {
+static const uint16_t Req2Pwm_Lut[LUT_SIZE] = {
     1000, 1004, 1008, 1012, 1016, 1020, 1024, 1027, 1031, 1035,
     1039, 1043, 1047, 1051, 1055, 1059, 1063, 1067, 1071, 1075,
     1078, 1082, 1086, 1090, 1094, 1098, 1102, 1106, 1110, 1114,
@@ -89,7 +87,6 @@ const static uint16_t Req2Pwm_Lut[LUT_SIZE] = {
     Function definitions
 |===================================================================================================================================|
 */
-//TODO: Rename to Assign queue and create other init function that takes the Spi_Storage_T as argument
 void MotorCtrlAsignInputQueue(QueueHandle_t inbox_queue_handle)
 {
     Assigned_Queue = inbox_queue_handle;
@@ -103,7 +100,7 @@ void MotorCtrlExecutePeriodic(void)
     uint8_t snapshot = 0;
 
     queue_rx_status = xQueueReceive(Assigned_Queue, &receivedMessage, (TickType_t)MAX_WAIT_TICKS);
-    for(int i = 0; i < MOTORS_NUMBER; i++)
+    for(uint8_t i = 0; i < MOTORS_NUMBER; i++)
     {
         snapshot = receivedMessage.req_vals[i];
         converted_value = Req2Pwm_Lut[snapshot];
@@ -116,11 +113,11 @@ QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
     return Assigned_Queue;
 }
 
-void ReceiverExecute(void)
+void ReceiverExecute(Receiver_Handler_T* rec_handle)
 {
     PowerRequestsPackage_T data_to_pass;
 
-    SpiReadIt(&Spi_Storage, data_to_pass.req_vals, MOTORS_NUMBER);
+    SpiReadIt(&(rec_handle->spi_handler), data_to_pass.req_vals, MOTORS_NUMBER);
 
     /*Switch task to Blocked State - Wait here for single notification for maximum allowed time*/
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
