@@ -7,8 +7,6 @@
 #include "rtos_types_UT.h"
 #include "spi.h"
 
-Spi_Storage_T Spi_Storage;
-
 const int Max_Queue_Length = 10;
 const int Max_Queue_Item_Size = 4;
 const QueueHandle_t Arbitrary_Queue_Handle = (void*)0x1234; /*Variable used only to store non NULL pointer */
@@ -68,15 +66,20 @@ void receiver_Executes(void)
     const BaseType_t expected_single_event = pdTRUE;
     const PowerRequestsPackage_T read_data = {{1, 100, 2, 3}};
     const TickType_t max_puting_time = 100;
-
-    SpiReadIt_ExpectAnyArgs();
+    Receiver_Handler_T rec_handle;
+    Spi_Storage_T* spi_storage_ptr = &(rec_handle.spi_handler);
+    
+    /* Expect the config pointer to the SPI */
+    SpiReadIt_Expect(spi_storage_ptr, read_data.req_vals, MOTORS_NUMBER);
+    SpiReadIt_IgnoreArg_dest_ptr();
+    SpiReadIt_IgnoreArg_mess_len();
     SpiReadIt_ReturnThruPtr_dest_ptr((void*)&read_data);
-
+    /* Expect calling the OS api to block the task */
     ulTaskGenericNotifyTake_ExpectAndReturn(tskDEFAULT_INDEX_TO_NOTIFY, expected_single_event, undefined_wait_period, pdTRUE);
-
+    /* Expect sending the received data into queue */
     xQueueGenericSend_ExpectAndReturn(Arbitrary_Queue_Handle, (void*)&read_data, (TickType_t)max_puting_time, queueSEND_TO_FRONT, pdPASS);
 
-    ReceiverExecute();
+    ReceiverExecute(&rec_handle);
 }
 
 int main(void)
