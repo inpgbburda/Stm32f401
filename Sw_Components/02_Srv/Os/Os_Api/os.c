@@ -40,19 +40,17 @@
     Local types definitions 
 |===================================================================================================================================|
 */
-
-static QueueHandle_t          Spi_To_Pwm_Queue;
-
 static void PwmTask(void* pvParameters);
 static void SpiTask(void* pvParameters);
 
 /*
 |===================================================================================================================================|
-    Object allocations 
+Object allocations 
 |===================================================================================================================================|
 */
 
-TaskHandle_t SpiTaskHandle;
+static TaskHandle_t SpiTaskHandle;
+static QueueHandle_t Spi_To_Pwm_Queue;
 
 /*
 |===================================================================================================================================|
@@ -95,7 +93,7 @@ void OsInit(Os_Handler_T* os_handler)
     MotorCtrlAsignInputQueue(Spi_To_Pwm_Queue);
 
     xTaskCreate(PwmTask, "PwmTask", configMINIMAL_STACK_SIZE + 100, NULL, PWM_TASK_PRIORITY, NULL);
-    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, os_handler->rec_handler, SPI_TASK_PRIORITY, &SpiTaskHandle);
+    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, &(os_handler->rec_handler), SPI_TASK_PRIORITY, &SpiTaskHandle);
 }
 
 /**
@@ -136,10 +134,7 @@ static void SpiTask(void* pvParameters)
 
 void Spi2_RxCompleteCbk(void)
 {
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    /* Notify the SPI task */
-    vTaskNotifyGiveFromISR(SpiTaskHandle, &xHigherPriorityTaskWoken);
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    ReceiverCallRxCompleted(SpiTaskHandle);
 }
 
 /**

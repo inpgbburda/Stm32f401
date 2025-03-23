@@ -109,6 +109,9 @@ typedef portSTACK_TYPE   StackType_t;
 #define ulTaskNotifyTake( xClearCountOnExit, xTicksToWait ) \
     ulTaskGenericNotifyTake( ( tskDEFAULT_INDEX_TO_NOTIFY ), ( xClearCountOnExit ), ( xTicksToWait ) )
 
+#define vTaskNotifyGiveFromISR( xTaskToNotify, pxHigherPriorityTaskWoken ) \
+    vTaskGenericNotifyGiveFromISR( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( pxHigherPriorityTaskWoken ) )
+
 #define xQueueSendToFront( xQueue, pvItemToQueue, xTicksToWait ) \
     xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
 

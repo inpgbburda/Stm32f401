@@ -30,7 +30,7 @@
 
 typedef struct
 {
-    Receiver_Handler_T* rec_handler;
+    Receiver_Handler_T rec_handler;
 } Os_Handler_T;
 
 /*

@@ -38,8 +38,8 @@
     Object allocations 
 |===================================================================================================================================|
 */
-Receiver_Handler_T Receiver_Handler;
-Os_Handler_T Os_Handler = {&Receiver_Handler};
+/* Main memory allocation */
+static Os_Handler_T Os_Handler;
 
 /*
 |===================================================================================================================================|
@@ -51,14 +51,12 @@ int main(void)
     ClockInit(&Clock_Config);
     PortInit(Port_Config);
     PwmInit(&Pwm2_Config);
-    SpiInit(&Receiver_Handler.spi_handler, &Spi2_It_Config);
+    SpiInit(&(Os_Handler.rec_handler.spi_handler), &Spi2_It_Config);
 
     SystickInit();
     OsInit(&Os_Handler);
     
     PwmStart(&Pwm2_Config);
-
-    
     OsStart();
 
     while (1)

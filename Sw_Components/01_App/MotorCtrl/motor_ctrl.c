@@ -124,3 +124,13 @@ void ReceiverExecute(Receiver_Handler_T* rec_handle)
 
     xQueueSendToFront(Assigned_Queue, (void*)&data_to_pass, (TickType_t)MAX_WAIT_TICKS);
 }
+
+void ReceiverCallRxCompleted(TaskHandle_t rx_task_handle)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    /* Notify the SPI task */
+    vTaskNotifyGiveFromISR(rx_task_handle, &xHigherPriorityTaskWoken);
+#ifndef _UNIT_TEST
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+#endif
+}

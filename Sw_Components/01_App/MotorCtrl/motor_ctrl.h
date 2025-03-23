@@ -64,5 +64,6 @@ void MotorCtrlAsignInputQueue(QueueHandle_t inbox_queue_handle);
 void MotorCtrlExecutePeriodic(void);
 QueueHandle_t MotorCtrlGetInboxQueueHandle(void);
 void ReceiverExecute(Receiver_Handler_T* rec_handle);
+void ReceiverCallRxCompleted(TaskHandle_t rx_task_handle);
 
 #endif /* MOTOR_CTRL_H */

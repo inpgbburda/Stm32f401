@@ -82,11 +82,22 @@ void receiver_Executes(void)
     ReceiverExecute(&rec_handle);
 }
 
+void receiver_CallsReceptionCompleted(void)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    TaskHandle_t SpiTaskHandle;
+
+    vTaskGenericNotifyGiveFromISR_Expect(SpiTaskHandle, tskDEFAULT_INDEX_TO_NOTIFY, &xHigherPriorityTaskWoken);
+
+    ReceiverCallRxCompleted(SpiTaskHandle);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(motor_ctrl_AssignsQueue);
     RUN_TEST(motor_ctrl_ExecutesPeriodicallyWithCorrectValues);
     RUN_TEST(receiver_Executes);
+    RUN_TEST(receiver_CallsReceptionCompleted);
     return UNITY_END();
 }
