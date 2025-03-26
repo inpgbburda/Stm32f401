@@ -60,6 +60,14 @@ void motor_ctrl_ExecutesPeriodicallyWithCorrectValues(void)
     MotorCtrlExecutePeriodic();
 }
 
+void motor_ctrl_FailsToReceiveDataFromQueue(void)
+{
+    xQueueReceive_ExpectAnyArgsAndReturn(pdFALSE);
+    /* Don't expect updating the PWMs */
+
+    MotorCtrlExecutePeriodic();
+}
+
 void receiver_Executes(void)
 {
     const TickType_t undefined_wait_period = portMAX_DELAY;
@@ -99,5 +107,6 @@ int main(void)
     RUN_TEST(motor_ctrl_ExecutesPeriodicallyWithCorrectValues);
     RUN_TEST(receiver_Executes);
     RUN_TEST(receiver_CallsReceptionCompleted);
+    RUN_TEST(motor_ctrl_FailsToReceiveDataFromQueue);
     return UNITY_END();
 }

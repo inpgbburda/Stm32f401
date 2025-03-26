@@ -100,11 +100,18 @@ void MotorCtrlExecutePeriodic(void)
     uint8_t snapshot = 0;
 
     queue_rx_status = xQueueReceive(Assigned_Queue, &receivedMessage, (TickType_t)MAX_WAIT_TICKS);
-    for(uint8_t i = 0; i < MOTORS_NUMBER; i++)
+    if(queue_rx_status == pdTRUE)
     {
-        snapshot = receivedMessage.req_vals[i];
-        converted_value = Req2Pwm_Lut[snapshot];
-        PwmSetDuty(&Pwm2_Config, (Pwm_Timer_Chan_T)i, converted_value);
+        for(uint8_t i = 0; i < MOTORS_NUMBER; i++)
+        {
+            snapshot = receivedMessage.req_vals[i];
+            converted_value = Req2Pwm_Lut[snapshot];
+            PwmSetDuty(&Pwm2_Config, (Pwm_Timer_Chan_T)i, converted_value);
+        }
+    }
+    else
+    {
+        /* Do nothing */
     }
 }
 
