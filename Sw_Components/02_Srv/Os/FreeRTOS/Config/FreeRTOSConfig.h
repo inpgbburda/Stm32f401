@@ -327,7 +327,7 @@
 
 /* Another name for configMAX_SYSCALL_INTERRUPT_PRIORITY - the name used depends
  * on the FreeRTOS port. */
-#define configMAX_API_CALL_INTERRUPT_PRIORITY    0
+#define configMAX_API_CALL_INTERRUPT_PRIORITY    0x50
 
 /******************************************************************************/
 /* Hook and callback function related definitions. ****************************/

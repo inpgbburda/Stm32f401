@@ -4,6 +4,8 @@
 
 #include "unity.h"
 #include "pwm_types.h"
+#include "rtos_types_UT.h"
+#include "spi_types_mock.h"
 #include "pwm.h"
 
 /* Ignore the following warnings, since we are copying code */

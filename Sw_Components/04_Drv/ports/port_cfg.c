@@ -23,8 +23,8 @@ const uint32_t portA_mode =
     GPIO_1_INPUT_MODE  |
     GPIO_2_INPUT_MODE  |
     GPIO_3_INPUT_MODE  |
-    GPIO_4_OUTPUT_MODE | /* Debug DIO */
-    GPIO_5_INPUT_MODE  |
+    GPIO_4_OUTPUT_MODE | /* Debug DIO 1 */
+    GPIO_5_OUTPUT_MODE | /* Debug DIO 2 */
     GPIO_6_INPUT_MODE  |
     GPIO_7_INPUT_MODE  |
     GPIO_8_INPUT_MODE  |

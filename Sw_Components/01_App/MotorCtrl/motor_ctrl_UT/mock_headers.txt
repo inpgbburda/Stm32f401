@@ -1,1 +1,4 @@
+Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/include/queue.h
+Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/include/task.h
 Sw_Components/04_Drv/pwm/pwm.h
+Sw_Components/04_Drv/spi/spi.h

@@ -2,29 +2,111 @@
 #include "motor_ctrl.h"
 #include "pwm_types.h"
 #include "pwm.h"
+#include "queue.h"
+#include "task.h"
+#include "rtos_types_UT.h"
+#include "spi.h"
 
+const int Max_Queue_Length = 10;
+const int Max_Queue_Item_Size = 4;
+const QueueHandle_t Arbitrary_Queue_Handle = (void*)0x1234; /*Variable used only to store non NULL pointer */
+
+static void ExpectPwmSetDutyCallWithConfigIgnore(uint16_t Expected_Pwm_Values[] )
+{
+    for(int i = 0; (Pwm_Timer_Chan_T)i < PWM_CHAN_MAX; i++)
+    {
+        PwmSetDuty_Expect(NULL, i, Expected_Pwm_Values[i]);
+        PwmSetDuty_IgnoreArg_config();
+    }
+}
 
 void setUp(void)
 {
     pwm_Init();
+    spi_Init();
+    queue_Init();
+    task_Init();
 }
 
 void tearDown(void)
 {
     pwm_Verify();
+    spi_Verify();
+    queue_Verify();
+    task_Verify();
+
+    pwm_Destroy();
+    spi_Destroy();
+    queue_Destroy();
+    task_Destroy();
 }
 
-void motor_ctrl_CalculatesMotorsSets(void)
+void motor_ctrl_AssignsQueue(void)
 {
-    PwmSetDuty_ExpectAnyArgs();
+    MotorCtrlAsignInputQueue(Arbitrary_Queue_Handle);
 
-    CalculateMotorsSets();
+    TEST_ASSERT_EQUAL(Arbitrary_Queue_Handle, MotorCtrlGetInboxQueueHandle());
+}
+
+void motor_ctrl_ExecutesPeriodicallyWithCorrectValues(void)
+{
+    PowerRequestsPackage_T received_message = {{100, 50, 255, 1}};
+    uint16_t expected_pwm_values[] = {1392, 1196, 2000, 1004};
+
+    xQueueReceive_ExpectAnyArgsAndReturn(pdPASS);
+    xQueueReceive_ReturnThruPtr_pvBuffer(&received_message);
+    ExpectPwmSetDutyCallWithConfigIgnore(expected_pwm_values);
+
+    MotorCtrlExecutePeriodic();
+}
+
+void motor_ctrl_FailsToReceiveDataFromQueue(void)
+{
+    xQueueReceive_ExpectAnyArgsAndReturn(pdFALSE);
+    /* Don't expect updating the PWMs */
+
+    MotorCtrlExecutePeriodic();
+}
+
+void receiver_Executes(void)
+{
+    const TickType_t undefined_wait_period = portMAX_DELAY;
+    const BaseType_t expected_single_event = pdTRUE;
+    const PowerRequestsPackage_T read_data = {{1, 100, 2, 3}};
+    const TickType_t max_puting_time = 100;
+    Receiver_Handler_T rec_handle;
+    Spi_Storage_T* spi_storage_ptr = &(rec_handle.spi_handler);
+    
+    /* Expect the config pointer to the SPI */
+    SpiReadIt_Expect(spi_storage_ptr, read_data.req_vals, MOTORS_NUMBER);
+    SpiReadIt_IgnoreArg_dest_ptr();
+    SpiReadIt_IgnoreArg_mess_len();
+    SpiReadIt_ReturnThruPtr_dest_ptr((void*)&read_data);
+    /* Expect calling the OS api to block the task */
+    ulTaskGenericNotifyTake_ExpectAndReturn(tskDEFAULT_INDEX_TO_NOTIFY, expected_single_event, undefined_wait_period, pdTRUE);
+    /* Expect sending the received data into queue */
+    xQueueGenericSend_ExpectAndReturn(Arbitrary_Queue_Handle, (void*)&read_data, (TickType_t)max_puting_time, queueSEND_TO_FRONT, pdPASS);
+
+    ReceiverExecute(&rec_handle);
+}
+
+void receiver_CallsReceptionCompleted(void)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    TaskHandle_t SpiTaskHandle;
+
+    vTaskGenericNotifyGiveFromISR_Expect(SpiTaskHandle, tskDEFAULT_INDEX_TO_NOTIFY, &xHigherPriorityTaskWoken);
+
+    ReceiverCallRxCompleted(SpiTaskHandle);
 }
 
 int main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(motor_ctrl_CalculatesMotorsSets);
-
+    RUN_TEST(motor_ctrl_AssignsQueue);
+    RUN_TEST(motor_ctrl_ExecutesPeriodicallyWithCorrectValues);
+    RUN_TEST(receiver_Executes);
+    RUN_TEST(receiver_CallsReceptionCompleted);
+    RUN_TEST(motor_ctrl_FailsToReceiveDataFromQueue);
     return UNITY_END();
 }

@@ -12,28 +12,45 @@
 #include "os.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
+
 #include "spi.h"
 #include "spi_cfg.h"
+
+#include "pwm.h"
+#include "pwm_cfg.h"
+
+#include "motor_ctrl.h"
 
 /*
 |===================================================================================================================================|
     Macro definitions
 |===================================================================================================================================|
 */
+#define SPI_TASK_PERIOD_MS 10
+#define PWM_TASK_PERIOD_MS 20
+
+#define PWM_TASK_PRIORITY 1
+#define SPI_TASK_PRIORITY 2
+
+#define MAX_QUEUE_LENGTH 10
 
 /*
 |===================================================================================================================================|
     Local types definitions 
 |===================================================================================================================================|
 */
+static void PwmTask(void* pvParameters);
+static void SpiTask(void* pvParameters);
 
 /*
 |===================================================================================================================================|
-    Object allocations 
+Object allocations 
 |===================================================================================================================================|
 */
 
-uint8_t buffer[4] = {0};
+static TaskHandle_t SpiTaskHandle;
+static QueueHandle_t Spi_To_Pwm_Queue;
 
 /*
 |===================================================================================================================================|
@@ -66,18 +83,32 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char* pcTaskName)
 }
 
 /**
+ * @brief This function initializes the operating system (OS) by creating tasks.
+ *
+ * @return This function does not return.
+ */
+void OsInit(Os_Handler_T* os_handler)
+{
+    Spi_To_Pwm_Queue = xQueueCreate(MAX_QUEUE_LENGTH, sizeof(PowerRequestsPackage_T));
+    MotorCtrlAsignInputQueue(Spi_To_Pwm_Queue);
+
+    xTaskCreate(PwmTask, "PwmTask", configMINIMAL_STACK_SIZE + 100, NULL, PWM_TASK_PRIORITY, NULL);
+    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, &(os_handler->rec_handler), SPI_TASK_PRIORITY, &SpiTaskHandle);
+}
+
+/**
  * @brief This function is a task that updates the PWM output.
  * @param pvParameters A pointer to the task's parameters. This parameter is not used in this function.
  *
  * @return This function does not return. It runs in an infinite loop.
  */
-void PwmTask(void* pvParameters)
+static void PwmTask(void* pvParameters)
 {
     for (;;)
     {
         /* Task updating the PWM output */
-        /* TODO */
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        MotorCtrlExecutePeriodic();
+        vTaskDelay(pdMS_TO_TICKS(PWM_TASK_PERIOD_MS));
     }
 }
 
@@ -91,32 +122,19 @@ void PwmTask(void* pvParameters)
  *
  * @return This function runs in an infinite loop and does not return.
  */
-void SpiTask(void* pvParameters)
+static void SpiTask(void* pvParameters)
 {
+    Receiver_Handler_T* rec_handler = (Receiver_Handler_T*)pvParameters;
+    /* Task reading data from an SPI peripheral */
     for (;;)
     {
-        SpiReadIt(&Spi_Storage, buffer, 4);
-        vTaskDelay(pdMS_TO_TICKS(120));
+        ReceiverExecute(rec_handler);
     }
 }
 
 void Spi2_RxCompleteCbk(void)
 {
-    for (int i = 0; i < 4; i++)
-    {
-        buffer[i] = 0;
-    }
-}
-
-/**
- * @brief This function initializes the operating system (OS) by creating tasks.
- *
- * @return This function does not return.
- */
-void OsInit(void)
-{
-    xTaskCreate(PwmTask, "PwmTask", configMINIMAL_STACK_SIZE + 100, NULL, 1, NULL);
-    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, NULL, 2, NULL);
+    ReceiverCallRxCompleted(SpiTaskHandle);
 }
 
 /**
