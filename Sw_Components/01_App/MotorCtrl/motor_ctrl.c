@@ -1,18 +1,21 @@
 /**
-* @file motor_ctrl.c
-* @brief Module for converting received data into motor control signals.
-*
-*
-* @note - 
-* @attention - 
-* @see - 
-* @author
-* @date 
-*/
+ * @file motor_ctrl.c
+ * @brief Module for converting received data into motor control signals.
+ *
+ * This module handles the processing of motor control commands received via
+ * a FreeRTOS queue and generates the appropriate PWM signals to control motors.
+ * It also includes functionality for SPI-based data reception and task notification.
+ *
+ * @note - Ensure proper initialization of FreeRTOS components and SPI handlers before use.
+ * @attention - This module is designed for STM32F401 and may require modifications for other platforms.
+ * @see - motor_ctrl.h, pwm.h, spi.h
+ * @author
+ * @date 03/05/2025
+ */
 
 /*
 |===================================================================================================================================|
-    File includes 
+    File includes
 |===================================================================================================================================|
 */
 #ifndef _UNIT_TEST
@@ -37,13 +40,13 @@
 #define LUT_SIZE 256
 /*
 |===================================================================================================================================|
-    Local types definitions 
+    Local types definitions
 |===================================================================================================================================|
 */
 
 /*
 |===================================================================================================================================|
-    Object allocations 
+    Object allocations
 |===================================================================================================================================|
 */
 static QueueHandle_t Assigned_Queue;
@@ -74,8 +77,7 @@ static const uint16_t Req2Pwm_Lut[LUT_SIZE] = {
     1863, 1867, 1871, 1875, 1878, 1882, 1886, 1890, 1894, 1898,
     1902, 1906, 1910, 1914, 1918, 1922, 1925, 1929, 1933, 1937,
     1941, 1945, 1949, 1953, 1957, 1961, 1965, 1969, 1973, 1976,
-    1980, 1984, 1988, 1992, 1996, 2000
-};
+    1980, 1984, 1988, 1992, 1996, 2000};
 /*
 |===================================================================================================================================|
     Local function declarations
@@ -87,22 +89,45 @@ static const uint16_t Req2Pwm_Lut[LUT_SIZE] = {
     Function definitions
 |===================================================================================================================================|
 */
+
+/**
+ * MotorCtrlAsignInputQueue
+ * @brief: Assigns the input queue for motor control commands.
+ * @param inbox_queue_handle: Handle to the FreeRTOS queue for receiving motor control commands.
+ *
+ * This function sets the queue that will be used to receive motor control commands.
+ *
+ * @return: None
+ *
+ * @note - Call this function before using other motor control functions.
+ */
 void MotorCtrlAsignInputQueue(QueueHandle_t inbox_queue_handle)
 {
     Assigned_Queue = inbox_queue_handle;
 }
 
+/**
+ * MotorCtrlExecutePeriodic
+ * @brief: Executes periodic motor control tasks.
+ *
+ * This function processes the motor control commands from the input queue
+ * and generates the appropriate control signals for the motors.
+ *
+ * @return: None
+ *
+ * @note - This function should be called periodically in a FreeRTOS task.
+ */
 void MotorCtrlExecutePeriodic(void)
 {
     PowerRequestsPackage_T receivedMessage;
-    BaseType_t queue_rx_status;
-    uint16_t converted_value = 0;
-    uint8_t snapshot = 0;
+    BaseType_t             queue_rx_status;
+    uint16_t               converted_value = 0;
+    uint8_t                snapshot = 0;
 
     queue_rx_status = xQueueReceive(Assigned_Queue, &receivedMessage, (TickType_t)MAX_WAIT_TICKS);
-    if(queue_rx_status == pdTRUE)
+    if (queue_rx_status == pdTRUE)
     {
-        for(uint8_t i = 0; i < MOTORS_NUMBER; i++)
+        for (uint8_t i = 0; i < MOTORS_NUMBER; i++)
         {
             snapshot = receivedMessage.req_vals[i];
             converted_value = Req2Pwm_Lut[snapshot];
@@ -115,11 +140,30 @@ void MotorCtrlExecutePeriodic(void)
     }
 }
 
+/**
+ * MotorCtrlGetInboxQueueHandle
+ * @brief: Retrieves the handle of the input queue for motor control.
+ *
+ * @return: QueueHandle_t Handle to the input queue.
+ *
+ * This function provides access to the input queue used for motor control commands.
+ */
 QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
 {
     return Assigned_Queue;
 }
 
+/**
+ * ReceiverExecute
+ * @brief: Executes receiver-specific tasks.
+ * @param rec_handle: Pointer to the receiver handler structure.
+ *
+ * This function processes received data and prepares it for motor control.
+ *
+ * @return: None
+ *
+ * @note - Ensure the receiver handler is properly initialized before calling this function.
+ */
 void ReceiverExecute(Receiver_Handler_T* rec_handle)
 {
     PowerRequestsPackage_T data_to_pass;
@@ -132,6 +176,18 @@ void ReceiverExecute(Receiver_Handler_T* rec_handle)
     xQueueSendToFront(Assigned_Queue, (void*)&data_to_pass, (TickType_t)MAX_WAIT_TICKS);
 }
 
+/**
+ * ReceiverCallRxCompleted
+ * @brief: Notifies a task that an SPI receive operation has been completed.
+ * @param rx_task_handle: Handle to the task that should be notified.
+ *
+ * This function is called from an interrupt service routine (ISR) to notify
+ * a specific task that an SPI receive operation has been completed.
+ *
+ * @return: None
+ *
+ * @note - This function should be called from the RX interrupt or callback.
+ */
 void ReceiverCallRxCompleted(TaskHandle_t rx_task_handle)
 {
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;

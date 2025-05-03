@@ -3,18 +3,18 @@ This is the **AuxUnit** of the **FlyMatic** drone project.\
 Click here to read more: [Flymatic_HomePage](https://inpgbburda.github.io/FlyMatic/)
 
 ## Need to install:
-    1) Compiler and related tools
+1) Compiler and related tools
        - arm-none-eabi
        - make
        - cmake
        - mingw - required for Cmake generation and compilation
        - ruby - required for CMock 
-    2) Open OCD
-    3) Code formatter
-        - LLVM Snapshot 
+2) Open OCD
+3) Code formatter
+        - LLVM Snapshot - [LLVM_Snapshot_link](https://llvm.org/builds/)
+
 To enable VS Code task execution configure paths in `settings.json` file.\
-The project and automation scripts are trimmed for Windows environment. ⊞\
-[LLVM_Snapshot_link](https://llvm.org/builds/)
+The project and automation scripts are trimmed for Windows environment. ⊞
 
 ## Hardware Setup
 ![Basic_Setup](https://github.com/inpgbburda/Stm32f401/assets/49471138/361be77b-3889-4240-b91b-b38e69d017e0)
