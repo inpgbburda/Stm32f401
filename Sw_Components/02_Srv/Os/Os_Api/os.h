@@ -30,8 +30,8 @@
 
 typedef struct
 {
-    Receiver_Handler_T rec_handler;
-} Os_Handler_T;
+    Receiver_Handle_T rec_handle;
+} Os_Handle_T;
 
 /*
 |===================================================================================================================================|
@@ -51,7 +51,7 @@ typedef struct
  *
  * @return This function does not return.
  */
-void OsInit(Os_Handler_T* os_handler);
+void OsInit(Os_Handle_T* os_handler);
 
 /**
  * @brief This function starts the operating system scheduler.

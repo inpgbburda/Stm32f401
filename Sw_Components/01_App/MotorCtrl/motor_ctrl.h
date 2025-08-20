@@ -47,8 +47,8 @@ typedef struct
 
 typedef struct
 {
-    Spi_Storage_T spi_handler;
-} Receiver_Handler_T;
+    Spi_Storage_T spi_handle;
+} Receiver_Handle_T;
 
 /*
 |===================================================================================================================================|
@@ -109,7 +109,7 @@ QueueHandle_t MotorCtrlGetInboxQueueHandle(void);
  * 
  * @note - Ensure the receiver handler is properly initialized before calling this function.
  */
-void ReceiverExecute(Receiver_Handler_T* rec_handle);
+void ReceiverExecute(Receiver_Handle_T* rec_handle);
 
 /**
  * ReceiverCallRxCompleted

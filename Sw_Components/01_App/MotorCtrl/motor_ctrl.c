@@ -164,11 +164,11 @@ QueueHandle_t MotorCtrlGetInboxQueueHandle(void)
  *
  * @note - Ensure the receiver handler is properly initialized before calling this function.
  */
-void ReceiverExecute(Receiver_Handler_T* rec_handle)
+void ReceiverExecute(Receiver_Handle_T* rec_handle)
 {
     PowerRequestsPackage_T data_to_pass;
 
-    SpiReadIt(&(rec_handle->spi_handler), data_to_pass.req_vals, MOTORS_NUMBER);
+    SpiReadIt(&(rec_handle->spi_handle), data_to_pass.req_vals, MOTORS_NUMBER);
 
     /*Switch task to Blocked State - Wait here for single notification for maximum allowed time*/
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
