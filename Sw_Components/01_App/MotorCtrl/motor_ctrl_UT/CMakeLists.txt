@@ -15,6 +15,7 @@ include_directories(
     mocks/
     mocks/portable/GCC/ARM_CM4F/
     ../
+    ../../HwCfg/
     ${CMAKE_CURRENT_SOURCE_DIR}/${UNITY_RLV_PATH}/Unity/src
     ${CMAKE_CURRENT_SOURCE_DIR}/${CMOCK_RLV_PATH}/src
     ../../../../Sw_Components/02_Srv/Os/FreeRTOS_UT
@@ -31,7 +32,7 @@ add_executable(${CMAKE_PROJECT_NAME}
     mocks/queue.c
     mocks/task.c
     mocks/spi.c
-    ../../../../Sw_Components/04_Drv/pwm/pwm_cfg.c
+    ../../HwCfg/pwm_cfg.c
     ${CMAKE_CURRENT_SOURCE_DIR}/${UNITY_RLV_PATH}/Unity/src/unity.c
     ${CMAKE_CURRENT_SOURCE_DIR}/${CMOCK_RLV_PATH}/src/cmock.c
 )
