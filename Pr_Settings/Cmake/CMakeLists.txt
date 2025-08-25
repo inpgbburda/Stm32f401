@@ -13,6 +13,7 @@ set(REL_PATH ../../)
 
 set(INCLUDE_DIRS
     ${REL_PATH}Sw_Components/01_App/MotorCtrl/
+    ${REL_PATH}Sw_Components/01_App/HwCfg/
     ${REL_PATH}Sw_Components/02_Srv/Os/Os_Api/
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/Config
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/include
@@ -34,6 +35,10 @@ set(CPP_SRCS
 
 set(C_SRCS
     ${REL_PATH}Sw_Components/01_App/MotorCtrl/motor_ctrl.c
+    ${REL_PATH}Sw_Components/01_App/HwCfg/clock_cfg.c
+    ${REL_PATH}Sw_Components/01_App/HwCfg/port_cfg.c
+    ${REL_PATH}Sw_Components/01_App/HwCfg/pwm_cfg.c
+    ${REL_PATH}Sw_Components/01_App/HwCfg/spi_cfg.c
     ${REL_PATH}Sw_Components/02_Srv/main.c
     ${REL_PATH}Sw_Components/02_Srv/Os/Os_Api/os.c
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/croutine.c
@@ -46,15 +51,11 @@ set(C_SRCS
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/portable/GCC/ARM_CM4F/port.c
     ${REL_PATH}Sw_Components/02_Srv/Os/FreeRTOS/FreeRTOS-Kernel/portable/MemMang/heap_4.c
     ${REL_PATH}Sw_Components/04_Drv/clock/clock.c
-    ${REL_PATH}Sw_Components/04_Drv/clock/clock_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/irq/isr_vectors.c
     ${REL_PATH}Sw_Components/04_Drv/irq/systick.c
     ${REL_PATH}Sw_Components/04_Drv/ports/port.c
-    ${REL_PATH}Sw_Components/04_Drv/ports/port_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/pwm/pwm.c
-    ${REL_PATH}Sw_Components/04_Drv/pwm/pwm_cfg.c
     ${REL_PATH}Sw_Components/04_Drv/spi/spi.c
-    ${REL_PATH}Sw_Components/04_Drv/spi/spi_cfg.c
     ${REL_PATH}SW_Components/05_Mcu/Core/Src/system_stm32f4xx.c
 )
 

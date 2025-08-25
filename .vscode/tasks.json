@@ -151,23 +151,6 @@
             "problemMatcher": []
         },
         {
-            "label": "UT - pwm - build and run",
-            "type": "shell",
-            "command": "\"${workspaceFolder}/Tools/Scripts/ut_build_and_run.bat\"",
-            "args": [
-                    "${config:makePath}",
-                    "Sw_Components/04_Drv/pwm/pwm_UT"
-                    ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": ["$gcc"]
-        },
-        {
             "label": "UT - spi - build and run",
             "type": "shell",
             "command": "\"${workspaceFolder}/Tools/Scripts/ut_build_and_run.bat\"",

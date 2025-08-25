@@ -1,3 +1,2 @@
 Sw_Components\01_App\MotorCtrl\motor_ctrl_UT
 Sw_Components\04_Drv\spi\spi_UT
-Sw_Components\04_Drv\pwm\pwm_UT
