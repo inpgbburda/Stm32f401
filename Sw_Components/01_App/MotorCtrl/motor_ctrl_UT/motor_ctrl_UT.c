@@ -74,8 +74,8 @@ void receiver_Executes(void)
     const BaseType_t expected_single_event = pdTRUE;
     const PowerRequestsPackage_T read_data = {{1, 100, 2, 3}};
     const TickType_t max_puting_time = 100;
-    Receiver_Handler_T rec_handle;
-    Spi_Storage_T* spi_storage_ptr = &(rec_handle.spi_handler);
+    Receiver_Handle_T rec_handle;
+    Spi_Storage_T* spi_storage_ptr = &(rec_handle.spi_handle);
     
     /* Expect the config pointer to the SPI */
     SpiReadIt_Expect(spi_storage_ptr, read_data.req_vals, MOTORS_NUMBER);

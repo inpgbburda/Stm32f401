@@ -87,13 +87,13 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char* pcTaskName)
  *
  * @return This function does not return.
  */
-void OsInit(Os_Handler_T* os_handler)
+void OsInit(Os_Handle_T* os_handle)
 {
     Spi_To_Pwm_Queue = xQueueCreate(MAX_QUEUE_LENGTH, sizeof(PowerRequestsPackage_T));
     MotorCtrlAsignInputQueue(Spi_To_Pwm_Queue);
 
     xTaskCreate(PwmTask, "PwmTask", configMINIMAL_STACK_SIZE + 100, NULL, PWM_TASK_PRIORITY, NULL);
-    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, &(os_handler->rec_handler), SPI_TASK_PRIORITY, &SpiTaskHandle);
+    xTaskCreate(SpiTask, "SpiTask", configMINIMAL_STACK_SIZE + 100, &(os_handle->rec_handle), SPI_TASK_PRIORITY, &SpiTaskHandle);
 }
 
 /**
@@ -124,11 +124,11 @@ static void PwmTask(void* pvParameters)
  */
 static void SpiTask(void* pvParameters)
 {
-    Receiver_Handler_T* rec_handler = (Receiver_Handler_T*)pvParameters;
+    Receiver_Handle_T* rec_handle = (Receiver_Handle_T*)pvParameters;
     /* Task reading data from an SPI peripheral */
     for (;;)
     {
-        ReceiverExecute(rec_handler);
+        ReceiverExecute(rec_handle);
     }
 }
 

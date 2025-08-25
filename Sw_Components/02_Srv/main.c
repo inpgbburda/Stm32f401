@@ -39,7 +39,7 @@
 |===================================================================================================================================|
 */
 /* Main memory allocation */
-static Os_Handler_T Os_Handler;
+static Os_Handle_T Os_Handle;
 
 /*
 |===================================================================================================================================|
@@ -51,10 +51,10 @@ int main(void)
     ClockInit(&Clock_Config);
     PortInit(Port_Config);
     PwmInit(&Pwm2_Config);
-    SpiInit(&(Os_Handler.rec_handler.spi_handler), &Spi2_It_Config);
+    SpiInit(&(Os_Handle.rec_handle.spi_handle), &Spi2_It_Config);
 
     SystickInit();
-    OsInit(&Os_Handler);
+    OsInit(&Os_Handle);
     
     PwmStart(&Pwm2_Config);
     OsStart();
