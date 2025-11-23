@@ -63,8 +63,8 @@ void PwmInit(const Pwm_Cfg_T *config)
 
     timer_instance->PSC = config->prescaler_val;                    /* Set prescaler value */
     timer_instance->ARR = FIRST_PERIOD;                             /* Must be set before enabling automatic preload to avoid waiting for first overflow*/
-    timer_instance->CCMR1 |= (TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2); /*Pwm mode 1*/
-    timer_instance->CCMR1 |= TIM_CCMR1_OC1PE;                       /*Enable the Preload register*/
+    timer_instance->CCMR1 |= (TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC2M_1 | TIM_CCMR1_OC2M_2); /*Pwm mode 1 for channel 1 and 2*/
+    timer_instance->CCMR1 |= (TIM_CCMR1_OC1PE | TIM_CCMR1_OC2PE);   /*Enable the Preload register for channel 1 and 2 */
     timer_instance->CR1 |= TIM_CR1_ARPE;                            /*Enable the auto-reload Preload register */
     timer_instance->CCER |= config->chan_sel;                       /* Set channels as output */
 

@@ -19,8 +19,8 @@
 */
 const uint32_t portA_mode = 
 (
-    GPIO_0_ALT_FUN_MODE|
-    GPIO_1_INPUT_MODE  |
+    GPIO_0_ALT_FUN_MODE| /* TIM2 pin - motor 1*/
+    GPIO_1_ALT_FUN_MODE| /* TIM2 pin - motor 2*/
     GPIO_2_INPUT_MODE  |
     GPIO_3_INPUT_MODE  |
     GPIO_4_OUTPUT_MODE | /* Debug DIO 1 */
@@ -38,6 +38,7 @@ const uint32_t portA_mode =
 );
 const uint32_t portB_mode =
 (
+    GPIO_0_INPUT_MODE   |
     GPIO_1_INPUT_MODE   |
     GPIO_2_INPUT_MODE   |
     GPIO_3_INPUT_MODE   |
@@ -58,7 +59,7 @@ const uint32_t portB_mode =
 const uint32_t portA_afrl = 
 (
     GPIO_0_ALT_FUN_1| /* TIM2 pin */
-    GPIO_1_ALT_FUN_0|
+    GPIO_1_ALT_FUN_1| /* TIM2 pin */
     GPIO_2_ALT_FUN_0|
     GPIO_3_ALT_FUN_0|
     GPIO_4_ALT_FUN_0|
